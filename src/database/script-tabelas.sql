@@ -56,3 +56,5 @@ insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B
 insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
 insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
 insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
+
+ALTER TABLE usuario ADD COLUMN cpf CHAR(11);
