@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <script src="js/abrir-servidor.js"></script>
+        <title>
+            DigitalTrack | Minhas simulações
+        </title>
+        <link rel="stylesheet" href="css/dashboard.css">
+    </head>
+    <body>
+        <div class="menu-lateral">
+            <a class="logo" href="index.html">
+                <img src="assets/digitaltrack-logo.svg" alt="DigitalTrack">
+            </a>
+            <div class="links-menu">
+                <a class="selecionado" href="dashboard.html">
+                    <span>
+                        ◉
+                    </span>
+                    Visão geral
+                </a>
+                <button type="button" onclick="abrirCadastro(this)">
+                    <span>
+                        ＋
+                    </span>
+                    Cadastrar simulação
+                </button>
+                <a href="calculadora.html">
+                    <span>
+                        ▦
+                    </span>
+                    Simulador financeiro
+                </a>
+                <a href="index.html">
+                    <span>
+                        ⌂
+                    </span>
+                    Início
+                </a>
+            </div>
+            <div class="rodape-menu">
+                <div class="perfil">
+                    <span class="iniciais" id="iniciais_usuario">
+                        DT
+                    </span>
+                    <div>
+                        <p id="nome_usuario">
+                            Sua conta
+                        </p>
+                        <span>
+                            Área de simulações
+                        </span>
+                    </div>
+                </div>
+                <button class="botao-sair" type="button" onclick="sair()">
+                    Sair da conta
+                </button>
+            </div>
+        </div>
+        <div class="conteudo">
+            <div class="cabecalho">
+                <div>
+                    <p class="saudacao" id="saudacao">
+                        Bem-vindo ao DigitalTrack
+                    </p>
+                    <p class="texto-apoio">
+                        Planeje, compare e entenda seus cenários de venda.
+                    </p>
+                </div>
+                <button class="botao principal" type="button" onclick="abrirCadastro(this)">
+                    ＋ Nova simulação
+                </button>
+            </div>
+            <div class="area-painel">
+                <div class="apresentacao">
+                    <div>
+                        <p class="destaque">
+                            SEU PLANEJAMENTO EM NÚMEROS
+                        </p>
+                        <p class="titulo-pagina">
+                            Minhas simulações
+                        </p>
+                        <p class="texto-apoio">
+                            Compare alternativas com os preços, custos e estimativas que você cadastrou.
+                        </p>
+                    </div>
+                    <div class="periodo">
+                        R$ · projeção de 30 dias
+                    </div>
+                </div>
+                <div class="aviso" id="aviso" role="status" aria-live="polite">
+                    Consultando suas simulações…
+                </div>
+                <div class="linha-filtro">
+                    <p id="resumo_lista">
+                        Seus cenários de venda
+                    </p>
+                    <label for="filtro_plataforma">
+                        Plataforma
+                    </label>
+                    <select id="filtro_plataforma" onchange="atualizarPainel()">
+                        <option value="">
+                            Todas as plataformas
+                        </option>
+                        Google Ads
+                    </option>
+                    <option>
+                        Meta Ads
+                    </option>
+                    <option>
+                        TikTok Ads
+                    </option>
+                </select>
+                <button class="botao discreto" type="button" onclick="carregarSimulacoes()" id="btn_atualizar">
+                    Atualizar dados
+                </button>
+            </div>
+            <div class="cartoes">
+                <div class="cartao">
+                    <p class="titulo-cartao">
+                        SIMULAÇÕES
+                        <br>
+                        CADASTRADAS
+                    </p>
+                    <p class="valor" id="total_simulacoes">
+                        —
+                    </p>
+                    <p class="detalhe" id="detalhe_total">
+                        Cenários em comparação
+                    </p>
+                </div>
+                <div class="cartao">
+                    <p class="titulo-cartao">
+                        MAIOR RESULTADO
+                        <br>
+                        ESTIMADO
+                    </p>
+                    <p class="valor positivo" id="maior_resultado">
+                        —
+                    </p>
+                    <p class="detalhe" id="nome_resultado">
+                        Cadastre um cenário
+                    </p>
+                </div>
+                <div class="cartao">
+                    <p class="titulo-cartao">
+                        MAIOR MARGEM
+                        <br>
+                        ESTIMADA
+                    </p>
+                    <p class="valor azul" id="maior_margem">
+                        —
+                    </p>
+                    <p class="detalhe" id="nome_margem">
+                        Cadastre um cenário
+                    </p>
+                </div>
+                <div class="cartao">
+                    <p class="titulo-cartao">
+                        MAIOR ROAS
+                        <br>
+                        ESTIMADO
+                    </p>
+                    <p class="valor amarelo" id="maior_roas">
+                        —
+                    </p>
+                    <p class="detalhe" id="nome_roas">
+                        Cadastre um cenário
+                    </p>
+                </div>
+            </div>
+            <div class="sem-registros" id="sem_registros" hidden>
+                <p class="titulo-painel" id="titulo_vazio">
+                    Cadastre sua primeira simulação
+                </p>
+                <p class="texto-apoio" id="texto_vazio">
+                    Seus indicadores e gráficos aparecerão aqui depois do cadastro.
+                </p>
+                <button class="botao principal" type="button" onclick="abrirCadastro(this)">
+                    ＋ Cadastrar simulação
+                </button>
+            </div>
+            <div class="graficos" id="area_graficos" hidden>
+                <div class="painel painel-comparativo">
+                    <p class="titulo-painel">
+                        Faturamento e custos por cenário
+                    </p>
+                    <p class="texto-apoio">
+                        Compare as três parcelas mensais em reais.
+                    </p>
+                    <div class="legenda">
+                        <span>
+                            <span class="marcador cor-receita">
+                            </span>
+                            Faturamento
+                        </span>
+                        <span>
+                            <span class="marcador cor-produto">
+                            </span>
+                            Produto e frete
+                        </span>
+                        <span>
+                            <span class="marcador cor-anuncio">
+                            </span>
+                            Anúncios
+                        </span>
+                    </div>
+                    <div class="rolagem-grafico">
+                        <canvas id="grafico_custos" width="650" height="330" aria-label="Comparativo de faturamento e custos por simulação" role="img">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="painel painel-resultados">
+                    <p class="titulo-painel">
+                        Resultado estimado por cenário
+                    </p>
+                    <p class="texto-apoio">
+                        Após produto, frete e anúncios. Negativos em vermelho.
+                    </p>
+                    <div class="rolagem-grafico">
+                        <canvas id="grafico_resultados" width="420" height="370" aria-label="Resultado estimado positivo ou negativo por simulação" role="img">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <p class="observacao" id="nota_graficos" hidden>
+                Os códigos dos gráficos identificam as simulações na lista abaixo. Passe o mouse nas barras para ver o nome completo.
+            </p>
+            <div class="painel lista" id="area_lista" hidden>
+                <div class="cabecalho-lista">
+                    <div>
+                        <p class="titulo-painel">
+                            Cenários cadastrados
+                        </p>
+                        <p class="texto-apoio">
+                            Estimativas individuais · cada cenário representa uma alternativa.
+                        </p>
+                    </div>
+                    <span id="quantidade_lista">
+                    </span>
+                </div>
+                <div class="linha-tabela titulos-tabela">
+                    <div class="coluna-nome">
+                        SIMULAÇÃO / PLATAFORMA
+                    </div>
+                    <div class="coluna-vendas">
+                        VENDAS / MÊS
+                    </div>
+                    <div class="coluna-dinheiro">
+                        FATURAMENTO
+                    </div>
+                    <div class="coluna-dinheiro">
+                        CUSTOS INFORMADOS
+                    </div>
+                    <div class="coluna-dinheiro">
+                        RESULTADO
+                    </div>
+                    <div class="coluna-metrica">
+                        MARGEM
+                    </div>
+                    <div class="coluna-metrica">
+                        ROAS
+                    </div>
+                    <div class="coluna-acao">
+                        AÇÃO
+                    </div>
+                </div>
+                <div id="lista_simulacoes">
+                </div>
+            </div>
+            <div class="nota">
+                <p>
+                    Uma simulação ajuda a comparar possibilidades.
+                </p>
+                <p>
+                    Os resultados usam 30 dias e apenas os custos informados. Não representam vendas realizadas nem lucro líquido. Impostos, taxas, devoluções e outros custos podem alterar o resultado.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="fundo-modal" id="fundo_modal" hidden>
+        <div class="caixa-modal" role="dialog" aria-modal="true" aria-labelledby="titulo_modal">
+            <div class="cabecalho-modal">
+                <div>
+                    <p class="destaque">
+                        NOVO CENÁRIO
+                    </p>
+                    <p class="titulo-modal" id="titulo_modal">
+                        Cadastrar simulação
+                    </p>
+                </div>
+                <button class="fechar" id="btn_fechar" type="button" aria-label="Fechar cadastro" onclick="fecharCadastro()">
+                    ×
+                </button>
+            </div>
+            <p class="texto-apoio">
+                Informe valores por unidade em reais. A projeção considera 30 dias.
+            </p>
+            <form id="formulario_simulacao" onsubmit="event.preventDefault(); salvarSimulacao()">
+                <div class="campo">
+                    <label for="nome_simulacao">
+                        Nome da simulação
+                    </label>
+                    <input id="nome_simulacao" required minlength="3" maxlength="120" placeholder="Ex.: Organizador — teste Google">
+                </div>
+                <div class="campo">
+                    <label for="plataforma_simulacao">
+                        Plataforma de anúncio
+                    </label>
+                    <select id="plataforma_simulacao">
+                        <option>
+                            Google Ads
+                        </option>
+                        <option>
+                            Meta Ads
+                        </option>
+                        <option>
+                            TikTok Ads
+                        </option>
+                    </select>
+                </div>
+                <div class="linha-campos">
+                    <div class="campo">
+                        <label for="preco_venda">
+                            Preço de venda por unidade (R$)
+                        </label>
+                        <input id="preco_venda" type="number" required min="0" max="99999999.99" step="0.01" placeholder="100,00">
+                    </div>
+                    <div class="campo">
+                        <label for="custo_produto">
+                            Produto e frete por unidade (R$)
+                        </label>
+                        <input id="custo_produto" type="number" required min="0" max="99999999.99" step="0.01" placeholder="40,00">
+                    </div>
+                </div>
+                <div class="linha-campos">
+                    <div class="campo">
+                        <label for="custo_anuncio">
+                            Anúncio por venda (R$)
+                        </label>
+                        <input id="custo_anuncio" type="number" required min="0" max="99999999.99" step="0.01" placeholder="20,00">
+                    </div>
+                    <div class="campo">
+                        <label for="vendas_dia">
+                            Vendas estimadas por dia
+                        </label>
+                        <input id="vendas_dia" type="number" required min="0" max="1000000" step="1" placeholder="5">
+                    </div>
+                </div>
+                <p class="erro-formulario" id="erro_formulario" role="alert">
+                </p>
+                <div class="acoes-modal">
+                    <button class="botao discreto" id="btn_cancelar" type="button" onclick="fecharCadastro()">
+                        Cancelar
+                    </button>
+                    <button class="botao principal" id="btn_salvar" type="submit">
+                        Salvar simulação
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/chart.umd.js">
+    </script>
+    <script src="js/dashboard.js">
+    </script>
+</body>
+</html>
