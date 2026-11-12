@@ -1,211 +1,124 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>AquaTech | Cadastro</title>
-
-  <script src="./js/sessao.js"></script>
-
-  <link rel="stylesheet" href="./css/estilo.css" />
-  <link rel="icon" href="./assets/icon/favicon2.ico" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-</head>
-
-<body onload="listar()">
-  <!--header inicio-->
-  <div class="header">
-    <div class="container">
-      <h1 class="titulo">AquaTech</h1>
-      <ul class="navbar">
-        <li>
-          <a href="index.html">Inicial</a>
-        </li>
-        <li>
-          <a href="simulador.html">Simulador</a>
-        </li>
-        <li>|</li>
-        <li>
-          <a href="login.html">Login</a>
-        </li>
-        <li class="agora">
-          <a href="#">Cadastro</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <!--header fim-->
-
-  <div class="login">
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
-      </div>
-    </div>
-    <div class="container">
-      <div class="card card-cadastro">
-        <h2>Bem-vindo!</h2>
-        <div class="formulario">
-          <!--
-                         Para inserir mais um campo, copie uma das inputs abaixo.
-                         Assim que inserir vá para o script abaixo.
-                     -->
-          <div class="campo">
-            <span>Código de ativação:</span>
-            <input id="codigo_input" type="text" placeholder="Insira aqui seu código" />
-          </div>
-          <div class="campo">
-            <span>Nome:</span>
-            <input id="nome_input" type="text" placeholder="Seu nome" />
-          </div>
-          <div class="campo">
-            <span>E-mail:</span>
-            <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
-          </div>
-          <div class="campo">
-            <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
-          </div>
-          <div class="campo">
-            <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
-          </div>
-          <button class="botao" onclick="cadastrar()">Cadastrar</button>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <script src="js/abrir-servidor.js"></script>
+        <title>
+            Digital Track | Criar Conta
+        </title>
+        <link rel="stylesheet" href="css/geral.css">
+        <link rel="stylesheet" href="css/cadastro.css">
+    </head>
+    <body class="pagina pagina-acesso">
+        <div class="area-acesso">
+            <div class="caixa-acesso">
+                <div class="faixa-colorida"></div>
+                <div class="cabecalho-acesso">
+                    <a href="index.html" class="imagem-acesso">
+                        <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
+                    </a>
+                    <p class="titulo-grande titulo-acesso">
+                        Crie sua Conta Global
+                    </p>
+                    <p class="descricao-acesso">
+                        Inicie sua jornada no e-commerce internacional e acesse a dashboard analítica.
+                    </p>
+                </div>
+                <div class="mensagem" id="msg_senha" role="status" aria-live="polite">
+                    <img class="icone" src="assets/icones/atencao-94a3b8.svg" alt="">
+                    <span id="texto_mensagem">
+                        Mensagem de aviso
+                    </span>
+                </div>
+                <div class="campos-acesso" onkeydown="if (event.key == &#x27;Enter&#x27;) { event.preventDefault(); cadastrar(); }">
+                    <div class="campo">
+                        <label>
+                            Nome Completo
+                        </label>
+                        <div class="caixa-campo">
+                            <input type="text" id="ipt_nome" class="entrada-acesso" placeholder="Ex: Roberto Silva" required autocomplete="name" maxlength="100" aria-label="Nome Completo">
+                            <img class="icone icone-campo" src="assets/icones/usuario-94a3b8.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>
+                            E-mail Profissional
+                        </label>
+                        <div class="caixa-campo">
+                            <input type="email" id="ipt_email" class="entrada-acesso" placeholder="seuemail@exemplo.com" required autocomplete="email" maxlength="100" aria-label="E-mail">
+                            <img class="icone icone-campo" src="assets/icones/envelope-94a3b8.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>
+                            Nível de Experiência
+                        </label>
+                        <div class="caixa-campo">
+                            <select id="ipt_nivel" class="entrada-acesso" style="padding-left: 46px; cursor: pointer;" autocomplete="name" maxlength="100" aria-label="Nível de Experiência">
+                                <option value="Iniciante">
+                                    Iniciante (Nunca vendi online)
+                                </option>
+                                <option value="Intermediário">
+                                    Intermediário (Já vendo no Brasil e quero expandir)
+                                </option>
+                                <option value="Avançado">
+                                    Avançado (Já opero com tráfego e e-commerce)
+                                </option>
+                            </select>
+                            <img class="icone icone-campo" src="assets/icones/camadas-94a3b8.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label>
+                            Senha
+                        </label>
+                        <div class="caixa-campo">
+                            <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Mínimo 6 caracteres" required oninput="verificarSenha(this.value)" autocomplete="new-password" maxlength="128" aria-label="Senha">
+                            <img class="icone icone-campo" src="assets/icones/cadeado-94a3b8.svg" alt="">
+                            <button type="button" class="botao-senha" aria-label="Mostrar senha" aria-pressed="false" onclick="mostrarSenha(&#x27;ipt_senha&#x27;, this)">
+                                <img class="icone" src="assets/icones/olho-94a3b8.svg" alt="">
+                            </button>
+                        </div>
+                        <div class="medidor-senha">
+                            <div class="barra-senha" id="barra_senha">
+                            </div>
+                        </div>
+                        <span class="texto-senha" id="texto_senha">
+                            Digite uma senha segura
+                        </span>
+                    </div>
+                    <div class="campo">
+                        <label>
+                            Confirmação da Senha
+                        </label>
+                        <div class="caixa-campo">
+                            <input type="password" id="ipt_confirmarSenha" class="entrada-acesso" placeholder="Repita sua senha" required autocomplete="new-password" maxlength="128" aria-label="Confirmação da Senha">
+                            <img class="icone icone-campo" src="assets/icones/escudo-00f5a0.svg" alt="">
+                            <button type="button" class="botao-senha" aria-label="Mostrar senha" aria-pressed="false" onclick="mostrarSenha(&#x27;ipt_confirmarSenha&#x27;, this)">
+                                <img class="icone" src="assets/icones/olho-94a3b8.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+                    <label class="opcao">
+                        <input type="checkbox" id="chk_termos" required checked aria-label="chk_termos">
+                        <span>
+                            Concordo com os Termos de Uso e Política de Privacidade
+                        </span>
+                    </label>
+                    <button type="button" class="botao botao-colorido botao-brilho" style="width: 100%; padding: 13px;" onclick="cadastrar()" id="btn_cadastrar">
+                        <img class="icone" src="assets/icones/usuario-050811.svg" alt="">
+                        Finalizar Cadastro
+                    </button>
+                </div>
+                <div class="acessos">
+                    Já possui uma conta na plataforma?
+                    <a href="login.html">
+                        Fazer Login
+                    </a>
+                </div>
+            </div>
         </div>
-        <div id="div_aguardar" class="loading-div">
-          <img src="./assets/circle-loading.gif" id="loading-gif" />
-        </div>
-
-        <div id="div_erros_login"></div>
-      </div>
-    </div>
-  </div>
-
-  <!--footer inicio-->
-  <div class="footer">
-    <div class="container">
-      <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023-2026</h4>
-    </div>
-  </div>
-  <!--footer fim-->
-</body>
-
+        <script src="js/validacoes.js"></script>
+        <script src="js/acesso.js"></script>
+    </body>
 </html>
-
-<script>
-
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
-
-  function cadastrar() {
-    // aguardar();
-
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome_input.value;
-    var emailVar = email_input.value;
-    var senhaVar = senha_input.value;
-    var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
-    var idEmpresaVincular
-
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == "" ||
-      confirmacaoSenhaVar == "" ||
-      codigoVar == ""
-    ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
-      finalizarAguardar();
-      return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
-    }
-
-    // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
-
-    // Enviando o valor da nova input
-    fetch("/usuarios/cadastrar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeVar,
-        emailServer: emailVar,
-        senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
-      }),
-    })
-      .then(function (resposta) {
-        console.log("resposta: ", resposta);
-
-        if (resposta.ok) {
-          cardErro.style.display = "block";
-
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-          setTimeout(() => {
-            window.location = "login.html";
-          }, "2000");
-
-          limparFormulario();
-          finalizarAguardar();
-        } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
-        }
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-        finalizarAguardar();
-      });
-
-    return false;
-  }
-
-  // Listando empresas cadastradas 
-  function listar() {
-    fetch("/empresas/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
-
-            console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
-          });
-        });
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
-  }
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-  }
-</script>
