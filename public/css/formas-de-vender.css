@@ -1,0 +1,231 @@
+.apresentacao-vendas {
+    padding: 155px 0 60px;
+}
+
+.titulo-vendas {
+    font-size: 56px;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    margin: 18px 0 24px;
+}
+
+.descricao-vendas {
+    width: 730px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #94a3b8;
+}
+
+.atalhos-vendas {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.resumo-vendas {
+    display: flex;
+    gap: 85px;
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 1px solid #202938;
+}
+
+.resumo-vendas span {
+    color: #00d9f5;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+}
+
+.resumo-vendas p {
+    color: #e2e8f0;
+    font-size: 16px;
+    margin-top: 6px;
+}
+
+.grupo-vendas {
+    padding: 70px 0;
+    scroll-margin-top: 90px;
+}
+
+.grupo-pagamentos, .grupo-exemplos {
+    background-color: #0a101b;
+    border-top: 1px solid #192333;
+    border-bottom: 1px solid #192333;
+}
+
+.cartoes-vendas, .cartoes-pagamentos, .cartoes-produtos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.cartao-vendas {
+    width: 584px;
+    padding: 30px;
+    border: 1px solid #273244;
+    border-radius: 18px;
+    background-color: #101828;
+}
+
+.identificacao-vendas {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #00d9f5;
+    margin-bottom: 15px;
+}
+
+.cartao-vendas .titulo-cartao, .cartao-pagamento .titulo-cartao {
+    font-size: 23px;
+    margin-bottom: 16px;
+}
+
+.explicacao-vendas, .cartao-pagamento .explicacao-pagamento {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #b0bfd3;
+}
+
+.exemplo-vendas {
+    padding: 18px;
+    margin-top: 23px;
+    border: 1px solid #2a384b;
+    border-radius: 10px;
+    background-color: #151f30;
+}
+
+.exemplo-vendas span {
+    display: block;
+    color: #00f5a0;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.exemplo-vendas p {
+    color: #b9c7da;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.detalhe-vendas {
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 19px;
+}
+
+.cartao-vendas-destaque {
+    border-top: 3px solid #00d9ce;
+}
+
+.cartao-pagamento, .cartao-produto {
+    width: 381px;
+    padding: 27px;
+    border: 1px solid #273244;
+    border-radius: 16px;
+    background-color: #101828;
+}
+
+.cartao-pagamento.cartao-vendas-destaque {
+    border-top: 3px solid #00d9ce;
+}
+
+.cartao-pagamento .detalhe-vendas {
+    font-size: 12px;
+    border-top: 1px solid #2a384b;
+    padding-top: 18px;
+}
+
+.numero-produto {
+    display: inline-block;
+    padding: 7px 12px;
+    border: 1px solid #235c50;
+    border-radius: 9px;
+    background-color: #12352d;
+    color: #00f5a0;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cartao-produto .titulo-cartao {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.cartao-produto > p:last-child {
+    color: #a8b7cc;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.linha-exemplo {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 22px 27px;
+    border: 1px solid #273244;
+    border-radius: 12px;
+    background-color: #101828;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #b9c7da;
+}
+
+.nome-exemplo {
+    width: 210px;
+    flex-shrink: 0;
+    font-weight: bold;
+    color: #f8fafc;
+}
+
+.linha-exemplo span {
+    color: #00d9ce;
+    padding: 0 7px;
+}
+
+.convite-vendas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 45px;
+    padding: 32px;
+    border: 1px solid #24594f;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0d2825, #111a33);
+}
+
+.convite-vendas .titulo-cartao {
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+.convite-vendas > div > p:last-child {
+    font-size: 14px;
+    color: #a8b7cc;
+}
+
+.fontes-vendas {
+    padding-top: 30px;
+    margin-top: 45px;
+    border-top: 1px solid #253247;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.fontes-vendas p {
+    color: #cbd5e1;
+    margin-bottom: 12px;
+}
+
+.fontes-vendas a {
+    display: block;
+    width: fit-content;
+    margin: 8px 0;
+}
+
+.fontes-vendas a:hover {
+    color: #00d9f5;
+}
