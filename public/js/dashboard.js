@@ -4,6 +4,9 @@ var graficoResultados;
 var salvando = false;
 var carregando = false;
 var ultimoBotao;
+var simulacaoSelecionada = null;
+var graficoIndividual;
+var registrosFiltrados = [];
 
 function elemento(id) {
     return document.getElementById(id);
@@ -72,7 +75,11 @@ function calcularSimulacao(simulacao) {
         id: simulacao.id,
         nome: simulacao.nome,
         plataforma: simulacao.plataforma,
-        vendasDia: Number(simulacao.vendasDia), vendas: vendas,
+        precoVenda: Number(simulacao.precoVenda),
+        custoProduto: Number(simulacao.custoProduto),
+        custoAnuncio: Number(simulacao.custoAnuncio),
+        vendasDia: Number(simulacao.vendasDia),
+        vendas: vendas,
         faturamento: faturamento, produto: produto, anuncios: anuncios, resultado: resultado,
         margem: margem,
         roas: retornoAnuncios
@@ -104,27 +111,45 @@ function preencherIndicador(registros, campo, idValor, idNome, formato, classe) 
 function atualizarPainel() {
     var filtro = elemento('filtro_plataforma').value;
     var registros = [];
+    var filtroResultado = elemento('filtro_resultado').value;
     for (var i = 0; i < simulacoes.length; i++) {
         if (filtro === '' || simulacoes[i].plataforma === filtro) {
-            registros.push(calcularSimulacao(simulacoes[i]));
+            var calculo = calcularSimulacao(simulacoes[i]);
+            if (filtroResultado === '' ||
+                (filtroResultado === 'positivo' && calculo.resultado > 0) ||
+                (filtroResultado === 'negativo' && calculo.resultado < 0) ||
+                (filtroResultado === 'equilibrio' && calculo.resultado === 0)) {
+                registros.push(calculo);
+            }
         }
     }
     elemento('total_simulacoes').textContent = registros.length;
     elemento('detalhe_total').textContent = filtro || 'Todas as plataformas';
-    elemento('resumo_lista').textContent = filtro ? 'Indicadores e gráficos filtrados por ' + filtro : 'Todos os seus cenários de venda';
+    elemento('resumo_lista').textContent = registros.length + ' de ' + simulacoes.length + ' cenários';
     preencherIndicador(registros, 'resultado', 'maior_resultado', 'nome_resultado', moeda, 'positivo');
     preencherIndicador(registros, 'margem', 'maior_margem', 'nome_margem', percentual, 'azul');
-    preencherIndicador(registros, 'roas', 'maior_roas', 'nome_roas', roas, 'amarelo');
+    var positivos = 0;
+    for (var i = 0; i < registros.length; i++) {
+        if (registros[i].resultado > 0) {
+            positivos++;
+        }
+    }
+    elemento('total_positivos').textContent = positivos + ' de ' + registros.length;
+    elemento('detalhe_positivos').textContent = 'Com resultado estimado acima de zero';
+    registrosFiltrados = registros;
     var vazio = registros.length === 0;
     elemento('sem_registros').hidden = !vazio;
     elemento('area_graficos').hidden = vazio;
     elemento('area_lista').hidden = vazio;
     elemento('nota_graficos').hidden = vazio;
-    elemento('titulo_vazio').textContent = filtro && simulacoes.length ? 'Nenhum cenário nesta plataforma' : 'Cadastre sua primeira simulação';
-    elemento('texto_vazio').textContent = filtro && simulacoes.length ? 'Escolha outra plataforma ou cadastre uma nova simulação.' : 'Seus indicadores e gráficos aparecerão aqui depois do cadastro.';
+    elemento('titulo_vazio').textContent = (filtro || filtroResultado) && simulacoes.length ? 'Nenhum cenário para estes filtros' : 'Cadastre sua primeira simulação';
+    elemento('texto_vazio').textContent = (filtro || filtroResultado) && simulacoes.length ? 'Limpe os filtros ou cadastre uma nova simulação.' : 'Seus indicadores e gráficos aparecerão aqui depois do cadastro.';
     elemento('quantidade_lista').textContent = registros.length + (registros.length === 1 ? ' cenário' : ' cenários');
     montarLista(registros);
     montarGraficos(registros);
+    if (simulacaoSelecionada !== null) {
+        mostrarAnalise(simulacaoSelecionada, false);
+    }
 }
 function criarTexto(classe, texto) {
     var div = document.createElement('div');
@@ -148,6 +173,16 @@ function montarLista(registros) {
         linha.appendChild(criarTexto('coluna-metrica', percentual(item.margem)));
         linha.appendChild(criarTexto('coluna-metrica', roas(item.roas)));
         var acao = criarTexto('coluna-acao', '');
+        var analisar = document.createElement('button');
+        analisar.type = 'button';
+        analisar.className = 'analisar';
+        analisar.textContent = 'Analisar';
+        analisar.dataset.id = item.id;
+        analisar.setAttribute('aria-label', 'Analisar ' + item.nome);
+        analisar.onclick = function () {
+            mostrarAnalise(Number(this.dataset.id), true);
+        };
+        acao.appendChild(analisar);
         var botao = document.createElement('button');
         botao.type = 'button';
         botao.className = 'excluir';
@@ -177,7 +212,7 @@ function montarGraficos(registros) {
     }
     var nomes = [], receitas = [], produtos = [], anuncios = [], resultados = [], cores = [];
     for (var i = 0; i < registros.length; i++) {
-        nomes.push('#' + registros[i].id);
+        nomes.push(nomeCurto(registros[i].nome));
         receitas.push(registros[i].faturamento);
         produtos.push(registros[i].produto);
         anuncios.push(registros[i].anuncios);
@@ -190,7 +225,7 @@ function montarGraficos(registros) {
     }
     Chart.defaults.color = '#9cacc2';
     Chart.defaults.font.family = 'Arial';
-    var largura = Math.max(550, elemento('grafico_custos').parentElement.clientWidth - 5, registros.length * 78);
+    var largura = Math.max(550, elemento('grafico_custos').parentElement.clientWidth - 5, registros.length * 130);
     elemento('grafico_custos').width = largura;
     elemento('grafico_custos').height = 330;
     elemento('grafico_resultados').width = Math.max(330, elemento('grafico_resultados').parentElement.clientWidth - 5);
@@ -207,6 +242,11 @@ function montarGraficos(registros) {
     function tituloTooltip(itens) { return registros[itens[0].dataIndex].nome; }
     var opcoes = {
         responsive: false, animation: false,
+        onClick: function (evento, barras) {
+            if (barras.length > 0) {
+                mostrarAnalise(registros[barras[0].index].id, true);
+            }
+        },
         plugins: { legend: { display: false }, tooltip: { callbacks: {
             title: tituloTooltip,
             label: function (item) { return item.dataset.label + ': ' + moeda(item.raw); }
@@ -223,6 +263,11 @@ function montarGraficos(registros) {
     graficoResultados = new Chart(elemento('grafico_resultados'), {
         type: 'bar', data: { labels: nomes, datasets: [{ label: 'Resultado', data: resultados, backgroundColor: cores, borderRadius: 4, maxBarThickness: 28 }] },
         options: { responsive: false, animation: false, indexAxis: 'y',
+            onClick: function (evento, barras) {
+                if (barras.length > 0) {
+                    mostrarAnalise(registros[barras[0].index].id, true);
+                }
+            },
             plugins: { legend: { display: false }, tooltip: { callbacks: { title: tituloTooltip, label: function (item) { return moeda(item.raw); } } } },
             scales: { y: { grid: { display: false } }, x: { beginAtZero: true, grid: { color: '#253044' }, ticks: { maxTicksLimit: 5, callback: valorResumido } } }
         }
@@ -237,7 +282,7 @@ async function carregarSimulacoes() {
     avisar('Consultando suas simulações no banco…', false);
     try {
         simulacoes = await consultar('/simulacoes/listar');
-        avisar('Dados consultados no banco às ' + new Date().toLocaleTimeString('pt-BR') + '. As projeções usam apenas suas simulações.', false);
+        avisar('Atualizado às ' + new Date().toLocaleTimeString('pt-BR') + ' · Suas simulações salvas.', false);
         atualizarPainel();
         return true;
     } catch (erro) {
@@ -336,5 +381,99 @@ async function iniciar() {
         elemento('iniciais_usuario').textContent = (partes[0][0] + (partes.length > 1 ? partes[partes.length - 1][0] : '')).toUpperCase();
         await carregarSimulacoes();
     } catch (erro) { avisar('Não foi possível verificar sua sessão. ' + erro.message, true); }
+}
+function nomeCurto(nome) {
+    if (nome.length > 20) {
+        return nome.substring(0, 19) + '…';
+    }
+    return nome;
+}
+function limparFiltros() {
+    elemento('filtro_plataforma').value = '';
+    elemento('filtro_resultado').value = '';
+    atualizarPainel();
+}
+function fecharAnalise() {
+    simulacaoSelecionada = null;
+    elemento('analise_individual').hidden = true;
+    if (graficoIndividual) {
+        graficoIndividual.destroy();
+        graficoIndividual = null;
+    }
+}
+function mostrarAnalise(id, moverTela) {
+    var item = null;
+    for (var i = 0; i < registrosFiltrados.length; i++) {
+        if (registrosFiltrados[i].id === id) {
+            item = registrosFiltrados[i];
+        }
+    }
+    if (item === null) {
+        fecharAnalise();
+        return;
+    }
+    simulacaoSelecionada = id;
+    elemento('analise_individual').hidden = false;
+    elemento('nome_analise').textContent = item.nome;
+    elemento('plataforma_analise').textContent = item.plataforma + ' · ' + item.vendasDia + ' vendas estimadas por dia · ' + item.vendas + ' em 30 dias';
+    elemento('analise_preco').textContent = moeda(item.precoVenda);
+    elemento('analise_produto').textContent = moeda(item.custoProduto);
+    elemento('analise_anuncio').textContent = moeda(item.custoAnuncio);
+    var sobra = item.precoVenda - item.custoProduto - item.custoAnuncio;
+    elemento('analise_sobra').textContent = moeda(sobra);
+    elemento('analise_sobra').className = sobra < 0 ? 'negativo' : 'positivo';
+    elemento('analise_resultado').textContent = moeda(item.resultado);
+    elemento('analise_resultado').className = item.resultado < 0 ? 'negativo' : 'positivo';
+    elemento('analise_margem').textContent = percentual(item.margem);
+    elemento('analise_roas').textContent = roas(item.roas);
+    var leitura = '';
+    if (item.vendas === 0) {
+        leitura = 'Sem vendas estimadas: a projeção mensal é zero. Informe uma quantidade para comparar o cenário.';
+    } else if (sobra < 0) {
+        leitura = 'Os custos informados superam o preço em ' + moeda(-sobra) + ' por venda. Revise preço, produto, frete ou anúncio.';
+    } else if (sobra === 0) {
+        leitura = 'O preço cobre exatamente os custos informados. Outros custos podem deixar o resultado negativo.';
+    } else {
+        leitura = 'Após os custos informados, restam ' + moeda(sobra) + ' por venda. Essa projeção não comprova vendas reais nem valida a oferta.';
+    }
+    if (item.custoAnuncio === 0) {
+        leitura += ' Sem investimento em anúncios, o ROAS não é calculado.';
+    }
+    elemento('leitura_cenario').textContent = leitura;
+    if (graficoIndividual) {
+        graficoIndividual.destroy();
+        graficoIndividual = null;
+    }
+    if (typeof Chart !== 'undefined') {
+        elemento('grafico_individual').width = Math.max(380, elemento('grafico_individual').parentElement.clientWidth - 5);
+        graficoIndividual = new Chart(elemento('grafico_individual'), {
+            type: 'bar',
+            data: {
+                labels: ['Faturamento', 'Produto e frete', 'Anúncios', 'Resultado'],
+                datasets: [{
+                    label: 'Projeção de 30 dias',
+                    data: [item.faturamento, item.produto, item.anuncios, item.resultado],
+                    backgroundColor: ['#00dda5', '#f5b544', '#7770f5', item.resultado < 0 ? '#fa8297' : '#04c9e6'],
+                    maxBarThickness: 24
+                }]
+            },
+            options: {
+                responsive: false,
+                animation: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: function (barra) { return moeda(barra.raw); } } }
+                },
+                scales: {
+                    x: { beginAtZero: true, ticks: { maxTicksLimit: 4, callback: function (valor) { return moeda(valor); } } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+    }
+    if (moverTela) {
+        elemento('analise_individual').scrollIntoView({ block: 'start' });
+    }
 }
 iniciar();

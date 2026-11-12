@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <script src="js/abrir-servidor.js"></script>
         <title>
-            DigitalTrack | Minhas simulações
+            DigitalTrack | Análise de cenários
         </title>
         <link rel="stylesheet" href="css/dashboard.css">
     </head>
@@ -18,7 +18,7 @@
                     <span>
                         ◉
                     </span>
-                    Visão geral
+                    Análise de cenários
                 </a>
                 <button type="button" onclick="abrirCadastro(this)">
                     <span>
@@ -79,7 +79,7 @@
                             SEU PLANEJAMENTO EM NÚMEROS
                         </p>
                         <p class="titulo-pagina">
-                            Minhas simulações
+                            Análise de cenários
                         </p>
                         <p class="texto-apoio">
                             Compare alternativas com os preços, custos e estimativas que você cadastrou.
@@ -103,6 +103,7 @@
                         <option value="">
                             Todas as plataformas
                         </option>
+                    <option>
                         Google Ads
                     </option>
                     <option>
@@ -112,6 +113,14 @@
                         TikTok Ads
                     </option>
                 </select>
+                <label for="filtro_resultado">Resultado</label>
+                <select id="filtro_resultado" onchange="atualizarPainel()">
+                    <option value="">Todos os resultados</option>
+                    <option value="positivo">Positivo</option>
+                    <option value="negativo">Negativo</option>
+                    <option value="equilibrio">Em equilíbrio</option>
+                </select>
+                <button class="botao discreto" type="button" onclick="limparFiltros()">Limpar filtros</button>
                 <button class="botao discreto" type="button" onclick="carregarSimulacoes()" id="btn_atualizar">
                     Atualizar dados
                 </button>
@@ -158,14 +167,14 @@
                 </div>
                 <div class="cartao">
                     <p class="titulo-cartao">
-                        MAIOR ROAS
+                        CENÁRIOS
                         <br>
-                        ESTIMADO
+                        POSITIVOS
                     </p>
-                    <p class="valor amarelo" id="maior_roas">
+                    <p class="valor amarelo" id="total_positivos">
                         —
                     </p>
-                    <p class="detalhe" id="nome_roas">
+                    <p class="detalhe" id="detalhe_positivos">
                         Cadastre um cenário
                     </p>
                 </div>
@@ -187,7 +196,7 @@
                         Faturamento e custos por cenário
                     </p>
                     <p class="texto-apoio">
-                        Compare as três parcelas mensais em reais.
+                        Compare faturamento, produto e frete e anúncios em 30 dias.
                     </p>
                     <div class="legenda">
                         <span>
@@ -225,8 +234,36 @@
                 </div>
             </div>
             <p class="observacao" id="nota_graficos" hidden>
-                Os códigos dos gráficos identificam as simulações na lista abaixo. Passe o mouse nas barras para ver o nome completo.
+                Clique em uma barra ou em Analisar para ver os valores daquele cenário. Os nomes completos aparecem ao passar o mouse.
             </p>
+            <div class="painel analise-individual" id="analise_individual" hidden>
+                <div class="cabecalho-lista">
+                    <div>
+                        <p class="destaque">ANÁLISE INDIVIDUAL · PROJEÇÃO DE 30 DIAS</p>
+                        <p class="titulo-painel" id="nome_analise"></p>
+                        <p class="texto-apoio" id="plataforma_analise"></p>
+                    </div>
+                    <button class="botao discreto" type="button" onclick="fecharAnalise()">Fechar análise</button>
+                </div>
+                <div class="valores-analise">
+                    <div><p>Preço por unidade</p><span id="analise_preco"></span></div>
+                    <div><p>Produto e frete por unidade</p><span id="analise_produto"></span></div>
+                    <div><p>Anúncio por venda</p><span id="analise_anuncio"></span></div>
+                    <div><p>Resultado por venda</p><span id="analise_sobra"></span></div>
+                </div>
+                <div class="colunas-analise">
+                    <div class="grafico-analise">
+                        <p class="titulo-painel">Os valores deste cenário</p>
+                        <canvas id="grafico_individual" width="500" height="260" role="img" aria-label="Faturamento, custos e resultado mensal do cenário selecionado"></canvas>
+                    </div>
+                    <div class="resumo-analise">
+                        <div><p>Resultado em 30 dias</p><span id="analise_resultado"></span></div>
+                        <div><p>Margem estimada</p><span id="analise_margem"></span></div>
+                        <div><p>ROAS estimado</p><span id="analise_roas"></span></div>
+                        <div class="leitura-cenario" id="leitura_cenario" role="status"></div>
+                    </div>
+                </div>
+            </div>
             <div class="painel lista" id="area_lista" hidden>
                 <div class="cabecalho-lista">
                     <div>
@@ -234,7 +271,7 @@
                             Cenários cadastrados
                         </p>
                         <p class="texto-apoio">
-                            Estimativas individuais · cada cenário representa uma alternativa.
+                            Use Analisar para entender cada alternativa de venda.
                         </p>
                     </div>
                     <span id="quantidade_lista">
