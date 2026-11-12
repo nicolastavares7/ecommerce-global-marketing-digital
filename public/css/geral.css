@@ -732,11 +732,41 @@ select.entrada {
 body { min-width: 1320px; }
 .conteudo { width: 1240px; max-width: none; }
 .cabecalho { min-width: 1320px; background: #060911; }
-.cabecalho .conteudo { gap: 20px; }
-.imagem-logo img { width: 185px; height: auto; }
-.menu { gap: 20px; }
-.item-menu { font-size: 13px; }
-.botoes-menu { gap: 12px; }
+.cabecalho .conteudo {
+    width: 1280px;
+    padding: 0 20px;
+    gap: 18px;
+}
+.imagem-logo {
+    flex-shrink: 0;
+}
+
+.imagem-logo img {
+    width: 260px;
+    height: auto;
+    display: block;
+}
+
+.logo-rodape {
+    width: 290px;
+    height: auto;
+    display: block;
+}
+.menu {
+    gap: 16px;
+    flex-shrink: 0;
+}
+.item-menu {
+    font-size: 13px;
+    white-space: nowrap;
+}
+.botoes-menu {
+    gap: 12px;
+    flex-shrink: 0;
+}
+.botoes-menu .botao {
+    white-space: nowrap;
+}
 .botao-pequeno { padding: 9px 17px; font-size: 13px; }
 .colunas-inicio { justify-content: space-between; }
 .textos-inicio { width: 630px; }

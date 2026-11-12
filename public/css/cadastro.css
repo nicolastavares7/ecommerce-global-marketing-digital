@@ -216,7 +216,11 @@
 /* Cartão fixo, sem movimento. */
 .area-acesso { padding: 40px 20px; }
 .caixa-acesso { width: 480px; max-width: none; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-.imagem-acesso img { width: 230px; height: auto; }
+.imagem-acesso img {
+    width: 340px;
+    height: auto;
+    display: block;
+}
 .caixa-campo .icone.icone-campo { position: absolute; left: 16px; top: 16px; width: 19px; height: 19px; }
 .botao-senha { top: 12px; right: 12px; padding: 0; }
 .botao-senha .icone { width: 21px; height: 21px; }

@@ -57,13 +57,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .logo {
     height: 108px;
     border-bottom: 1px solid #202a38;
-    padding: 38px 26px;
+    padding: 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo img {
-    width: 180px;
-    height: 34px;
-    object-fit: contain;
+    width: 208px;
+    height: auto;
+    display: block;
 }
 
 .links-menu {
