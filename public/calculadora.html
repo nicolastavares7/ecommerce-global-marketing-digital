@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Digital Track | Simulador Financeiro</title>
+        <link rel="stylesheet" href="css/geral.css">
+    </head>
+    <body class="pagina" onload="calcular()">
+        <div class="cabecalho">
+            <div class="conteudo">
+                <a href="index.html" class="imagem-logo">
+                    <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
+                </a>
+                <div class="lista-textos menu" id="menu">
+                    <p class="item-texto">
+                        <a href="index.html#pilares" class="item-menu">
+                            Pilares Globais
+                        </a>
+                    </p>
+                    <p class="item-texto">
+                        <a href="index.html#fornecedores" class="item-menu">
+                            Fornecedores
+                        </a>
+                    </p>
+                    <p class="item-texto">
+                        <a href="formas-de-vender.html" class="item-menu">
+                            Formas de vender
+                        </a>
+                    </p>
+                    <p class="item-texto">
+                        <a href="calculadora.html" class="item-menu">
+                            Simulador Financeiro
+                        </a>
+                    </p>
+                    <p class="item-texto">
+                        <a href="marketing-e-metricas.html" class="item-menu">
+                            Marketing e métricas
+                        </a>
+                    </p>
+                    <p class="item-texto">
+                        <a href="index.html#faq" class="item-menu">
+                            FAQ
+                        </a>
+                    </p>
+                </div>
+                <div class="botoes-menu">
+                    <a href="login.html" class="botao botao-contorno botao-pequeno">
+                        Entrar
+                    </a>
+                    <a href="cadastro.html" class="botao botao-colorido botao-pequeno botao-brilho">
+                        Começar Agora
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="height: 80px;"></div>
+        <div class="secao" id="calculadora" style="background: rgba(12, 18, 32, 0.4);">
+            <div class="conteudo">
+                <div class="cabecalho-secao">
+                    <span class="subtitulo">
+                        Ferramenta Interativa Exclusiva
+                    </span>
+                    <p class="titulo-grande titulo-secao">
+                        Calculadora de Arbitragem Cambial &amp; Lucro Global
+                    </p>
+                    <p class="descricao-secao">
+                        Descubra quanto você pode lucrar vendendo produtos para o exterior e convertendo o faturamento de moedas fortes para Reais (BRL).
+                    </p>
+                </div>
+                <div class="caixa-calculadora">
+                    <div class="campos-calculadora">
+                        <div class="campo">
+                            <label>
+                                <img class="icone" src="assets/icones/dinheiro-94a3b8.svg" alt="">
+                                Moeda do Mercado Alvo
+                            </label>
+                            <select class="entrada" id="sel_moeda" onchange="calcular()" aria-label="Moeda do Mercado Alvo">
+                                <option value="USD" selected>
+                                    Dólar Americano (USD) - Câmbio: R$ 5,75
+                                </option>
+                                <option value="EUR">
+                                    Euro (EUR) - Câmbio: R$ 6,20
+                                </option>
+                                <option value="GBP">
+                                    Libra Esterlina (GBP) - Câmbio: R$ 7,35
+                                </option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 16px;">
+                            <div class="campo">
+                                <label>
+                                    Preço de Venda do Produto
+                                </label>
+                                <div class="campo-com-icone">
+                                    <span class="simbolo" id="simbolo_preco">
+                                        $
+                                    </span>
+                                    <input type="number" class="entrada" id="ipt_preco" value="59.90" step="0.5" oninput="calcular()" aria-label="Preço de Venda do Produto">
+                                </div>
+                            </div>
+                            <div class="campo">
+                                <label>
+                                    Custo do Fornecedor + Frete
+                                </label>
+                                <div class="campo-com-icone">
+                                    <span class="simbolo" id="simbolo_custo">
+                                        $
+                                    </span>
+                                    <input type="number" class="entrada" id="ipt_custo" value="16.50" step="0.5" oninput="calcular()" aria-label="Custo do Fornecedor + Frete">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 16px;">
+                            <div class="campo">
+                                <label>
+                                    Custo de Tráfego Pago / Venda (CPA)
+                                </label>
+                                <div class="campo-com-icone">
+                                    <span class="simbolo" id="simbolo_anuncio">
+                                        $
+                                    </span>
+                                    <input type="number" class="entrada" id="ipt_anuncio" value="18.00" step="0.5" oninput="calcular()" aria-label="Custo de Tráfego Pago / Venda (CPA)">
+                                </div>
+                            </div>
+                            <div class="campo">
+                                <label>
+                                    Vendas Estimadas por Dia
+                                </label>
+                                <div class="campo-com-icone">
+                                    <span class="simbolo">
+                                        <img class="icone" src="assets/icones/carrinho-94a3b8.svg" alt="">
+                                    </span>
+                                    <input type="number" class="entrada" id="ipt_vendas" value="10" min="1" oninput="calcular()" aria-label="Vendas Estimadas por Dia">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="resultado-calculadora">
+                        <div class="titulo-resultado">
+                            Lucro Líquido Estimado por Mês
+                        </div>
+                        <div class="valor-lucro" id="div_lucro_reais">
+                            R$ 43.815,00
+                        </div>
+                        <div class="lista-resultados">
+                            <div class="linha-resultado">
+                                <span>
+                                    Lucro em Moeda Estrangeira:
+                                </span>
+                                <span id="div_lucro_moeda" class="numero-destaque">
+                                    $ 7,620.00 / mês
+                                </span>
+                            </div>
+                            <div class="linha-resultado">
+                                <span>
+                                    Faturamento Bruto Mensal:
+                                </span>
+                                <span id="div_faturamento" class="numero-destaque">
+                                    $ 17,970.00
+                                </span>
+                            </div>
+                            <div class="linha-resultado">
+                                <span>
+                                    Margem Líquida Real:
+                                </span>
+                                <span style="color: #00f5a0;" id="div_margem" class="numero-destaque">
+                                    42.4%
+                                </span>
+                            </div>
+                            <div class="linha-resultado">
+                                <span>
+                                    ROAS Estimado (Retorno de Ads):
+                                </span>
+                                <span style="color: #00d9f5;" id="div_roas" class="numero-destaque">
+                                    3.33x
+                                </span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 24px;">
+                            <a href="cadastro.html" class="botao botao-colorido" style="width: 100%;">
+                                <img class="icone" src="assets/icones/grafico-050811.svg" alt="">
+                                Quero Aprender a Montar Essa Operação
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="aviso-calculadora" id="aviso_calculadora" role="status" aria-live="polite"></p>
+        </div>
+        <div class="rodape">
+            <div class="conteudo">
+                <div class="colunas-rodape">
+                    <div class="apresentacao-rodape">
+                        <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo" style="height: 38px;">
+                        <p>
+                            Capacitando empreendedores digitais a construir operações globais de e-commerce, tráfego de alta conversão e arbitragem de moedas fortes.
+                        </p>
+                    </div>
+                    <div class="coluna-rodape">
+                        <p class="titulo-pequeno">
+                            Plataforma
+                        </p>
+                        <div class="lista-textos">
+                            <p class="item-texto">
+                                <a href="index.html#pilares">
+                                    Pilares Globais
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="index.html#fornecedores">
+                                    Fornecedores
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="formas-de-vender.html">
+                                    Formas de vender
+                                </a>
+                            </p>
+                            <p class="item-texto"><a href="marketing-e-metricas.html">Marketing e métricas</a></p>
+                            <p class="item-texto"><a href="pagamentos-e-entregas.html">Pagamentos e entregas</a></p>
+                            <p class="item-texto">
+                                <a href="calculadora.html">
+                                    Simulador Financeiro
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="index.html#trilha">
+                                    Trilha de Estudos
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="coluna-rodape">
+                        <p class="titulo-pequeno">
+                            Recursos
+                        </p>
+                        <div class="lista-textos">
+                            <p class="item-texto">
+                                <a href="login.html">
+                                    Área de Membros
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="cadastro.html">
+                                    Criar Conta
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="login.html">
+                                    Acessar Dashboard
+                                </a>
+                            </p>
+                            <p class="item-texto">
+                                <a href="index.html#faq">
+                                    Suporte &amp; FAQ
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="coluna-rodape">
+                        <p class="titulo-pequeno">
+                            Tecnologias
+                        </p>
+                        <div class="lista-textos">
+                            <p class="item-texto">
+                                <span>
+                                    Meta Ads CBO
+                                </span>
+                            </p>
+                            <p class="item-texto">
+                                <span>
+                                    TikTok Shop &amp; Ads
+                                </span>
+                            </p>
+                            <p class="item-texto">
+                                <span>
+                                    Stripe &amp; Multi-Currency
+                                </span>
+                            </p>
+                            <p class="item-texto">
+                                <span>
+                                    CJ &amp; Zendrop Logistics
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="final-rodape">
+                    <p>
+                        © 2026 Digital Track - Projeto Individual de Empreendedorismo Digital &amp; E-commerce Global. Todos os direitos reservados.
+                    </p>
+                    <p>
+                        Desenvolvido com foco em alta performance e visualização de dados.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script src="js/calculadora.js"></script>
+    </body>
+</html>
