@@ -1,0 +1,25 @@
+.apresentacao-marketing { padding: 155px 0 65px; }
+.titulo-marketing { font-size: 54px; line-height: 1.18; letter-spacing: -1.5px; margin: 20px 0 25px; }
+.descricao-marketing { width: 800px; font-size: 18px; line-height: 1.8; color: #a8b7cc; }
+.atalhos-marketing { display: flex; gap: 12px; margin-top: 35px; }
+.atalhos-marketing a { padding: 12px 17px; border: 1px solid #2a384b; border-radius: 24px; color: #cbd5e1; font-size: 13px; background-color: #101828; }
+.atalhos-marketing a:hover { border-color: #00d9ce; color: #00d9ce; }
+.grupo-marketing { padding: 65px 0; scroll-margin-top: 90px; }
+.grupo-marketing:nth-child(odd) { background-color: #0a101b; }
+.cartoes-marketing { display: flex; flex-wrap: wrap; gap: 24px; }
+.cartao-marketing { width: 381px; padding: 28px; border: 1px solid #273244; border-radius: 18px; background-color: #101828; }
+.cartao-marketing .titulo-cartao { font-size: 22px; color: #f8fafc; margin-bottom: 17px; }
+.cartao-marketing > p, .nota-marketing > p, .passo-marketing p { font-size: 15px; line-height: 1.85; color: #a8b7cc; }
+.cartao-marketing .exemplo-marketing { font-size: 13px; color: #00d9ce; border-top: 1px solid #273244; padding-top: 18px; margin-top: 20px; }
+.nota-marketing { padding: 28px 32px; margin-top: 25px; border: 1px solid #24594f; border-radius: 16px; background-color: #0e2427; }
+.nota-marketing .titulo-cartao { font-size: 21px; color: #f8fafc; margin-bottom: 12px; }
+.passo-marketing { display: flex; gap: 26px; padding: 26px; border: 1px solid #273244; border-radius: 14px; background-color: #101828; margin-bottom: 16px; }
+.passo-marketing > span { color: #00d9ce; font-size: 25px; width: 45px; flex-shrink: 0; font-weight: bold; }
+.passo-marketing .titulo-cartao { color: #f8fafc; font-size: 20px; margin-bottom: 8px; }
+.observacao-marketing { color: #94a3b8; font-size: 14px; line-height: 1.8; margin-top: 25px; }
+.convite-marketing { display: flex; align-items: center; justify-content: space-between; padding: 32px; gap: 30px; border: 1px solid #24594f; border-radius: 18px; margin-top: 35px; background: linear-gradient(135deg, #0d2825, #111a33); }
+.convite-marketing p:last-child { color: #a8b7cc; font-size: 14px; margin-top: 12px; }
+.fontes-marketing { padding-top: 40px; padding-bottom: 60px; }
+.fontes-marketing .titulo-cartao { font-size: 20px; margin-bottom: 18px; }
+.fontes-marketing a { display: block; width: fit-content; color: #94a3b8; font-size: 13px; margin: 12px 0; }
+.fontes-marketing a:hover { color: #00d9ce; }
