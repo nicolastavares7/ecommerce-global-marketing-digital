@@ -1,0 +1,12 @@
+# A linha abaixo determina que o diretório node_modules não será enviado ao repositório remoto
+node_modules
+package-lock.json
+
+.github
+
+# Configurações locais de conexão
+.env
+.env.dev
+
+# Arquivos gerados pelo macOS
+.DS_Store
