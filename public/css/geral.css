@@ -859,3 +859,45 @@ body { min-width: 1320px; }
 .descricao-ferramenta .titulo-cartao { font-size: 26px; margin-bottom: 15px; }
 .descricao-ferramenta > p:last-of-type { color: #a8b7cc; font-size: 15px; line-height: 1.9; }
 .descricao-ferramenta .botao { margin-top: 24px; }
+
+/* A relação pessoal com o tema do projeto. */
+.minha-historia {
+    display: flex;
+    gap: 40px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    scroll-margin-top: 100px;
+}
+.origem-projeto {
+    width: 710px;
+}
+.origem-projeto .titulo-grande {
+    font-size: 30px;
+    margin: 14px 0 20px;
+}
+.origem-projeto > p:not(.titulo-grande), .valores-projeto > p:not(.titulo-cartao) {
+    color: #a8b7cc;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+.valores-projeto {
+    width: 440px;
+    padding: 28px;
+    border: 1px solid #24594f;
+    border-radius: 16px;
+    background: #0e2427;
+}
+.valores-projeto .titulo-cartao {
+    font-size: 21px;
+    margin-bottom: 16px;
+}
+.valores-projeto span {
+    display: inline-block;
+    padding: 6px 9px;
+    margin: 6px 3px 0 0;
+    font-size: 12px;
+    border: 1px solid #24645b;
+    border-radius: 15px;
+    color: #50ddc5;
+}

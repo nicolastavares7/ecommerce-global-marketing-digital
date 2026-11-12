@@ -23,3 +23,74 @@
 .fontes-marketing .titulo-cartao { font-size: 20px; margin-bottom: 18px; }
 .fontes-marketing a { display: block; width: fit-content; color: #94a3b8; font-size: 13px; margin: 12px 0; }
 .fontes-marketing a:hover { color: #00d9ce; }
+
+[hidden] {
+    display: none !important;
+}
+.apresentacao-marketing {
+    padding: 125px 0 28px;
+}
+.titulo-marketing {
+    font-size: 44px;
+    margin: 16px 0;
+}
+.descricao-marketing {
+    width: 900px;
+    font-size: 16px;
+}
+.abas-marketing {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+}
+.abas-marketing button {
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 13px 20px;
+    border: 1px solid #2a384b;
+    border-radius: 24px;
+    background: #101828;
+    color: #bcc8dc;
+}
+.abas-marketing .aba-ativa {
+    background: #00d3b3;
+    color: #061321;
+    border-color: #00d3b3;
+    font-weight: bold;
+}
+.grupo-marketing {
+    padding: 30px 0;
+}
+.grupo-marketing .cabecalho-secao {
+    margin-bottom: 28px;
+}
+.grupo-marketing .titulo-secao {
+    font-size: 30px;
+}
+.grupo-marketing .descricao-secao {
+    font-size: 16px;
+}
+.cartao-marketing {
+    padding: 24px;
+}
+.cartao-marketing .titulo-cartao {
+    font-size: 20px;
+}
+.cartao-marketing > p, .nota-marketing > p {
+    line-height: 1.7;
+    font-size: 14px;
+}
+.nota-marketing {
+    padding: 20px 25px;
+}
+.nota-marketing a {
+    color: #1bd3cc;
+}
+.convite-final-marketing {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 25px;
+    padding-bottom: 45px;
+}
