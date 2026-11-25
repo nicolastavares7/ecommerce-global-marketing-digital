@@ -1,3 +1,4 @@
+/* Alteração: uma propriedade por linha e recuo de quatro espaços, como no PowerTrack. */
 .area-acesso {
     min-height: 100vh;
     display: flex;
@@ -5,9 +6,7 @@
     justify-content: center;
     padding: 40px 20px;
     position: relative;
-    background: radial-gradient(circle at 50% 20%, rgba(0, 245, 160, 0.08) 0%, transparent 60%),
-              radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-              #060911;
+    background: radial-gradient(circle at 50% 20%, rgba(0, 245, 160, 0.08) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%), #060911;
 }
 
 .caixa-acesso {
@@ -214,26 +213,115 @@
 }
 
 /* Cartão fixo, sem movimento. */
-.area-acesso { padding: 40px 20px; }
-.caixa-acesso { width: 480px; max-width: none; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.area-acesso {
+    padding: 40px 20px;
+}
+
+.caixa-acesso {
+    width: 480px;
+    max-width: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .imagem-acesso img {
     width: 340px;
     height: auto;
     display: block;
 }
-.caixa-campo .icone.icone-campo { position: absolute; left: 16px; top: 16px; width: 19px; height: 19px; }
-.botao-senha { top: 12px; right: 12px; padding: 0; }
-.botao-senha .icone { width: 21px; height: 21px; }
-.botao-senha .texto-botao { font-size: 10px; color: #94a3b8; }
-.campo .entrada-acesso { height: 48px; }
-.mensagem { display: none; }
-.mensagem.erro { display: block; background: #321e28; color: #fca5a5; border: 1px solid #7c3347; }
-.mensagem.aviso { display: block; background: #10352d; color: #a1edd5; border: 1px solid #236b58; }
-.acesso-ajuda { border: 0; background: none; cursor: pointer; font-family: inherit; }
-.opcao input { margin: 0; padding: 0; }
-.barra-senha { background: #ef4444; }
-.senha-fraca { width: 33%; background: #ef4444; }
-.senha-media { width: 66%; background: #f59e0b; }
-.senha-forte { width: 100%; background: #00f5a0; }
 
-.faixa-colorida { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(135deg, #00f5a0, #00d9f5, #6366f1); }
+.caixa-campo .icone.icone-campo {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 19px;
+    height: 19px;
+}
+
+.botao-senha {
+    top: 12px;
+    right: 12px;
+    padding: 0;
+}
+
+.botao-senha .icone {
+    width: 21px;
+    height: 21px;
+}
+
+.botao-senha .texto-botao {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+.campo .entrada-acesso {
+    height: 48px;
+}
+
+.mensagem {
+    display: none;
+}
+
+.mensagem.erro {
+    display: block;
+    background: #321e28;
+    color: #fca5a5;
+    border: 1px solid #7c3347;
+}
+
+.mensagem.aviso {
+    display: block;
+    background: #10352d;
+    color: #a1edd5;
+    border: 1px solid #236b58;
+}
+
+.acesso-ajuda {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.opcao input {
+    margin: 0;
+    padding: 0;
+}
+
+.barra-senha {
+    background: #ef4444;
+}
+
+.senha-fraca {
+    width: 33%;
+    background: #ef4444;
+}
+
+.senha-media {
+    width: 66%;
+    background: #f59e0b;
+}
+
+.senha-forte {
+    width: 100%;
+    background: #00f5a0;
+}
+
+.faixa-colorida {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #00f5a0, #00d9f5, #6366f1);
+}
+
+/* Alteração: estilos antes escritos diretamente no HTML da tela de cadastro. */
+#ipt_nivel {
+    padding-left: 46px;
+    cursor: pointer;
+}
+
+#btn_cadastrar {
+    width: 100%;
+    padding: 13px;
+}

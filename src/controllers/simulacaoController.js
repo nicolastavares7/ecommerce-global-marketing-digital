@@ -1,38 +1,91 @@
-var simulacaoModel = require('../models/simulacaoModel');
-function validar(dados) {
-    if (typeof dados.nome !== 'string' || dados.nome.trim().length < 3 || dados.nome.trim().length > 120) return false;
-    if (['Google Ads', 'Meta Ads', 'TikTok Ads'].indexOf(dados.plataforma) === -1) return false;
-    var campos = ['precoVenda', 'custoProduto', 'custoAnuncio'];
-    for (var i = 0; i < campos.length; i++) {
-        var valor = dados[campos[i]];
-        // Centavos e limite compatíveis com DECIMAL(10,2), sem aceitar texto parcial.
-        if (typeof valor !== 'number' || !Number.isFinite(valor) || valor < 0 || valor > 99999999.99 ||
-            Math.abs(valor * 100 - Math.round(valor * 100)) > 0.00001) return false;
+// Alteração: arquivo de avisos da base reaproveitado para simulações do DigitalTrack.
+let simulacaoModel = require('../models/simulacaoModel');
+
+// Alteração: funções comuns e then/catch, seguindo o formato do WebDataViz.
+function listar(req, res) {
+    let idUsuario = Number(req.params.idUsuario);
+    if (Number.isInteger(idUsuario) == false || idUsuario <= 0) {
+        res.status(400).json({ mensagem: 'Usuário inválido.' });
+        return;
     }
-    return Number.isInteger(dados.vendasDia) && dados.vendasDia >= 0 && dados.vendasDia <= 1000000;
+
+    simulacaoModel.listar(idUsuario).then(function (resultado) {
+        res.json(resultado);
+    }).catch(function (erro) {
+        res.status(503).json({ mensagem: 'Não foi possível consultar as simulações.' });
+    });
 }
-function falha(res, erro) {
-    console.error('Simulações indisponíveis:', erro.code || 'erro interno');
-    res.status(503).json({ mensagem: 'Não foi possível acessar o banco. Nenhuma alteração foi confirmada. Tente novamente.' });
+
+// Confere um valor em reais: de zero ao limite do banco e até dois decimais.
+function valorValido(valor) {
+    if (typeof valor != 'number' || isFinite(valor) == false) {
+        return false;
+    }
+    if (valor < 0 || valor > 99999999.99) {
+        return false;
+    }
+    // toFixed(2) arredonda para centavos; o valor original deve ser igual.
+    return valor == Number(valor.toFixed(2));
 }
-async function listar(req, res) {
-    try { res.json(await simulacaoModel.listar(req.usuario.id)); }
-    catch (erro) { falha(res, erro); }
+
+function cadastrar(req, res) {
+    let idUsuario = Number(req.params.idUsuario);
+    if (Number.isInteger(idUsuario) == false || idUsuario <= 0) {
+        res.status(400).json({ mensagem: 'Usuário inválido.' });
+        return;
+    }
+
+    let nome = req.body.nome;
+    let plataforma = req.body.plataforma;
+    let preco = req.body.precoVenda;
+    let produto = req.body.custoProduto;
+    let anuncio = req.body.custoAnuncio;
+    let vendas = req.body.vendasDia;
+
+    if (typeof nome != 'string' || nome.trim().length < 3 || nome.trim().length > 120) {
+        res.status(400).json({ mensagem: 'O nome deve ter entre 3 e 120 caracteres.' });
+    } else if (plataforma != 'Google Ads' && plataforma != 'Meta Ads' && plataforma != 'TikTok Ads') {
+        res.status(400).json({ mensagem: 'Escolha uma das plataformas disponíveis.' });
+    } else if (valorValido(preco) == false || valorValido(produto) == false || valorValido(anuncio) == false) {
+        res.status(400).json({ mensagem: 'Informe valores não negativos com até duas casas decimais.' });
+    } else if (typeof vendas != 'number' || vendas % 1 != 0 || vendas < 0 || vendas > 1000000) {
+        res.status(400).json({ mensagem: 'Informe vendas diárias inteiras, de 0 a 1000000.' });
+    } else {
+        simulacaoModel.cadastrar(idUsuario, nome.trim(), plataforma, preco, produto, anuncio, vendas)
+            .then(function (resultado) {
+                res.status(201).json({ id: resultado.insertId });
+            }).catch(function (erro) {
+                res.status(503).json({ mensagem: 'Não foi possível salvar a simulação.' });
+            });
+    }
 }
-async function cadastrar(req, res) {
-    if (!validar(req.body)) return res.status(400).json({ mensagem: 'Confira nome, plataforma, valores não negativos com até 2 casas e vendas diárias inteiras.' });
-    try {
-        var resultado = await simulacaoModel.cadastrar(req.usuario.id, req.body);
-        res.status(201).json({ id: resultado.insertId });
-    } catch (erro) { falha(res, erro); }
+
+function excluir(req, res) {
+    let idUsuario = Number(req.params.idUsuario);
+    if (Number.isInteger(idUsuario) == false || idUsuario <= 0) {
+        res.status(400).json({ mensagem: 'Usuário inválido.' });
+        return;
+    }
+
+    let id = Number(req.params.id);
+
+    if (Number.isSafeInteger(id) == false || id <= 0) {
+        res.status(400).json({ mensagem: 'Identificador inválido.' });
+    } else {
+        simulacaoModel.excluir(id, idUsuario).then(function (resultado) {
+            if (resultado.affectedRows == 0) {
+                res.status(404).json({ mensagem: 'Simulação não encontrada para esta conta.' });
+            } else {
+                res.sendStatus(204);
+            }
+        }).catch(function (erro) {
+            res.status(503).json({ mensagem: 'Não foi possível excluir a simulação.' });
+        });
+    }
 }
-async function excluir(req, res) {
-    var id = Number(req.params.id);
-    if (!Number.isSafeInteger(id) || id <= 0) return res.status(400).json({ mensagem: 'Identificador inválido.' });
-    try {
-        var resultado = await simulacaoModel.excluir(id, req.usuario.id);
-        if (!resultado.affectedRows) return res.status(404).json({ mensagem: 'Simulação não encontrada para esta conta.' });
-        res.sendStatus(204);
-    } catch (erro) { falha(res, erro); }
-}
-module.exports = { listar, cadastrar, excluir };
+
+module.exports = {
+    listar: listar,
+    cadastrar: cadastrar,
+    excluir: excluir
+};

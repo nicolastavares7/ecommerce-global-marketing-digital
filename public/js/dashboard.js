@@ -1,201 +1,182 @@
-var simulacoes = [];
-var graficoCustos;
-var graficoResultados;
-var salvando = false;
-var carregando = false;
-var ultimoBotao;
-var simulacaoSelecionada = null;
-var graficoIndividual;
-var registrosFiltrados = [];
+// Alteração: dashboard resumida, com cadastro na página, sem janela flutuante.
+let simulacoes = [];
+let graficoCustos;
+let graficoResultados;
+let salvando = false;
 
-function elemento(id) {
-    return document.getElementById(id);
-}
 function moeda(valor) {
-    return valor.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+    return 'R$ ' + valor.toFixed(2).replace('.', ',');
 }
+
 function percentual(valor) {
-    if (valor === null) {
-        return "—";
+    if (valor == null) {
+        return '—';
     }
-    return valor.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%";
+    return valor.toFixed(1).replace('.', ',') + '%';
 }
+
 function roas(valor) {
-    if (valor === null) {
-        return "—";
+    if (valor == null) {
+        return '—';
     }
-    return valor.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }) + "x";
+    return valor.toFixed(2).replace('.', ',') + 'x';
 }
+
 function avisar(texto, erro) {
-    elemento('aviso').textContent = texto;
-    if (erro) {
-        elemento('aviso').className = 'aviso erro';
-    } else {
-        elemento('aviso').className = 'aviso';
+    document.getElementById('aviso').textContent = texto;
+    document.getElementById('aviso').className = 'aviso';
+    if (erro == true) {
+        document.getElementById('aviso').className = 'aviso erro';
     }
 }
-async function consultar(endereco, opcoes) {
-    var resposta = await fetch(endereco, opcoes);
-    if (resposta.status === 401) {
-        window.location.href = 'login.html';
-        throw new Error('Entre na sua conta novamente.');
-    }
-    if (!resposta.ok) {
-        var dados = await resposta.json();
-        throw new Error(dados.mensagem || 'Não foi possível concluir a operação.');
-    }
-    if (resposta.status === 204) {
-        return null;
-    }
-    return resposta.json();
-}
-// Os valores vêm do MySQL; este vetor serve apenas para montar a tela.
+
+// Contas da projeção de 30 dias. Nenhum resultado é gravado no banco.
 function calcularSimulacao(simulacao) {
-    var vendas = Number(simulacao.vendasDia) * 30;
-    var faturamento = vendas * Number(simulacao.precoVenda);
-    var produto = vendas * Number(simulacao.custoProduto);
-    var anuncios = vendas * Number(simulacao.custoAnuncio);
-    var resultado = faturamento - produto - anuncios;
-    var margem = null;
-    var retornoAnuncios = null;
+    let vendas = Number(simulacao.vendasDia) * 30;
+    let faturamento = vendas * Number(simulacao.precoVenda);
+    let produto = vendas * Number(simulacao.custoProduto);
+    let anuncios = vendas * Number(simulacao.custoAnuncio);
+    let resultado = faturamento - produto - anuncios;
+    let margem = null;
+    let retorno = null;
     if (faturamento > 0) {
         margem = resultado / faturamento * 100;
     }
     if (anuncios > 0) {
-        retornoAnuncios = faturamento / anuncios;
+        retorno = faturamento / anuncios;
     }
-
     return {
         id: simulacao.id,
         nome: simulacao.nome,
         plataforma: simulacao.plataforma,
-        precoVenda: Number(simulacao.precoVenda),
-        custoProduto: Number(simulacao.custoProduto),
-        custoAnuncio: Number(simulacao.custoAnuncio),
-        vendasDia: Number(simulacao.vendasDia),
         vendas: vendas,
-        faturamento: faturamento, produto: produto, anuncios: anuncios, resultado: resultado,
+        faturamento: faturamento,
+        produto: produto,
+        anuncios: anuncios,
+        resultado: resultado,
         margem: margem,
-        roas: retornoAnuncios
+        roas: retorno
     };
 }
-function destacarValor(id, valor, texto, classe) {
-    elemento(id).textContent = texto;
-    if (valor !== null && valor < 0) {
-        elemento(id).className = 'valor negativo';
-    } else {
-        elemento(id).className = 'valor ' + classe;
-    }
-}
-function preencherIndicador(registros, campo, idValor, idNome, formato, classe) {
-    var melhor = null;
-    for (var i = 0; i < registros.length; i++) {
-        if (registros[i][campo] !== null && (melhor === null || registros[i][campo] > melhor[campo])) {
-            melhor = registros[i];
+
+function preencherIndicadores(registros) {
+    let melhorResultado = null;
+    let melhorMargem = null;
+    let positivos = 0;
+    for (let i = 0; i < registros.length; i++) {
+        let atual = registros[i];
+        if (atual.resultado > 0) {
+            positivos++;
         }
-    }
-    if (melhor === null) {
-        destacarValor(idValor, null, '—', classe);
-        elemento(idNome).textContent = 'Sem resultado calculável';
-    } else {
-        destacarValor(idValor, melhor[campo], formato(melhor[campo]), classe);
-        elemento(idNome).textContent = melhor.nome;
-    }
-}
-function atualizarPainel() {
-    var filtro = elemento('filtro_plataforma').value;
-    var registros = [];
-    var filtroResultado = elemento('filtro_resultado').value;
-    for (var i = 0; i < simulacoes.length; i++) {
-        if (filtro === '' || simulacoes[i].plataforma === filtro) {
-            var calculo = calcularSimulacao(simulacoes[i]);
-            if (filtroResultado === '' ||
-                (filtroResultado === 'positivo' && calculo.resultado > 0) ||
-                (filtroResultado === 'negativo' && calculo.resultado < 0) ||
-                (filtroResultado === 'equilibrio' && calculo.resultado === 0)) {
-                registros.push(calculo);
+        if (melhorResultado == null || atual.resultado > melhorResultado.resultado) {
+            melhorResultado = atual;
+        }
+        if (atual.margem != null) {
+            if (melhorMargem == null || atual.margem > melhorMargem.margem) {
+                melhorMargem = atual;
             }
         }
     }
-    elemento('total_simulacoes').textContent = registros.length;
-    elemento('detalhe_total').textContent = filtro || 'Todas as plataformas';
-    elemento('resumo_lista').textContent = registros.length + ' de ' + simulacoes.length + ' cenários';
-    preencherIndicador(registros, 'resultado', 'maior_resultado', 'nome_resultado', moeda, 'positivo');
-    preencherIndicador(registros, 'margem', 'maior_margem', 'nome_margem', percentual, 'azul');
-    var positivos = 0;
-    for (var i = 0; i < registros.length; i++) {
-        if (registros[i].resultado > 0) {
-            positivos++;
+    document.getElementById('total_simulacoes').textContent = registros.length;
+    document.getElementById('total_positivos').textContent = positivos + ' de ' + registros.length;
+    document.getElementById('maior_resultado').textContent = '—';
+    document.getElementById('nome_resultado').textContent = 'Sem resultado calculável';
+    document.getElementById('maior_margem').textContent = '—';
+    document.getElementById('nome_margem').textContent = 'Sem resultado calculável';
+    document.getElementById('maior_resultado').className = 'valor positivo';
+    document.getElementById('maior_margem').className = 'valor azul';
+    if (melhorResultado != null) {
+        document.getElementById('maior_resultado').textContent = moeda(melhorResultado.resultado);
+        document.getElementById('nome_resultado').textContent = melhorResultado.nome;
+        if (melhorResultado.resultado < 0) {
+            document.getElementById('maior_resultado').className = 'valor negativo';
         }
     }
-    elemento('total_positivos').textContent = positivos + ' de ' + registros.length;
-    elemento('detalhe_positivos').textContent = 'Com resultado estimado acima de zero';
-    registrosFiltrados = registros;
-    var vazio = registros.length === 0;
-    elemento('sem_registros').hidden = !vazio;
-    elemento('area_graficos').hidden = vazio;
-    elemento('area_lista').hidden = vazio;
-    elemento('nota_graficos').hidden = vazio;
-    elemento('titulo_vazio').textContent = (filtro || filtroResultado) && simulacoes.length ? 'Nenhum cenário para estes filtros' : 'Cadastre sua primeira simulação';
-    elemento('texto_vazio').textContent = (filtro || filtroResultado) && simulacoes.length ? 'Limpe os filtros ou cadastre uma nova simulação.' : 'Seus indicadores e gráficos aparecerão aqui depois do cadastro.';
-    elemento('quantidade_lista').textContent = registros.length + (registros.length === 1 ? ' cenário' : ' cenários');
+    if (melhorMargem != null) {
+        document.getElementById('maior_margem').textContent = percentual(melhorMargem.margem);
+        document.getElementById('nome_margem').textContent = melhorMargem.nome;
+        if (melhorMargem.margem < 0) {
+            document.getElementById('maior_margem').className = 'valor negativo';
+        }
+    }
+}
+
+// O for percorre as simulações e guarda apenas as que passam nos filtros.
+function atualizarPainel() {
+    let plataforma = document.getElementById('filtro_plataforma').value;
+    let resultado = document.getElementById('filtro_resultado').value;
+    let registros = [];
+    for (let i = 0; i < simulacoes.length; i++) {
+        let item = calcularSimulacao(simulacoes[i]);
+        let mostrar = true;
+        if (plataforma != '' && item.plataforma != plataforma) {
+            mostrar = false;
+        }
+        if (resultado == 'positivo' && item.resultado <= 0) {
+            mostrar = false;
+        } else if (resultado == 'negativo' && item.resultado >= 0) {
+            mostrar = false;
+        } else if (resultado == 'equilibrio' && item.resultado != 0) {
+            mostrar = false;
+        }
+        if (mostrar == true) {
+            registros.push(item);
+        }
+    }
+    document.getElementById('detalhe_total').textContent = 'Todas as plataformas';
+    if (plataforma != '') {
+        document.getElementById('detalhe_total').textContent = plataforma;
+    }
+    document.getElementById('resumo_lista').textContent = registros.length + ' de ' + simulacoes.length + ' cenários';
+    document.getElementById('quantidade_lista').textContent = registros.length + ' cenário(s)';
+    document.getElementById('sem_registros').hidden = registros.length > 0;
+    document.getElementById('area_graficos').hidden = registros.length == 0;
+    document.getElementById('area_lista').hidden = registros.length == 0;
+    document.getElementById('titulo_vazio').textContent = 'Nenhuma simulação para mostrar';
+    document.getElementById('texto_vazio').textContent = 'Cadastre uma simulação abaixo ou limpe os filtros.';
+    preencherIndicadores(registros);
     montarLista(registros);
     montarGraficos(registros);
-    if (simulacaoSelecionada !== null) {
-        mostrarAnalise(simulacaoSelecionada, false);
-    }
 }
-function criarTexto(classe, texto) {
-    var div = document.createElement('div');
-    div.className = classe;
+
+// Protege o nome digitado antes de colocá-lo no HTML da lista.
+function textoSeguro(texto) {
+    let div = document.createElement('div');
     div.textContent = texto;
-    return div;
+    return div.innerHTML;
 }
+
+// Alteração: monta as linhas com HTML, como a exibição do resultado no PowerTrack.
 function montarLista(registros) {
-    var lista = elemento('lista_simulacoes');
-    lista.replaceChildren();
-    for (var i = 0; i < registros.length; i++) {
-        var item = registros[i];
-        var linha = criarTexto('linha-tabela', '');
-        var nome = criarTexto('coluna-nome', '');
-        nome.append(criarTexto('codigo', '#' + item.id), criarTexto('nome-cenario', item.nome), criarTexto('plataforma', item.plataforma));
-        linha.appendChild(nome);
-        linha.appendChild(criarTexto('coluna-vendas', item.vendas.toLocaleString('pt-BR') + ' (' + item.vendasDia + '/dia)'));
-        linha.appendChild(criarTexto('coluna-dinheiro', moeda(item.faturamento)));
-        linha.appendChild(criarTexto('coluna-dinheiro', moeda(item.produto + item.anuncios)));
-        linha.appendChild(criarTexto('coluna-dinheiro ' + (item.resultado < 0 ? 'negativo' : 'positivo'), moeda(item.resultado)));
-        linha.appendChild(criarTexto('coluna-metrica', percentual(item.margem)));
-        linha.appendChild(criarTexto('coluna-metrica', roas(item.roas)));
-        var acao = criarTexto('coluna-acao', '');
-        var analisar = document.createElement('button');
-        analisar.type = 'button';
-        analisar.className = 'analisar';
-        analisar.textContent = 'Analisar';
-        analisar.dataset.id = item.id;
-        analisar.setAttribute('aria-label', 'Analisar ' + item.nome);
-        analisar.onclick = function () {
-            mostrarAnalise(Number(this.dataset.id), true);
-        };
-        acao.appendChild(analisar);
-        var botao = document.createElement('button');
-        botao.type = 'button';
-        botao.className = 'excluir';
-        botao.textContent = 'Excluir';
-        botao.dataset.id = item.id;
-        botao.dataset.nome = item.nome;
-        botao.setAttribute('aria-label', 'Excluir ' + item.nome);
-        botao.onclick = function () { excluirSimulacao(this); };
-        acao.appendChild(botao);
-        linha.appendChild(acao);
-        lista.appendChild(linha);
+    let lista = document.getElementById('lista_simulacoes');
+    lista.innerHTML = '';
+    for (let i = 0; i < registros.length; i++) {
+        let item = registros[i];
+        let classe = 'positivo';
+        if (item.resultado < 0) {
+            classe = 'negativo';
+        }
+        lista.innerHTML += `
+            <div class="linha-tabela">
+                <div class="coluna-nome">
+                    <div class="codigo">#${Number(item.id)}</div>
+                    <div class="nome-cenario">${textoSeguro(item.nome)}</div>
+                    <div class="plataforma">${textoSeguro(item.plataforma)}</div>
+                </div>
+                <div class="coluna-vendas">${item.vendas}</div>
+                <div class="coluna-dinheiro">${moeda(item.faturamento)}</div>
+                <div class="coluna-dinheiro">${moeda(item.produto + item.anuncios)}</div>
+                <div class="coluna-dinheiro ${classe}">${moeda(item.resultado)}</div>
+                <div class="coluna-metrica">${percentual(item.margem)}</div>
+                <div class="coluna-metrica">${roas(item.roas)}</div>
+                <div class="coluna-acao">
+                    <button class="excluir" type="button" onclick="excluirSimulacao(${Number(item.id)})">Excluir</button>
+                </div>
+            </div>`;
     }
 }
+
+// Dois gráficos simples. O for separa os dados de cada simulação em vetores.
 function montarGraficos(registros) {
     if (graficoCustos) {
         graficoCustos.destroy();
@@ -203,16 +184,21 @@ function montarGraficos(registros) {
     if (graficoResultados) {
         graficoResultados.destroy();
     }
-    if (!registros.length) {
+    if (registros.length == 0) {
         return;
     }
-    if (typeof Chart === 'undefined') {
-        avisar('Dados carregados do banco. Não foi possível abrir os gráficos; os valores estão na lista.', true);
+    if (typeof Chart == 'undefined') {
+        avisar('Não foi possível abrir os gráficos. Confira os valores na lista.', true);
         return;
     }
-    var nomes = [], receitas = [], produtos = [], anuncios = [], resultados = [], cores = [];
-    for (var i = 0; i < registros.length; i++) {
-        nomes.push(nomeCurto(registros[i].nome));
+    let nomes = [];
+    let receitas = [];
+    let produtos = [];
+    let anuncios = [];
+    let resultados = [];
+    let cores = [];
+    for (let i = 0; i < registros.length; i++) {
+        nomes.push(registros[i].nome);
         receitas.push(registros[i].faturamento);
         produtos.push(registros[i].produto);
         anuncios.push(registros[i].anuncios);
@@ -224,256 +210,140 @@ function montarGraficos(registros) {
         }
     }
     Chart.defaults.color = '#9cacc2';
-    Chart.defaults.font.family = 'Arial';
-    var largura = Math.max(550, elemento('grafico_custos').parentElement.clientWidth - 5, registros.length * 130);
-    elemento('grafico_custos').width = largura;
-    elemento('grafico_custos').height = 330;
-    elemento('grafico_resultados').width = Math.max(330, elemento('grafico_resultados').parentElement.clientWidth - 5);
-    elemento('grafico_resultados').height = Math.max(330, registros.length * 48);
-    function valorResumido(valor) {
-        if (Math.abs(valor) >= 1000000) {
-            return 'R$ ' + (valor / 1000000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mi';
-        }
-        if (Math.abs(valor) >= 1000) {
-            return 'R$ ' + (valor / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mil';
-        }
-        return moeda(valor);
-    }
-    function tituloTooltip(itens) { return registros[itens[0].dataIndex].nome; }
-    var opcoes = {
-        responsive: false, animation: false,
-        onClick: function (evento, barras) {
-            if (barras.length > 0) {
-                mostrarAnalise(registros[barras[0].index].id, true);
-            }
+    graficoCustos = new Chart(document.getElementById('grafico_custos'), {
+        type: 'bar',
+        data: {
+            labels: nomes,
+            datasets: [
+                { label: 'Faturamento', data: receitas, backgroundColor: '#00dda5' },
+                { label: 'Produto e frete', data: produtos, backgroundColor: '#f5b544' },
+                { label: 'Anúncios', data: anuncios, backgroundColor: '#7770f5' }
+            ]
         },
-        plugins: { legend: { display: false }, tooltip: { callbacks: {
-            title: tituloTooltip,
-            label: function (item) { return item.dataset.label + ': ' + moeda(item.raw); }
-        } } },
-        scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#253044' }, ticks: { callback: valorResumido } } }
-    };
-    graficoCustos = new Chart(elemento('grafico_custos'), {
-        type: 'bar', data: { labels: nomes, datasets: [
-            { label: 'Faturamento', data: receitas, backgroundColor: '#00dda5', borderRadius: 4 },
-            { label: 'Produto e frete', data: produtos, backgroundColor: '#f5b544', borderRadius: 4 },
-            { label: 'Anúncios', data: anuncios, backgroundColor: '#7770f5', borderRadius: 4 }
-        ] }, options: opcoes
+        options: {
+            responsive: false,
+            animation: false,
+            scales: { y: { beginAtZero: true } }
+        }
     });
-    graficoResultados = new Chart(elemento('grafico_resultados'), {
-        type: 'bar', data: { labels: nomes, datasets: [{ label: 'Resultado', data: resultados, backgroundColor: cores, borderRadius: 4, maxBarThickness: 28 }] },
-        options: { responsive: false, animation: false, indexAxis: 'y',
-            onClick: function (evento, barras) {
-                if (barras.length > 0) {
-                    mostrarAnalise(registros[barras[0].index].id, true);
-                }
-            },
-            plugins: { legend: { display: false }, tooltip: { callbacks: { title: tituloTooltip, label: function (item) { return moeda(item.raw); } } } },
-            scales: { y: { grid: { display: false } }, x: { beginAtZero: true, grid: { color: '#253044' }, ticks: { maxTicksLimit: 5, callback: valorResumido } } }
+    graficoResultados = new Chart(document.getElementById('grafico_resultados'), {
+        type: 'bar',
+        data: {
+            labels: nomes,
+            datasets: [
+                { label: 'Resultado', data: resultados, backgroundColor: cores }
+            ]
+        },
+        options: {
+            responsive: false,
+            animation: false,
+            indexAxis: 'y',
+            scales: { x: { beginAtZero: true } }
         }
     });
 }
-async function carregarSimulacoes() {
-    if (carregando) {
-        return false;
-    }
-    carregando = true;
-    elemento('btn_atualizar').disabled = true;
-    avisar('Consultando suas simulações no banco…', false);
-    try {
-        simulacoes = await consultar('/simulacoes/listar');
-        avisar('Atualizado às ' + new Date().toLocaleTimeString('pt-BR') + ' · Suas simulações salvas.', false);
-        atualizarPainel();
-        return true;
-    } catch (erro) {
-        avisar('Não foi possível atualizar os dados. ' + erro.message + ' Use “Atualizar dados” para tentar novamente. Os valores anteriores podem estar desatualizados.', true);
-        return false;
-    } finally {
-        carregando = false;
-        elemento('btn_atualizar').disabled = false;
-    }
+
+// Busca as simulações do usuário e atualiza os indicadores, a lista e os gráficos.
+function carregarSimulacoes() {
+    document.getElementById('btn_atualizar').disabled = true;
+
+    return fetch('/simulacoes/listar/' + sessionStorage.ID_USUARIO).then(function (resposta) {
+        return resposta.json().then(function (dados) {
+            if (resposta.ok == false) {
+                throw new Error(dados.mensagem);
+            }
+
+            simulacoes = dados;
+            atualizarPainel();
+            avisar('Simulações atualizadas.', false);
+            document.getElementById('btn_atualizar').disabled = false;
+        });
+    }).catch(function (erro) {
+        avisar('Não foi possível atualizar. ' + erro.message, true);
+        document.getElementById('btn_atualizar').disabled = false;
+    });
 }
-function abrirCadastro(botao) {
-    if (carregando) {
-        return;
-    }
-    ultimoBotao = botao;
-    elemento('formulario_simulacao').reset();
-    elemento('erro_formulario').textContent = '';
-    elemento('fundo_modal').hidden = false;
-    document.body.style.overflow = 'hidden';
-    elemento('nome_simulacao').focus();
-}
-function fecharCadastro() {
-    if (salvando) {
-        return;
-    }
-    elemento('fundo_modal').hidden = true;
-    document.body.style.overflow = '';
-    if (ultimoBotao) ultimoBotao.focus();
-}
-async function salvarSimulacao() {
-    if (salvando || !elemento('formulario_simulacao').reportValidity()) {
+
+// Alteração: formulário comum, sempre visível. Não precisa abrir ou fechar janela.
+function salvarSimulacao() {
+    if (salvando == true || document.getElementById('formulario_simulacao').reportValidity() == false) {
         return;
     }
     salvando = true;
-    elemento('btn_salvar').disabled = true;
-    elemento('btn_cancelar').disabled = true;
-    elemento('btn_fechar').disabled = true;
-    elemento('erro_formulario').textContent = '';
-    var dados = {
-        nome: elemento('nome_simulacao').value.trim(), plataforma: elemento('plataforma_simulacao').value,
-        precoVenda: Number(elemento('preco_venda').value), custoProduto: Number(elemento('custo_produto').value),
-        custoAnuncio: Number(elemento('custo_anuncio').value), vendasDia: Number(elemento('vendas_dia').value)
+    document.getElementById('btn_salvar').disabled = true;
+    document.getElementById('erro_formulario').textContent = '';
+    let dados = {
+        nome: document.getElementById('nome_simulacao').value.trim(),
+        plataforma: document.getElementById('plataforma_simulacao').value,
+        precoVenda: Number(document.getElementById('preco_venda').value),
+        custoProduto: Number(document.getElementById('custo_produto').value),
+        custoAnuncio: Number(document.getElementById('custo_anuncio').value),
+        vendasDia: Number(document.getElementById('vendas_dia').value)
     };
-    try {
-        await consultar('/simulacoes/cadastrar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
-        salvando = false;
-        fecharCadastro();
-        await carregarSimulacoes();
-    } catch (erro) {
-        elemento('erro_formulario').textContent = erro.message + ' Se houve interrupção de conexão, confira a lista antes de cadastrar novamente.';
-    } finally {
-        salvando = false;
-        elemento('btn_salvar').disabled = false;
-        elemento('btn_cancelar').disabled = false;
-        elemento('btn_fechar').disabled = false;
-    }
+    return fetch('/simulacoes/cadastrar/' + sessionStorage.ID_USUARIO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+    }).then(function (resposta) {
+        return resposta.json().then(function (dados) {
+            if (resposta.ok == false) {
+                throw new Error(dados.mensagem);
+            }
+
+            document.getElementById('formulario_simulacao').reset();
+            liberarFormulario();
+            return carregarSimulacoes();
+        });
+    }).catch(function (erro) {
+        document.getElementById('erro_formulario').textContent = erro.message;
+        liberarFormulario();
+    });
 }
-async function excluirSimulacao(botao) {
-    if (!confirm('Excluir a simulação “' + botao.dataset.nome + '”? Essa ação remove o registro do banco.')) {
+
+function liberarFormulario() {
+    salvando = false;
+    document.getElementById('btn_salvar').disabled = false;
+}
+
+function excluirSimulacao(id) {
+    if (confirm('Excluir esta simulação?') == false) {
         return;
     }
-    botao.disabled = true;
-    try {
-        await consultar('/simulacoes/excluir/' + botao.dataset.id, { method: 'DELETE' });
-        await carregarSimulacoes();
-    } catch (erro) { avisar(erro.message, true); botao.disabled = false; }
+    return fetch('/simulacoes/excluir/' + id + '/' + sessionStorage.ID_USUARIO, {
+        method: 'DELETE'
+    }).then(function (resposta) {
+        if (resposta.ok == true) {
+            return carregarSimulacoes();
+        }
+
+        return resposta.json().then(function (dados) {
+            throw new Error(dados.mensagem);
+        });
+    }).catch(function (erro) {
+        avisar(erro.message, true);
+    });
 }
-async function sair() {
-    try {
-        await consultar('/usuarios/sair', { method: 'POST' });
-        window.location.href = 'login.html';
-    } catch (erro) { avisar('Não foi possível sair. ' + erro.message, true); }
-}
-document.addEventListener('keydown', function (evento) {
-    if (elemento('fundo_modal').hidden) {
-        return;
-    }
-    if (evento.key === 'Escape') fecharCadastro();
-    if (evento.key === 'Tab') {
-        var campos = elemento('fundo_modal').querySelectorAll('button:not(:disabled), input, select');
-        var primeiro = campos[0], ultimo = campos[campos.length - 1];
-        if (evento.shiftKey && document.activeElement === primeiro) { evento.preventDefault(); ultimo.focus(); }
-        else if (!evento.shiftKey && document.activeElement === ultimo) { evento.preventDefault(); primeiro.focus(); }
-    }
-});
-async function iniciar() {
-    if (window.location.protocol == "file:") {
-        avisar("Abrindo o DigitalTrack pelo servidor local…", false);
-        return;
-    }
-    try {
-        var usuario = await consultar('/usuarios/sessao');
-        elemento('nome_usuario').textContent = usuario.nome;
-        elemento('saudacao').textContent = 'Olá, ' + usuario.nome + '!';
-        var partes = usuario.nome.trim().split(' ');
-        elemento('iniciais_usuario').textContent = (partes[0][0] + (partes.length > 1 ? partes[partes.length - 1][0] : '')).toUpperCase();
-        await carregarSimulacoes();
-    } catch (erro) { avisar('Não foi possível verificar sua sessão. ' + erro.message, true); }
-}
-function nomeCurto(nome) {
-    if (nome.length > 20) {
-        return nome.substring(0, 19) + '…';
-    }
-    return nome;
-}
+
 function limparFiltros() {
-    elemento('filtro_plataforma').value = '';
-    elemento('filtro_resultado').value = '';
+    document.getElementById('filtro_plataforma').value = '';
+    document.getElementById('filtro_resultado').value = '';
     atualizarPainel();
 }
-function fecharAnalise() {
-    simulacaoSelecionada = null;
-    elemento('analise_individual').hidden = true;
-    if (graficoIndividual) {
-        graficoIndividual.destroy();
-        graficoIndividual = null;
-    }
+
+// Sair limpa os dados do login desta aba, como no WebDataViz.
+function sair() {
+    limparSessao();
 }
-function mostrarAnalise(id, moverTela) {
-    var item = null;
-    for (var i = 0; i < registrosFiltrados.length; i++) {
-        if (registrosFiltrados[i].id === id) {
-            item = registrosFiltrados[i];
-        }
-    }
-    if (item === null) {
-        fecharAnalise();
+
+function iniciar() {
+    if (validarSessao() == false) {
         return;
     }
-    simulacaoSelecionada = id;
-    elemento('analise_individual').hidden = false;
-    elemento('nome_analise').textContent = item.nome;
-    elemento('plataforma_analise').textContent = item.plataforma + ' · ' + item.vendasDia + ' vendas estimadas por dia · ' + item.vendas + ' em 30 dias';
-    elemento('analise_preco').textContent = moeda(item.precoVenda);
-    elemento('analise_produto').textContent = moeda(item.custoProduto);
-    elemento('analise_anuncio').textContent = moeda(item.custoAnuncio);
-    var sobra = item.precoVenda - item.custoProduto - item.custoAnuncio;
-    elemento('analise_sobra').textContent = moeda(sobra);
-    elemento('analise_sobra').className = sobra < 0 ? 'negativo' : 'positivo';
-    elemento('analise_resultado').textContent = moeda(item.resultado);
-    elemento('analise_resultado').className = item.resultado < 0 ? 'negativo' : 'positivo';
-    elemento('analise_margem').textContent = percentual(item.margem);
-    elemento('analise_roas').textContent = roas(item.roas);
-    var leitura = '';
-    if (item.vendas === 0) {
-        leitura = 'Sem vendas estimadas: a projeção mensal é zero. Informe uma quantidade para comparar o cenário.';
-    } else if (sobra < 0) {
-        leitura = 'Os custos informados superam o preço em ' + moeda(-sobra) + ' por venda. Revise preço, produto, frete ou anúncio.';
-    } else if (sobra === 0) {
-        leitura = 'O preço cobre exatamente os custos informados. Outros custos podem deixar o resultado negativo.';
-    } else {
-        leitura = 'Após os custos informados, restam ' + moeda(sobra) + ' por venda. Essa projeção não comprova vendas reais nem valida a oferta.';
-    }
-    if (item.custoAnuncio === 0) {
-        leitura += ' Sem investimento em anúncios, o ROAS não é calculado.';
-    }
-    elemento('leitura_cenario').textContent = leitura;
-    if (graficoIndividual) {
-        graficoIndividual.destroy();
-        graficoIndividual = null;
-    }
-    if (typeof Chart !== 'undefined') {
-        elemento('grafico_individual').width = Math.max(380, elemento('grafico_individual').parentElement.clientWidth - 5);
-        graficoIndividual = new Chart(elemento('grafico_individual'), {
-            type: 'bar',
-            data: {
-                labels: ['Faturamento', 'Produto e frete', 'Anúncios', 'Resultado'],
-                datasets: [{
-                    label: 'Projeção de 30 dias',
-                    data: [item.faturamento, item.produto, item.anuncios, item.resultado],
-                    backgroundColor: ['#00dda5', '#f5b544', '#7770f5', item.resultado < 0 ? '#fa8297' : '#04c9e6'],
-                    maxBarThickness: 24
-                }]
-            },
-            options: {
-                responsive: false,
-                animation: false,
-                indexAxis: 'y',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { label: function (barra) { return moeda(barra.raw); } } }
-                },
-                scales: {
-                    x: { beginAtZero: true, ticks: { maxTicksLimit: 4, callback: function (valor) { return moeda(valor); } } },
-                    y: { grid: { display: false } }
-                }
-            }
-        });
-    }
-    if (moverTela) {
-        elemento('analise_individual').scrollIntoView({ block: 'start' });
-    }
+    let nome = sessionStorage.NOME_USUARIO;
+
+    document.getElementById('saudacao').textContent = 'Olá, ' + nome + '!';
+    document.getElementById('iniciais_usuario').textContent = nome[0].toUpperCase();
+    return carregarSimulacoes();
 }
+
 iniciar();

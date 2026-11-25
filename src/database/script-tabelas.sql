@@ -1,60 +1,35 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+-- Alteração: script original adaptado para criar somente as tabelas do DigitalTrack.
+CREATE DATABASE IF NOT EXISTS digital_track CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE digital_track;
 
-/*
-comandos para mysql server
-*/
-
-CREATE DATABASE aquatech;
-
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
+CREATE TABLE IF NOT EXISTS usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    nivel VARCHAR(20) NOT NULL,
+    data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+-- Um usuário pode cadastrar várias simulações. Valores unitários em reais.
+CREATE TABLE IF NOT EXISTS simulacao_cenario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fk_usuario INT NOT NULL,
+    nome_simulacao VARCHAR(120) NOT NULL,
+    plataforma_anuncio VARCHAR(20) NOT NULL,
+    preco_venda_unidade DECIMAL(10,2) NOT NULL,
+    custo_produto_frete DECIMAL(10,2) NOT NULL,
+    custo_anuncio_venda DECIMAL(10,2) NOT NULL,
+    vendas_estimadas_dia INT NOT NULL,
+    data_registro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (fk_usuario) REFERENCES usuario(id),
+    CHECK (plataforma_anuncio IN ('Google Ads', 'Meta Ads', 'TikTok Ads')),
+    CHECK (preco_venda_unidade >= 0),
+    CHECK (custo_produto_frete >= 0),
+    CHECK (custo_anuncio_venda >= 0),
+    CHECK (vendas_estimadas_dia >= 0)
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
-);
-
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
-);
-
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	temperatura DECIMAL,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
-);
-
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
-
-ALTER TABLE usuario ADD COLUMN cpf CHAR(11);
+-- Consulta usada pela API, com o ID de usuário enviado pela página:
+-- SELECT * FROM simulacao_cenario WHERE fk_usuario = ? ORDER BY id DESC;
+-- Os indicadores são calculados a partir destes dados, sempre para 30 dias.

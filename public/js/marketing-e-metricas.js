@@ -1,16 +1,21 @@
-var assuntos = ['plataformas', 'metricas', 'produtos', 'escala', 'orcamento', 'videos'];
+// Alteração: seleção das abas com let, for e if/else, no padrão do grupo.
+let assuntos = ['plataformas', 'metricas', 'produtos', 'escala', 'orcamento', 'videos'];
 
 function abrirAssunto(assunto) {
-    for (var i = 0; i < assuntos.length; i++) {
-        var selecionado = assuntos[i] === assunto;
+    for (let i = 0; i < assuntos.length; i++) {
+        let selecionado = assuntos[i] === assunto;
         document.getElementById(assuntos[i]).hidden = !selecionado;
-        var botao = document.getElementById('aba_' + assuntos[i]);
-        botao.className = selecionado ? 'aba-ativa' : '';
+        let botao = document.getElementById('aba_' + assuntos[i]);
+        if (selecionado == true) {
+            botao.className = 'aba-ativa';
+        } else {
+            botao.className = '';
+        }
         botao.setAttribute('aria-pressed', selecionado);
     }
 }
 function abrirPeloEndereco() {
-    var assunto = window.location.hash.substring(1);
+    let assunto = window.location.hash.substring(1);
     if (assunto === 'fornecedores') {
         assunto = 'produtos';
     }

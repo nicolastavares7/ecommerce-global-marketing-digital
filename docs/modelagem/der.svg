@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="820" viewBox="0 0 1360 820" role="img" aria-labelledby="title desc"><title id="title">DER — DigitalTrack</title><desc id="desc">Um usuário pode ter zero ou muitas simulações. Cada simulação pertence a exatamente um usuário.</desc><rect width="1360" height="820" fill="#f4f7fb"/>
+<text x="60" y="38" font-family="Arial, sans-serif" font-size="34" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">DER — DigitalTrack</text>
+<text x="60" y="86" font-family="Arial, sans-serif" font-size="19" dominant-baseline="text-before-edge" fill="#52647d">Banco digital_track · Modelo físico · Notação pé de galinha</text>
+<rect x="60" y="200" width="470" height="308" fill="#ffffff" stroke="#cad4e2"/>
+<rect x="60" y="200" width="470" height="56" fill="#17375e"/>
+<text x="80" y="215" font-family="Arial, sans-serif" font-size="23" dominant-baseline="text-before-edge" fill="#ffffff" font-weight="700">usuario</text>
+<rect x="61" y="256" width="468" height="42" fill="#edf2f8"/>
+<text x="74" y="268" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700">PK</text>
+<text x="136" y="267" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">id</text>
+<text x="350" y="268" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">INT · AI</text>
+<text x="74" y="310" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="136" y="309" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">nome</text>
+<text x="350" y="310" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(100)</text>
+<rect x="61" y="340" width="468" height="42" fill="#edf2f8"/>
+<text x="74" y="352" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700">UQ</text>
+<text x="136" y="351" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">email</text>
+<text x="350" y="352" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(100)</text>
+<text x="74" y="394" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="136" y="393" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">senha</text>
+<text x="350" y="394" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(255)</text>
+<rect x="61" y="424" width="468" height="42" fill="#edf2f8"/>
+<text x="74" y="436" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="136" y="435" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">nivel</text>
+<text x="350" y="436" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(20)</text>
+<text x="74" y="478" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="136" y="477" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">data_cadastro</text>
+<text x="350" y="478" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">DATETIME</text>
+<rect x="740" y="158" width="560" height="434" fill="#ffffff" stroke="#cad4e2"/>
+<rect x="740" y="158" width="560" height="56" fill="#17375e"/>
+<text x="760" y="173" font-family="Arial, sans-serif" font-size="23" dominant-baseline="text-before-edge" fill="#ffffff" font-weight="700">simulacao_cenario</text>
+<rect x="741" y="214" width="558" height="42" fill="#edf2f8"/>
+<text x="754" y="226" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700">PK</text>
+<text x="816" y="225" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">id</text>
+<text x="1120" y="226" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">INT · AI</text>
+<text x="754" y="268" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700">FK</text>
+<text x="816" y="267" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">fk_usuario</text>
+<text x="1120" y="268" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">INT</text>
+<rect x="741" y="298" width="558" height="42" fill="#edf2f8"/>
+<text x="754" y="310" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="309" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">nome_simulacao</text>
+<text x="1120" y="310" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(120)</text>
+<text x="754" y="352" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="351" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">plataforma_anuncio</text>
+<text x="1120" y="352" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">VARCHAR(20)</text>
+<rect x="741" y="382" width="558" height="42" fill="#edf2f8"/>
+<text x="754" y="394" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="393" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">preco_venda_unidade</text>
+<text x="1120" y="394" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">DECIMAL(10,2)</text>
+<text x="754" y="436" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="435" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">custo_produto_frete</text>
+<text x="1120" y="436" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">DECIMAL(10,2)</text>
+<rect x="741" y="466" width="558" height="42" fill="#edf2f8"/>
+<text x="754" y="478" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="477" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">custo_anuncio_venda</text>
+<text x="1120" y="478" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">DECIMAL(10,2)</text>
+<text x="754" y="520" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="519" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">vendas_estimadas_dia</text>
+<text x="1120" y="520" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">INT</text>
+<rect x="741" y="550" width="558" height="42" fill="#edf2f8"/>
+<text x="754" y="562" font-family="Arial, sans-serif" font-size="15" dominant-baseline="text-before-edge" fill="#2861a0" font-weight="700"></text>
+<text x="816" y="561" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#24334b">data_registro</text>
+<text x="1120" y="562" font-family="Arial, sans-serif" font-size="16" dominant-baseline="text-before-edge" fill="#52647d">DATETIME</text>
+<polyline points="530,277 740,277" fill="none" stroke="#506786" stroke-width="2" stroke-dasharray="7 7"/>
+<polyline points="545,264 545,290" fill="none" stroke="#506786" stroke-width="2"/>
+<polyline points="556,264 556,290" fill="none" stroke="#506786" stroke-width="2"/>
+<circle cx="705" cy="277" r="7" fill="#f4f7fb" stroke="#506786" stroke-width="2"/>
+<polyline points="719,277 740,263" fill="none" stroke="#506786" stroke-width="2"/>
+<polyline points="719,277 740,291" fill="none" stroke="#506786" stroke-width="2"/>
+<text x="577" y="234" font-family="Arial, sans-serif" font-size="18" dominant-baseline="text-before-edge" fill="#52647d">possui</text>
+<text x="540" y="302" font-family="Arial, sans-serif" font-size="18" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">1</text>
+<text x="688" y="302" font-family="Arial, sans-serif" font-size="18" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">0..N</text>
+<text x="60" y="612" font-family="Arial, sans-serif" font-size="22" dominant-baseline="text-before-edge" fill="#24334b" font-weight="700">Um usuário pode ter nenhuma ou várias simulações.</text>
+<text x="60" y="650" font-family="Arial, sans-serif" font-size="20" dominant-baseline="text-before-edge" fill="#24334b">Cada simulação pertence obrigatoriamente a um único usuário.</text>
+<text x="60" y="696" font-family="Arial, sans-serif" font-size="18" dominant-baseline="text-before-edge" fill="#52647d">FK: simulacao_cenario.fk_usuario → usuario.id</text>
+<text x="60" y="736" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#52647d">PK = chave primária    FK = chave estrangeira    UQ = único    AI = incremento automático</text>
+<text x="60" y="768" font-family="Arial, sans-serif" font-size="17" dominant-baseline="text-before-edge" fill="#52647d">Todos os campos são NOT NULL. Linha tracejada: relacionamento não identificador.</text>
+</svg>

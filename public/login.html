@@ -1,76 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <script src="js/abrir-servidor.js"></script>
-        <title>
-            Digital Track | Login
-        </title>
-        <link rel="stylesheet" href="css/geral.css">
-        <link rel="stylesheet" href="css/login.css">
-    </head>
-    <body class="pagina pagina-acesso" onload="verificarBloqueio()">
-        <div class="area-acesso">
-            <div class="caixa-acesso">
-                <div class="faixa-colorida"></div>
-                <div class="cabecalho-acesso">
-                    <a href="index.html" class="imagem-acesso">
-                        <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
-                    </a>
-                    <p class="titulo-grande titulo-acesso">
-                        Bem-vindo de volta!
-                    </p>
-                    <p class="descricao-acesso">
-                        Entre na sua conta para continuar.
-                    </p>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="js/abrir-servidor.js"></script>
+    <title>
+        Digital Track | Login
+    </title>
+    <link rel="stylesheet" href="css/geral.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body class="pagina pagina-acesso" onload="verificarBloqueio()">
+    <!-- Alteração: recuo de quatro espaços por nível; estrutura e conteúdo preservados. -->
+    <div class="area-acesso">
+        <div class="caixa-acesso">
+            <div class="faixa-colorida"></div>
+            <div class="cabecalho-acesso">
+                <a href="index.html" class="imagem-acesso">
+                    <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
+                </a>
+                <p class="titulo-grande titulo-acesso">
+                    Bem-vindo de volta!
+                </p>
+                <p class="descricao-acesso">
+                    Entre na sua conta para continuar.
+                </p>
+            </div>
+            <div class="mensagem" id="msg_senha" role="status" aria-live="polite">
+                <img class="icone" src="assets/icones/atencao-94a3b8.svg" alt="">
+                <span id="texto_mensagem">
+                    Mensagem de aviso
+                </span>
+            </div>
+            <!-- Alteração: aspas simples nos eventos para o editor reconhecer o JavaScript. -->
+            <div class="campos-acesso" onkeydown="if (event.key == 'Enter') { event.preventDefault(); entrar(); }">
+                <div class="campo">
+                    <label>
+                        E-mail Cadastrado
+                    </label>
+                    <div class="caixa-campo">
+                        <input type="text" id="ipt_email" class="entrada-acesso" placeholder="seuemail@exemplo.com" required autocomplete="username" maxlength="100" aria-label="E-mail">
+                        <img class="icone icone-campo" src="assets/icones/envelope-94a3b8.svg" alt="">
+                    </div>
                 </div>
-                <div class="mensagem" id="msg_senha" role="status" aria-live="polite">
-                    <img class="icone" src="assets/icones/atencao-94a3b8.svg" alt="">
-                    <span id="texto_mensagem">
-                        Mensagem de aviso
-                    </span>
-                </div>
-                <div class="campos-acesso" onkeydown="if (event.key == &#x27;Enter&#x27;) { event.preventDefault(); entrar(); }">
-                    <div class="campo">
-                        <label>
-                            E-mail Cadastrado
+                <div class="campo">
+                    <!-- Alteração: os estilos deste grupo estão em login.css. -->
+                    <div class="cabecalho-senha">
+                        <label class="rotulo-senha">
+                            Senha
                         </label>
-                        <div class="caixa-campo">
-                            <input type="text" id="ipt_email" class="entrada-acesso" placeholder="seuemail@exemplo.com" required autocomplete="username" maxlength="100" aria-label="E-mail">
-                            <img class="icone icone-campo" src="assets/icones/envelope-94a3b8.svg" alt="">
-                        </div>
+                        <button onclick="ajudarSenha()" class="acesso-ajuda" type="button">
+                            Ajuda para entrar
+                        </button>
                     </div>
-                    <div class="campo">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <label style="margin: 0;">
-                                Senha
-                            </label>
-                            <button onclick="ajudarSenha()" class="acesso-ajuda" style="font-size: 0.8rem;" type="button">
-                                Ajuda para entrar
-                            </button>
-                        </div>
-                        <div class="caixa-campo">
-                            <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Sua senha" required autocomplete="current-password" maxlength="128" aria-label="Senha">
-                            <img class="icone icone-campo" src="assets/icones/cadeado-94a3b8.svg" alt="">
-                            <button type="button" class="botao-senha" aria-label="Mostrar senha" aria-pressed="false" onclick="mostrarSenha(&#x27;ipt_senha&#x27;, this)">
-                                <img class="icone" src="assets/icones/olho-94a3b8.svg" alt="">
-                            </button>
-                        </div>
+                    <div class="caixa-campo">
+                        <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Sua senha" required autocomplete="current-password" maxlength="128" aria-label="Senha">
+                        <img class="icone icone-campo" src="assets/icones/cadeado-94a3b8.svg" alt="">
+                        <button type="button" class="botao-senha" aria-label="Mostrar senha" aria-pressed="false" onclick="mostrarSenha('ipt_senha', this)">
+                            <img class="icone" src="assets/icones/olho-94a3b8.svg" alt="">
+                        </button>
                     </div>
-                    <button type="button" class="botao botao-colorido botao-brilho" style="width: 100%; padding: 13px;" onclick="entrar()" id="btn_entrar">
-                        <img class="icone" src="assets/icones/entrar-050811.svg" alt="">
-                        Acessar Plataforma
-                    </button>
                 </div>
-                <div class="acessos">
-                    Ainda não tem conta na Digital Track?
-                    <a href="cadastro.html">
-                        Cadastre-se grátis
-                    </a>
-                </div>
+                <button type="button" class="botao botao-colorido botao-brilho" onclick="entrar()" id="btn_entrar">
+                    <img class="icone" src="assets/icones/entrar-050811.svg" alt="">
+                    Acessar Plataforma
+                </button>
+            </div>
+            <div class="acessos">
+                Ainda não tem conta na Digital Track?
+                <a href="cadastro.html">
+                    Cadastre-se grátis
+                </a>
             </div>
         </div>
-        <script src="js/validacoes.js"></script>
-        <script src="js/acesso.js"></script>
-    </body>
+    </div>
+    <script src="js/validacoes.js"></script>
+    <script src="js/acesso.js"></script>
+</body>
+
 </html>

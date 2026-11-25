@@ -28,6 +28,7 @@ function validarCampos(campos) {
     return true;
 }
 
+// Percorre o e-mail com while para conferir o arroba e o ponto após ele.
 function validarEmail(email) {
     let contador = 0;
     let quantidadeArrobas = 0;
@@ -61,6 +62,7 @@ function validarEmail(email) {
     return true;
 }
 
+// Mantém o contador com while, como no cadastro do PowerTrack.
 function validarSenha(senha) {
     let contador = 0;
     while (contador < senha.length) {

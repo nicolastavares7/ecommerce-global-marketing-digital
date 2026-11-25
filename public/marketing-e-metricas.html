@@ -1,368 +1,544 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Aprenda sobre anúncios, métricas, pesquisa de produtos, fornecedores, validação e escala.">
-        <title>DigitalTrack | Marketing e métricas</title>
-        <link rel="stylesheet" href="css/geral.css">
-        <link rel="stylesheet" href="css/marketing-e-metricas.css">
-    </head>
-    <body class="pagina">
-        <div class="cabecalho">
-            <div class="conteudo">
-                <a href="index.html" class="imagem-logo">
-                    <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Aprenda sobre anúncios, métricas, pesquisa de produtos, fornecedores, validação e escala.">
+    <title>
+        DigitalTrack | Marketing e métricas
+    </title>
+    <link rel="stylesheet" href="css/geral.css">
+    <link rel="stylesheet" href="css/marketing-e-metricas.css">
+</head>
+
+<body class="pagina">
+    <!-- Alteração: recuo de quatro espaços por nível; estrutura e conteúdo preservados. -->
+    <div class="cabecalho">
+        <div class="conteudo">
+            <a href="index.html" class="imagem-logo">
+                <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
+            </a>
+            <div class="lista-textos menu" id="menu">
+                <p class="item-texto">
+                    <a href="index.html#pilares" class="item-menu">
+                        Pilares Globais
+                    </a>
+                </p>
+                <p class="item-texto">
+                    <a href="index.html#fornecedores" class="item-menu">
+                        Fornecedores
+                    </a>
+                </p>
+                <p class="item-texto">
+                    <a href="formas-de-vender.html" class="item-menu">
+                        Formas de vender
+                    </a>
+                </p>
+                <p class="item-texto">
+                    <a href="calculadora.html" class="item-menu">
+                        Simulador Financeiro
+                    </a>
+                </p>
+                <p class="item-texto">
+                    <a href="marketing-e-metricas.html" class="item-menu selecionado" aria-current="page">
+                        Marketing e métricas
+                    </a>
+                </p>
+                <p class="item-texto">
+                    <a href="index.html#faq" class="item-menu">
+                        FAQ
+                    </a>
+                </p>
+            </div>
+            <div class="botoes-menu">
+                <a href="login.html" class="botao botao-contorno botao-pequeno">
+                    Entrar
                 </a>
-                <div class="lista-textos menu" id="menu">
-                    <p class="item-texto">
-                        <a href="index.html#pilares" class="item-menu">
-                            Pilares Globais
-                        </a>
-                    </p>
-                    <p class="item-texto">
-                        <a href="index.html#fornecedores" class="item-menu">
-                            Fornecedores
-                        </a>
-                    </p>
-                    <p class="item-texto">
-                        <a href="formas-de-vender.html" class="item-menu">
-                            Formas de vender
-                        </a>
-                    </p>
-                    <p class="item-texto">
-                        <a href="calculadora.html" class="item-menu">
-                            Simulador Financeiro
-                        </a>
-                    </p>
-                    <p class="item-texto">
-                        <a href="marketing-e-metricas.html" class="item-menu selecionado" aria-current="page">
-                            Marketing e métricas
-                        </a>
-                    </p>
-                    <p class="item-texto">
-                        <a href="index.html#faq" class="item-menu">
-                            FAQ
-                        </a>
-                    </p>
-                </div>
-                <div class="botoes-menu">
-                    <a href="login.html" class="botao botao-contorno botao-pequeno">
-                        Entrar
-                    </a>
-                    <a href="cadastro.html" class="botao botao-colorido botao-pequeno botao-brilho">
-                        Começar Agora
-                    </a>
-                </div>
+                <a href="cadastro.html" class="botao botao-colorido botao-pequeno botao-brilho">
+                    Começar Agora
+                </a>
             </div>
         </div>
-        <div class="apresentacao-marketing conteudo">
-            <span class="subtitulo">DO PRIMEIRO TESTE À LEITURA DOS RESULTADOS</span>
-            <p class="titulo-principal titulo-marketing">Entenda o marketing.<br><span class="texto-colorido">Compare suas possibilidades.</span></p>
-            <p class="descricao-marketing">Escolha um assunto para conhecer os conceitos principais e depois experimente os valores no simulador.</p>
-            <div class="abas-marketing" aria-label="Assuntos de marketing">
-                <button type="button" id="aba_plataformas" onclick="abrirAssunto('plataformas')">Canais de anúncios</button>
-                <button type="button" id="aba_metricas" onclick="abrirAssunto('metricas')">Métricas</button>
-                <button type="button" id="aba_produtos" onclick="abrirAssunto('produtos')">Produtos e fornecedores</button>
-                <button type="button" id="aba_escala" onclick="abrirAssunto('escala')">Testes e escala</button>
-                <button type="button" id="aba_orcamento" onclick="abrirAssunto('orcamento')">Orçamento e leilão</button>
-                <button type="button" id="aba_videos" onclick="abrirAssunto('videos')">Criativos e IA</button>
+    </div>
+    <div class="apresentacao-marketing conteudo">
+        <span class="subtitulo">
+            DO PRIMEIRO TESTE À LEITURA DOS RESULTADOS
+        </span>
+        <p class="titulo-principal titulo-marketing">Entenda o marketing.<br><span class="texto-colorido">Compare suas possibilidades.</span></p>
+        <p class="descricao-marketing">
+            Escolha um assunto para conhecer os conceitos principais e depois experimente os valores no simulador.
+        </p>
+        <div class="abas-marketing" aria-label="Assuntos de marketing">
+            <button type="button" id="aba_plataformas" onclick="abrirAssunto('plataformas')">
+                Canais de anúncios
+            </button>
+            <button type="button" id="aba_metricas" onclick="abrirAssunto('metricas')">
+                Métricas
+            </button>
+            <button type="button" id="aba_produtos" onclick="abrirAssunto('produtos')">
+                Produtos e fornecedores
+            </button>
+            <button type="button" id="aba_escala" onclick="abrirAssunto('escala')">
+                Testes e escala
+            </button>
+            <button type="button" id="aba_orcamento" onclick="abrirAssunto('orcamento')">
+                Orçamento e leilão
+            </button>
+            <button type="button" id="aba_videos" onclick="abrirAssunto('videos')">
+                Criativos e IA
+            </button>
+        </div>
+    </div>
+    <div class="grupo-marketing" id="plataformas">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Google Ads, Meta Ads e TikTok Ads
+                </p>
+                <p class="descricao-secao">
+                    O canal depende do público, do produto e do objetivo. Não existe uma plataforma que sempre venda mais.
+                </p>
             </div>
-        </div>
-        <div class="grupo-marketing" id="plataformas">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Google Ads, Meta Ads e TikTok Ads</p>
-                    <p class="descricao-secao">O canal depende do público, do produto e do objetivo. Não existe uma plataforma que sempre venda mais.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Google Ads</p>
-                        <p>Na rede de Pesquisa, o anúncio pode alcançar quem procura um produto ou uma solução. Palavras-chave e uma página coerente com a busca ajudam a apresentar a oferta.</p>
-                        <p class="exemplo-marketing">Exemplo: alguém pesquisa “organizador de cozinha”.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Meta Ads</p>
-                        <p>No Facebook e Instagram, imagens e vídeos podem apresentar uma oferta durante a navegação. Também é possível alcançar pessoas que já interagiram com o negócio.</p>
-                        <p class="exemplo-marketing">Exemplo: demonstrar como o organizador facilita a rotina.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">TikTok Ads</p>
-                        <p>Vídeos podem apresentar o produto em uso durante a descoberta de conteúdos. A abertura, a demonstração e a linguagem fazem parte do teste.</p>
-                        <p class="exemplo-marketing">Exemplo: mostrar a organização de uma gaveta.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p>Antes de anunciar, confira conta, moeda, permissões, página de destino e eventos de conversão. Visualizações e cliques não são compras. <a href="https://support.google.com/google-ads/answer/1722047?hl=pt-BR">Pesquisa do Google →</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="grupo-marketing" id="metricas">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Métricas que ajudam a decidir</p>
-                    <p class="descricao-secao">Compare o mesmo período, a mesma moeda e a mesma definição de conversão.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">CTR · taxa de cliques</p>
-                        <p>Cliques ÷ impressões × 100. Mostra a proporção de exibições que receberam cliques.</p>
-                        <p class="exemplo-marketing">100 cliques em 5.000 impressões = 2%.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">CPC · custo por clique</p>
-                        <p>Gasto em anúncios ÷ cliques. Indica o custo médio de um clique.</p>
-                        <p class="exemplo-marketing">R$ 200 em 100 cliques = R$ 2 por clique.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">CPA · custo por compra</p>
-                        <p>Gasto em anúncios ÷ compras atribuídas. Compare com o que sobra da venda antes de pagar o anúncio.</p>
-                        <p class="exemplo-marketing">R$ 200 em 10 compras = R$ 20 por compra.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Conversão em compra</p>
-                        <p>Compras ÷ visitas à loja × 100. A base usada no relatório deve ser conferida.</p>
-                        <p class="exemplo-marketing">10 compras em 100 visitas = 10%.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">ROAS · retorno dos anúncios</p>
-                        <p>Receita atribuída aos anúncios ÷ gasto em anúncios. Mede receita, não lucro.</p>
-                        <p class="exemplo-marketing">R$ 600 de receita ÷ R$ 200 em anúncios = 3x.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Resultado e margem</p>
-                        <p>Resultado = faturamento − custos informados. Margem = resultado ÷ faturamento × 100.</p>
-                        <p class="exemplo-marketing">R$ 1.000 de receita e R$ 800 de custos deixam R$ 200 e margem de 20%.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p>Não existe CTR, CPA ou ROAS ideal para todos os negócios. Considere produto, frete, taxas, devoluções e demais custos. <a href="https://support.google.com/google-ads/answer/9451527?hl=pt-BR">Leitura das métricas →</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="grupo-marketing" id="produtos">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Da pesquisa ao fornecedor</p>
-                    <p class="descricao-secao">Mineração é pesquisar oportunidades; validação depende de testes e resultados reais.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Encontre uma necessidade</p>
-                        <p>Observe dúvidas, avaliações e problemas dos clientes. Pesquise tendências e anúncios para levantar ideias, sem confundir popularidade com lucro.</p>
-                        <p class="exemplo-marketing">Google Trends, Biblioteca de Anúncios da Meta e TikTok Creative Center podem apoiar a pesquisa.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Compare a oferta</p>
-                        <p>Avalie utilidade, diferenciais, preço e entrega. Monte uma mensagem clara e um teste com limite de gasto. Registre as compras e os custos reais.</p>
-                        <p class="exemplo-marketing">Um anúncio ativo ou um produto viral não comprovam vendas lucrativas.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Confira o fornecedor</p>
-                        <p>Compare especificações, estoque, preço, frete, prazo, atendimento e devoluções. Peça uma amostra e confirme as condições por escrito.</p>
-                        <p class="exemplo-marketing">Dropi e Mastershop são opções para pesquisar e comparar conforme o país e o produto.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p><span id="fornecedores"></span>Conheça também <a href="formas-de-vender.html">os modelos de venda →</a> e <a href="pagamentos-e-entregas.html">pagamentos e entregas →</a>.</p>
-                </div>
-            </div>
-        </div>
-        <div class="grupo-marketing" id="escala">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Testar, comparar e crescer</p>
-                    <p class="descricao-secao">Antes de ampliar a operação, acompanhe compras, custos, margem e capacidade de entrega.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Validar uma oferta</p>
-                        <p>Use compras reais em períodos comparáveis. Avalie CPA, resultado, cancelamentos e qualidade da entrega. Uma venda isolada não demonstra consistência.</p>
-                        <p class="exemplo-marketing">As simulações do DigitalTrack comparam hipóteses; não validam uma campanha real.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Escala vertical</p>
-                        <p>Aumentar o orçamento de uma estrutura existente para buscar mais volume. Acompanhe se o custo por compra e o resultado continuam compatíveis com a operação.</p>
-                        <p class="exemplo-marketing">Não existe um aumento fixo de 20% que garanta manter o desempenho.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Escala horizontal</p>
-                        <p>Expandir os testes para outros públicos, criativos ou mercados. Uma cópia pode ser o ponto de partida, mas precisa de uma hipótese clara e avaliação própria.</p>
-                        <p class="exemplo-marketing">Duplicar campanhas não garante novas vendas nem preserva o aprendizado da original.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p><span id="campanhas"></span>Altere uma variável principal por vez, registre a hipótese e compare condições semelhantes. Mais volume também exige fornecedor, atendimento e caixa preparados.</p>
-                </div>
-            </div>
-        </div>
-        <div class="grupo-marketing" id="orcamento">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Orçamento e lance são coisas diferentes</p>
-                    <p class="descricao-secao">Planeje uma verba que a operação consiga usar no teste e acompanhe o gasto real.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Comece pela margem</p>
-                        <p>Calcule o que sobra antes dos anúncios e quanto pretende reservar de resultado. Essa conta ajuda a definir um custo de aquisição compatível.</p>
-                        <p class="exemplo-marketing">Venda de R$ 100, outros custos de R$ 60 e resultado desejado de R$ 15 deixam R$ 25 para anúncio por compra.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Defina o teste</p>
-                        <p>Escolha um período, um limite total e uma hipótese. Evite espalhar uma verba pequena entre muitos testes ao mesmo tempo.</p>
-                        <p class="exemplo-marketing">R$ 300 em 10 dias equivalem a uma média de R$ 30 por dia. É um exemplo, sem garantia de venda.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Entenda o leilão</p>
-                        <p>Orçamento é a verba planejada; lance faz parte da disputa por uma oportunidade de anúncio. Qualidade, contexto e outros fatores também influenciam a exibição.</p>
-                        <p class="exemplo-marketing">Oferecer mais dinheiro não garante uma venda.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p><span id="leilao"></span>Confira as regras de gasto da plataforma e acompanhe o relatório. <a href="https://support.google.com/google-ads/answer/6366577?hl=pt-BR">Como funciona o leilão do Google Ads →</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="grupo-marketing" id="videos">
-            <div class="conteudo">
-                <div class="cabecalho-secao">
-                    <p class="titulo-grande titulo-secao">Criativos e inteligência artificial</p>
-                    <p class="descricao-secao">A IA ajuda a produzir e organizar o trabalho. A mensagem e o material ainda precisam de revisão.</p>
-                </div>
-                <div class="cartoes-marketing">
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">UGC e demonstração</p>
-                        <p>UGC significa conteúdo gerado por usuários. Na publicidade, também se usa um estilo de apresentação parecido com relatos e demonstrações de criadores. Um vídeo gerado por IA não comprova experiência pessoal.</p>
-                        <p class="exemplo-marketing">Estrutura simples: abertura → benefício → demonstração → chamada para ação.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">IA como apoio</p>
-                        <p>Use IA para levantar ideias, escrever roteiros, preparar variações, narração e legendas. Ferramentas como Symphony Creative Studio apoiam a produção de vídeos.</p>
-                        <p class="exemplo-marketing">Revise idioma, preço, características do produto e o resultado antes de publicar.</p>
-                    </div>
-                    <div class="cartao-marketing">
-                        <p class="titulo-cartao">Material próprio ou autorizado</p>
-                        <p>Use gravações próprias, arquivos licenciados ou material autorizado pelo fornecedor. Não apresente depoimentos inventados nem demonstrações que não correspondem ao produto.</p>
-                        <p class="exemplo-marketing">Cortar, espelhar ou limpar metadados não torna um vídeo de outra pessoa original nem concede autorização.</p>
-                    </div>
-                </div>
-                <div class="nota-marketing">
-                    <p>Automatizar tarefas não dispensa revisão. <a href="https://ads.tiktok.com/resources/help/article/creative-center?lang=en-GB">Conheça os recursos criativos do TikTok →</a></p>
-                </div>
-            </div>
-        </div>
-        <div class="conteudo convite-final-marketing">
-            <p class="titulo-cartao">Transforme os conceitos em uma simulação</p>
-            <a class="botao botao-colorido" href="calculadora.html">Abrir Simulador Financeiro</a>
-        </div>
-        <div class="rodape">
-            <div class="conteudo">
-                <div class="colunas-rodape">
-                    <div class="apresentacao-rodape">
-                        <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo" class="logo-rodape">
-                        <p>
-                            Capacitando empreendedores digitais a construir operações globais de e-commerce, tráfego de alta conversão e arbitragem de moedas fortes.
-                        </p>
-                    </div>
-                    <div class="coluna-rodape">
-                        <p class="titulo-pequeno">
-                            Plataforma
-                        </p>
-                        <div class="lista-textos">
-                            <p class="item-texto">
-                                <a href="index.html#pilares">
-                                    Pilares Globais
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="index.html#fornecedores">
-                                    Fornecedores
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="formas-de-vender.html">
-                                    Formas de vender
-                                </a>
-                            </p>
-                            <p class="item-texto"><a href="marketing-e-metricas.html">Marketing e métricas</a></p>
-                            <p class="item-texto"><a href="pagamentos-e-entregas.html">Pagamentos e entregas</a></p>
-                            <p class="item-texto">
-                                <a href="calculadora.html">
-                                    Simulador Financeiro
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="index.html#trilha">
-                                    Trilha de Estudos
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="coluna-rodape">
-                        <p class="titulo-pequeno">
-                            Recursos
-                        </p>
-                        <div class="lista-textos">
-                            <p class="item-texto">
-                                <a href="login.html">
-                                    Área de Membros
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="cadastro.html">
-                                    Criar Conta
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="login.html">
-                                    Acessar Dashboard
-                                </a>
-                            </p>
-                            <p class="item-texto">
-                                <a href="index.html#faq">
-                                    Suporte &amp; FAQ
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="coluna-rodape">
-                        <p class="titulo-pequeno">
-                            Tecnologias
-                        </p>
-                        <div class="lista-textos">
-                            <p class="item-texto">
-                                <span>
-                                    Meta Ads CBO
-                                </span>
-                            </p>
-                            <p class="item-texto">
-                                <span>
-                                    TikTok Shop &amp; Ads
-                                </span>
-                            </p>
-                            <p class="item-texto">
-                                <span>
-                                    Stripe &amp; Multi-Currency
-                                </span>
-                            </p>
-                            <p class="item-texto">
-                                <span>
-                                    CJ &amp; Zendrop Logistics
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="final-rodape">
-                    <p>
-                        © 2026 Digital Track - Projeto Individual de Empreendedorismo Digital &amp; E-commerce Global. Todos os direitos reservados.
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Google Ads
                     </p>
                     <p>
-                        Desenvolvido com foco em alta performance e visualização de dados.
+                        Na rede de Pesquisa, o anúncio pode alcançar quem procura um produto ou uma solução. Palavras-chave e uma página coerente com a busca ajudam a apresentar a oferta.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Exemplo: alguém pesquisa “organizador de cozinha”.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Meta Ads
+                    </p>
+                    <p>
+                        No Facebook e Instagram, imagens e vídeos podem apresentar uma oferta durante a navegação. Também é possível alcançar pessoas que já interagiram com o negócio.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Exemplo: demonstrar como o organizador facilita a rotina.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        TikTok Ads
+                    </p>
+                    <p>
+                        Vídeos podem apresentar o produto em uso durante a descoberta de conteúdos. A abertura, a demonstração e a linguagem fazem parte do teste.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Exemplo: mostrar a organização de uma gaveta.
                     </p>
                 </div>
             </div>
+            <div class="nota-marketing">
+                <p>Antes de anunciar, confira conta, moeda, permissões, página de destino e eventos de conversão. Visualizações e cliques não são compras. <a href="https://support.google.com/google-ads/answer/1722047?hl=pt-BR">Pesquisa do Google →</a></p>
+            </div>
         </div>
-        <script src="js/marketing-e-metricas.js"></script>
+    </div>
+    <div class="grupo-marketing" id="metricas">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Métricas que ajudam a decidir
+                </p>
+                <p class="descricao-secao">
+                    Compare o mesmo período, a mesma moeda e a mesma definição de conversão.
+                </p>
+            </div>
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        CTR · taxa de cliques
+                    </p>
+                    <p>
+                        Cliques ÷ impressões × 100. Mostra a proporção de exibições que receberam cliques.
+                    </p>
+                    <p class="exemplo-marketing">
+                        100 cliques em 5.000 impressões = 2%.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        CPC · custo por clique
+                    </p>
+                    <p>
+                        Gasto em anúncios ÷ cliques. Indica o custo médio de um clique.
+                    </p>
+                    <p class="exemplo-marketing">
+                        R$ 200 em 100 cliques = R$ 2 por clique.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        CPA · custo por compra
+                    </p>
+                    <p>
+                        Gasto em anúncios ÷ compras atribuídas. Compare com o que sobra da venda antes de pagar o anúncio.
+                    </p>
+                    <p class="exemplo-marketing">
+                        R$ 200 em 10 compras = R$ 20 por compra.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Conversão em compra
+                    </p>
+                    <p>
+                        Compras ÷ visitas à loja × 100. A base usada no relatório deve ser conferida.
+                    </p>
+                    <p class="exemplo-marketing">
+                        10 compras em 100 visitas = 10%.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        ROAS · retorno dos anúncios
+                    </p>
+                    <p>
+                        Receita atribuída aos anúncios ÷ gasto em anúncios. Mede receita, não lucro.
+                    </p>
+                    <p class="exemplo-marketing">
+                        R$ 600 de receita ÷ R$ 200 em anúncios = 3x.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Resultado e margem
+                    </p>
+                    <p>
+                        Resultado = faturamento − custos informados. Margem = resultado ÷ faturamento × 100.
+                    </p>
+                    <p class="exemplo-marketing">
+                        R$ 1.000 de receita e R$ 800 de custos deixam R$ 200 e margem de 20%.
+                    </p>
+                </div>
+            </div>
+            <div class="nota-marketing">
+                <p>Não existe CTR, CPA ou ROAS ideal para todos os negócios. Considere produto, frete, taxas, devoluções e demais custos. <a href="https://support.google.com/google-ads/answer/9451527?hl=pt-BR">Leitura das métricas →</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="grupo-marketing" id="produtos">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Da pesquisa ao fornecedor
+                </p>
+                <p class="descricao-secao">
+                    Mineração é pesquisar oportunidades; validação depende de testes e resultados reais.
+                </p>
+            </div>
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Encontre uma necessidade
+                    </p>
+                    <p>
+                        Observe dúvidas, avaliações e problemas dos clientes. Pesquise tendências e anúncios para levantar ideias, sem confundir popularidade com lucro.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Google Trends, Biblioteca de Anúncios da Meta e TikTok Creative Center podem apoiar a pesquisa.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Compare a oferta
+                    </p>
+                    <p>
+                        Avalie utilidade, diferenciais, preço e entrega. Monte uma mensagem clara e um teste com limite de gasto. Registre as compras e os custos reais.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Um anúncio ativo ou um produto viral não comprovam vendas lucrativas.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Confira o fornecedor
+                    </p>
+                    <p>
+                        Compare especificações, estoque, preço, frete, prazo, atendimento e devoluções. Peça uma amostra e confirme as condições por escrito.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Dropi e Mastershop são opções para pesquisar e comparar conforme o país e o produto.
+                    </p>
+                </div>
+            </div>
+            <div class="nota-marketing">
+                <p><span id="fornecedores"></span>Conheça também <a href="formas-de-vender.html">os modelos de venda →</a> e <a href="pagamentos-e-entregas.html">pagamentos e entregas →</a>.</p>
+            </div>
+        </div>
+    </div>
+    <div class="grupo-marketing" id="escala">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Testar, comparar e crescer
+                </p>
+                <p class="descricao-secao">
+                    Antes de ampliar a operação, acompanhe compras, custos, margem e capacidade de entrega.
+                </p>
+            </div>
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Validar uma oferta
+                    </p>
+                    <p>
+                        Use compras reais em períodos comparáveis. Avalie CPA, resultado, cancelamentos e qualidade da entrega. Uma venda isolada não demonstra consistência.
+                    </p>
+                    <p class="exemplo-marketing">
+                        As simulações do DigitalTrack comparam hipóteses; não validam uma campanha real.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Escala vertical
+                    </p>
+                    <p>
+                        Aumentar o orçamento de uma estrutura existente para buscar mais volume. Acompanhe se o custo por compra e o resultado continuam compatíveis com a operação.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Não existe um aumento fixo de 20% que garanta manter o desempenho.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Escala horizontal
+                    </p>
+                    <p>
+                        Expandir os testes para outros públicos, criativos ou mercados. Uma cópia pode ser o ponto de partida, mas precisa de uma hipótese clara e avaliação própria.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Duplicar campanhas não garante novas vendas nem preserva o aprendizado da original.
+                    </p>
+                </div>
+            </div>
+            <div class="nota-marketing">
+                <p><span id="campanhas"></span>Altere uma variável principal por vez, registre a hipótese e compare condições semelhantes. Mais volume também exige fornecedor, atendimento e caixa preparados.</p>
+            </div>
+        </div>
+    </div>
+    <div class="grupo-marketing" id="orcamento">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Orçamento e lance são coisas diferentes
+                </p>
+                <p class="descricao-secao">
+                    Planeje uma verba que a operação consiga usar no teste e acompanhe o gasto real.
+                </p>
+            </div>
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Comece pela margem
+                    </p>
+                    <p>
+                        Calcule o que sobra antes dos anúncios e quanto pretende reservar de resultado. Essa conta ajuda a definir um custo de aquisição compatível.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Venda de R$ 100, outros custos de R$ 60 e resultado desejado de R$ 15 deixam R$ 25 para anúncio por compra.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Defina o teste
+                    </p>
+                    <p>
+                        Escolha um período, um limite total e uma hipótese. Evite espalhar uma verba pequena entre muitos testes ao mesmo tempo.
+                    </p>
+                    <p class="exemplo-marketing">
+                        R$ 300 em 10 dias equivalem a uma média de R$ 30 por dia. É um exemplo, sem garantia de venda.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Entenda o leilão
+                    </p>
+                    <p>
+                        Orçamento é a verba planejada; lance faz parte da disputa por uma oportunidade de anúncio. Qualidade, contexto e outros fatores também influenciam a exibição.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Oferecer mais dinheiro não garante uma venda.
+                    </p>
+                </div>
+            </div>
+            <div class="nota-marketing">
+                <p><span id="leilao"></span>Confira as regras de gasto da plataforma e acompanhe o relatório. <a href="https://support.google.com/google-ads/answer/6366577?hl=pt-BR">Como funciona o leilão do Google Ads →</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="grupo-marketing" id="videos">
+        <div class="conteudo">
+            <div class="cabecalho-secao">
+                <p class="titulo-grande titulo-secao">
+                    Criativos e inteligência artificial
+                </p>
+                <p class="descricao-secao">
+                    A IA ajuda a produzir e organizar o trabalho. A mensagem e o material ainda precisam de revisão.
+                </p>
+            </div>
+            <div class="cartoes-marketing">
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        UGC e demonstração
+                    </p>
+                    <p>
+                        UGC significa conteúdo gerado por usuários. Na publicidade, também se usa um estilo de apresentação parecido com relatos e demonstrações de criadores. Um vídeo gerado por IA não comprova experiência pessoal.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Estrutura simples: abertura → benefício → demonstração → chamada para ação.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        IA como apoio
+                    </p>
+                    <p>
+                        Use IA para levantar ideias, escrever roteiros, preparar variações, narração e legendas. Ferramentas como Symphony Creative Studio apoiam a produção de vídeos.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Revise idioma, preço, características do produto e o resultado antes de publicar.
+                    </p>
+                </div>
+                <div class="cartao-marketing">
+                    <p class="titulo-cartao">
+                        Material próprio ou autorizado
+                    </p>
+                    <p>
+                        Use gravações próprias, arquivos licenciados ou material autorizado pelo fornecedor. Não apresente depoimentos inventados nem demonstrações que não correspondem ao produto.
+                    </p>
+                    <p class="exemplo-marketing">
+                        Cortar, espelhar ou limpar metadados não torna um vídeo de outra pessoa original nem concede autorização.
+                    </p>
+                </div>
+            </div>
+            <div class="nota-marketing">
+                <p>Automatizar tarefas não dispensa revisão. <a href="https://ads.tiktok.com/resources/help/article/creative-center?lang=en-GB">Conheça os recursos criativos do TikTok →</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="conteudo convite-final-marketing">
+        <p class="titulo-cartao">
+            Transforme os conceitos em uma simulação
+        </p>
+        <a class="botao botao-colorido" href="calculadora.html">
+            Abrir Simulador Financeiro
+        </a>
+    </div>
+    <div class="rodape">
+        <div class="conteudo">
+            <div class="colunas-rodape">
+                <div class="apresentacao-rodape">
+                    <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo" class="logo-rodape">
+                    <p>
+                        Capacitando empreendedores digitais a construir operações globais de e-commerce, tráfego de alta conversão e arbitragem de moedas fortes.
+                    </p>
+                </div>
+                <div class="coluna-rodape">
+                    <p class="titulo-pequeno">
+                        Plataforma
+                    </p>
+                    <div class="lista-textos">
+                        <p class="item-texto">
+                            <a href="index.html#pilares">
+                                Pilares Globais
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="index.html#fornecedores">
+                                Fornecedores
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="formas-de-vender.html">
+                                Formas de vender
+                            </a>
+                        </p>
+                        <p class="item-texto"><a href="marketing-e-metricas.html">Marketing e métricas</a></p>
+                        <p class="item-texto"><a href="pagamentos-e-entregas.html">Pagamentos e entregas</a></p>
+                        <p class="item-texto">
+                            <a href="calculadora.html">
+                                Simulador Financeiro
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="index.html#trilha">
+                                Trilha de Estudos
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="coluna-rodape">
+                    <p class="titulo-pequeno">
+                        Recursos
+                    </p>
+                    <div class="lista-textos">
+                        <p class="item-texto">
+                            <a href="login.html">
+                                Área de Membros
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="cadastro.html">
+                                Criar Conta
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="login.html">
+                                Acessar Dashboard
+                            </a>
+                        </p>
+                        <p class="item-texto">
+                            <a href="index.html#faq">
+                                Suporte &amp; FAQ
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="coluna-rodape">
+                    <p class="titulo-pequeno">
+                        Tecnologias
+                    </p>
+                    <div class="lista-textos">
+                        <p class="item-texto">
+                            <span>
+                                Meta Ads CBO
+                            </span>
+                        </p>
+                        <p class="item-texto">
+                            <span>
+                                TikTok Shop &amp; Ads
+                            </span>
+                        </p>
+                        <p class="item-texto">
+                            <span>
+                                Stripe &amp; Multi-Currency
+                            </span>
+                        </p>
+                        <p class="item-texto">
+                            <span>
+                                CJ &amp; Zendrop Logistics
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="final-rodape">
+                <p>
+                    © 2026 Digital Track - Projeto Individual de Empreendedorismo Digital &amp; E-commerce Global. Todos os direitos reservados.
+                </p>
+                <p>
+                    Desenvolvido com foco em alta performance e visualização de dados.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="js/marketing-e-metricas.js"></script>
 </body>
+
 </html>

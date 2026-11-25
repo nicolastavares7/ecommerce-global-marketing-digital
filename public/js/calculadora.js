@@ -37,27 +37,40 @@ function calcular() {
     document.getElementById("simbolo_custo").textContent = simbolo;
     document.getElementById("simbolo_anuncio").textContent = simbolo;
 
-    let campos = ["ipt_preco", "ipt_custo", "ipt_anuncio", "ipt_vendas"];
-    let valores = [];
-    for (let i = 0; i < campos.length; i++) {
-        let texto = document.getElementById(campos[i]).value.trim();
-        let valor = Number(texto.replace(",", "."));
-        if (texto == "" || isNaN(valor) || isFinite(valor) == false || valor < 0) {
-            limparResultado("Preencha todos os campos com números válidos e não negativos.");
-            return;
-        }
-        valores.push(valor);
+    // Alteração: lê cada campo diretamente, como na calculadora do PowerTrack.
+    // replace permite que o usuário digite a parte decimal com vírgula.
+    let textoPreco = document.getElementById("ipt_preco").value.trim();
+    let textoCusto = document.getElementById("ipt_custo").value.trim();
+    let textoAnuncio = document.getElementById("ipt_anuncio").value.trim();
+    let textoVendas = document.getElementById("ipt_vendas").value.trim();
+
+    let preco = Number(textoPreco.replace(",", "."));
+    let custo = Number(textoCusto.replace(",", "."));
+    let anuncio = Number(textoAnuncio.replace(",", "."));
+    let vendasDia = Number(textoVendas.replace(",", "."));
+
+    if (textoPreco == "" || textoCusto == "" || textoAnuncio == "" || textoVendas == "") {
+        limparResultado("Preencha todos os campos com números válidos e não negativos.");
+        return;
     }
 
-    let preco = valores[0];
-    let custo = valores[1];
-    let anuncio = valores[2];
-    let vendasDia = valores[3];
+    // isFinite recusa texto que não virou número e valores infinitos.
+    if (isFinite(preco) == false || isFinite(custo) == false || isFinite(anuncio) == false || isFinite(vendasDia) == false) {
+        limparResultado("Preencha todos os campos com números válidos e não negativos.");
+        return;
+    }
+
+    if (preco < 0 || custo < 0 || anuncio < 0 || vendasDia < 0) {
+        limparResultado("Preencha todos os campos com números válidos e não negativos.");
+        return;
+    }
+
     if (preco <= 0 || vendasDia % 1 != 0) {
         limparResultado("O preço precisa ser maior que zero e as vendas devem ser um número inteiro.");
         return;
     }
 
+    // Cálculos em etapas: vendas do mês, faturamento, custos e resultado.
     let vendasMes = vendasDia * 30;
     let faturamento = preco * vendasMes;
     let investimento = anuncio * vendasMes;

@@ -1,7 +1,11 @@
+// Alteração: variáveis com let, no mesmo padrão dos demais scripts próprios.
 // Ao abrir um HTML pelo Finder, encaminha para o servidor local do projeto.
 // Pelo endereço HTTP da máquina virtual este redirecionamento não é executado.
 if (window.location.protocol == "file:") {
-    var partesCaminho = window.location.pathname.split("/");
-    var pagina = partesCaminho[partesCaminho.length - 1];
+    let partesCaminho = window.location.pathname.split("/");
+    let pagina = partesCaminho[partesCaminho.length - 1];
+    if (pagina == "dashboard.html") {
+        pagina = "dashboard/dashboard.html";
+    }
     window.location.replace("http://localhost:3334/" + pagina);
 }
