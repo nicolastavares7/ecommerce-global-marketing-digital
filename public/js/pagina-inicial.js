@@ -1,4 +1,5 @@
 function abrirResposta(idResposta, botao) {
+
     let resposta = document.getElementById(idResposta);
     if (resposta.style.display == "block") {
         resposta.style.display = "none";

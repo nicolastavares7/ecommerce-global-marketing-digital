@@ -1,5 +1,6 @@
 // Funções simples compartilhadas pelas telas de login e cadastro.
 function mostrarMensagem(texto, erro) {
+
     let mensagem = document.getElementById("msg_senha");
     mensagem.textContent = texto;
     mensagem.style.display = "block";
@@ -11,6 +12,7 @@ function mostrarMensagem(texto, erro) {
 }
 
 function validarCampos(campos) {
+
     for (let i = 0; i < campos.length; i++) {
         let campo = document.getElementById(campos[i]);
         campo.removeAttribute("aria-invalid");
@@ -30,6 +32,7 @@ function validarCampos(campos) {
 
 // Percorre o e-mail com while para conferir o arroba e o ponto após ele.
 function validarEmail(email) {
+
     let contador = 0;
     let quantidadeArrobas = 0;
     let posicaoArroba = -1;
@@ -64,6 +67,7 @@ function validarEmail(email) {
 
 // Mantém o contador com while, como no cadastro do PowerTrack.
 function validarSenha(senha) {
+
     let contador = 0;
     while (contador < senha.length) {
         contador++;
@@ -72,6 +76,7 @@ function validarSenha(senha) {
 }
 
 function mostrarSenha(idCampo, botao) {
+
     let campo = document.getElementById(idCampo);
     if (campo.type == "password") {
         campo.type = "text";

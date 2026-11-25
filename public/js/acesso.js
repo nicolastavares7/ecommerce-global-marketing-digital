@@ -3,6 +3,7 @@ let enviandoAcesso = false;
 let tentativas = 0; // Contador simples das tentativas nesta página.
 
 function verificarBloqueio() {
+
     if (tentativas >= 3) {
         document.getElementById('ipt_email').disabled = true;
         document.getElementById('ipt_senha').disabled = true;
@@ -16,6 +17,7 @@ function verificarBloqueio() {
 
 // Alteração: libera o botão tanto após uma resposta quanto após falha de conexão.
 function liberarLogin() {
+
     enviandoAcesso = false;
 
     if (verificarBloqueio() == false) {
@@ -24,6 +26,7 @@ function liberarLogin() {
 }
 
 function entrar() {
+
     if (enviandoAcesso == true || verificarBloqueio() == true) {
         return;
     }
@@ -75,11 +78,13 @@ function entrar() {
 }
 
 function liberarCadastro() {
+
     enviandoAcesso = false;
     document.getElementById('btn_cadastrar').disabled = false;
 }
 
 function cadastrar() {
+
     if (enviandoAcesso == true) {
         return;
     }
@@ -146,11 +151,13 @@ function cadastrar() {
 }
 
 function ajudarSenha() {
+
     mostrarMensagem('Use o e-mail e a senha da conta que você cadastrou. A recuperação de senha ainda não está disponível.', false);
 }
 
 // O for verifica cada caractere e o if decide quais requisitos foram encontrados.
 function verificarSenha(senha) {
+
     let achouNumero = false;
     let achouMaiuscula = false;
     let achouSimbolo = false;

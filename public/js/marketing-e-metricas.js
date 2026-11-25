@@ -2,6 +2,7 @@
 let assuntos = ['plataformas', 'metricas', 'produtos', 'escala', 'orcamento', 'videos'];
 
 function abrirAssunto(assunto) {
+
     for (let i = 0; i < assuntos.length; i++) {
         let selecionado = assuntos[i] === assunto;
         document.getElementById(assuntos[i]).hidden = !selecionado;
@@ -15,6 +16,7 @@ function abrirAssunto(assunto) {
     }
 }
 function abrirPeloEndereco() {
+
     let assunto = window.location.hash.substring(1);
     if (assunto === 'fornecedores') {
         assunto = 'produtos';

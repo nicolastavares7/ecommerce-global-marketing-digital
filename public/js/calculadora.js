@@ -1,5 +1,6 @@
 // Mesma simulação da referência: 30 dias por mês e câmbios de exemplo.
 function formatarValor(valor) {
+
     return valor.toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -7,6 +8,7 @@ function formatarValor(valor) {
 }
 
 function formatarMoeda(valor) {
+
     return valor.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -14,6 +16,7 @@ function formatarMoeda(valor) {
 }
 
 function limparResultado(texto) {
+
     let resultados = ["div_lucro_reais", "div_lucro_moeda", "div_faturamento", "div_margem", "div_roas"];
     for (let i = 0; i < resultados.length; i++) {
         document.getElementById(resultados[i]).textContent = "—";
@@ -22,6 +25,7 @@ function limparResultado(texto) {
 }
 
 function calcular() {
+
     let moeda = document.getElementById("sel_moeda").value;
     let cambio = 5.75;
     let simbolo = "$";

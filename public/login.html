@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="js/abrir-servidor.js"></script>
-    <title>
-        Digital Track | Login
-    </title>
+    <title>Digital Track | Login</title>
     <link rel="stylesheet" href="css/geral.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -20,25 +18,17 @@
                 <a href="index.html" class="imagem-acesso">
                     <img src="assets/digitaltrack-logo.svg" alt="Digital Track Logo">
                 </a>
-                <p class="titulo-grande titulo-acesso">
-                    Bem-vindo de volta!
-                </p>
-                <p class="descricao-acesso">
-                    Entre na sua conta para continuar.
-                </p>
+                <p class="titulo-grande titulo-acesso">Bem-vindo de volta!</p>
+                <p class="descricao-acesso">Entre na sua conta para continuar.</p>
             </div>
             <div class="mensagem" id="msg_senha" role="status" aria-live="polite">
                 <img class="icone" src="assets/icones/atencao-94a3b8.svg" alt="">
-                <span id="texto_mensagem">
-                    Mensagem de aviso
-                </span>
+                <span id="texto_mensagem">Mensagem de aviso</span>
             </div>
             <!-- Alteração: aspas simples nos eventos para o editor reconhecer o JavaScript. -->
             <div class="campos-acesso" onkeydown="if (event.key == 'Enter') { event.preventDefault(); entrar(); }">
                 <div class="campo">
-                    <label>
-                        E-mail Cadastrado
-                    </label>
+                    <label>E-mail Cadastrado</label>
                     <div class="caixa-campo">
                         <input type="text" id="ipt_email" class="entrada-acesso" placeholder="seuemail@exemplo.com" required autocomplete="username" maxlength="100" aria-label="E-mail">
                         <img class="icone icone-campo" src="assets/icones/envelope-94a3b8.svg" alt="">
@@ -47,12 +37,8 @@
                 <div class="campo">
                     <!-- Alteração: os estilos deste grupo estão em login.css. -->
                     <div class="cabecalho-senha">
-                        <label class="rotulo-senha">
-                            Senha
-                        </label>
-                        <button onclick="ajudarSenha()" class="acesso-ajuda" type="button">
-                            Ajuda para entrar
-                        </button>
+                        <label class="rotulo-senha">Senha</label>
+                        <button onclick="ajudarSenha()" class="acesso-ajuda" type="button">Ajuda para entrar</button>
                     </div>
                     <div class="caixa-campo">
                         <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Sua senha" required autocomplete="current-password" maxlength="128" aria-label="Senha">
@@ -69,9 +55,7 @@
             </div>
             <div class="acessos">
                 Ainda não tem conta na Digital Track?
-                <a href="cadastro.html">
-                    Cadastre-se grátis
-                </a>
+                <a href="cadastro.html">Cadastre-se grátis</a>
             </div>
         </div>
     </div>

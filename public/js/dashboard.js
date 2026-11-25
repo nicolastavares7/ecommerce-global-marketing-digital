@@ -5,10 +5,12 @@ let graficoResultados;
 let salvando = false;
 
 function moeda(valor) {
+
     return 'R$ ' + valor.toFixed(2).replace('.', ',');
 }
 
 function percentual(valor) {
+
     if (valor == null) {
         return '—';
     }
@@ -16,6 +18,7 @@ function percentual(valor) {
 }
 
 function roas(valor) {
+
     if (valor == null) {
         return '—';
     }
@@ -23,6 +26,7 @@ function roas(valor) {
 }
 
 function avisar(texto, erro) {
+
     document.getElementById('aviso').textContent = texto;
     document.getElementById('aviso').className = 'aviso';
     if (erro == true) {
@@ -32,6 +36,7 @@ function avisar(texto, erro) {
 
 // Contas da projeção de 30 dias. Nenhum resultado é gravado no banco.
 function calcularSimulacao(simulacao) {
+
     let vendas = Number(simulacao.vendasDia) * 30;
     let faturamento = vendas * Number(simulacao.precoVenda);
     let produto = vendas * Number(simulacao.custoProduto);
@@ -60,6 +65,7 @@ function calcularSimulacao(simulacao) {
 }
 
 function preencherIndicadores(registros) {
+
     let melhorResultado = null;
     let melhorMargem = null;
     let positivos = 0;
@@ -103,6 +109,7 @@ function preencherIndicadores(registros) {
 
 // O for percorre as simulações e guarda apenas as que passam nos filtros.
 function atualizarPainel() {
+
     let plataforma = document.getElementById('filtro_plataforma').value;
     let resultado = document.getElementById('filtro_resultado').value;
     let registros = [];
@@ -141,6 +148,7 @@ function atualizarPainel() {
 
 // Protege o nome digitado antes de colocá-lo no HTML da lista.
 function textoSeguro(texto) {
+
     let div = document.createElement('div');
     div.textContent = texto;
     return div.innerHTML;
@@ -148,6 +156,7 @@ function textoSeguro(texto) {
 
 // Alteração: monta as linhas com HTML, como a exibição do resultado no PowerTrack.
 function montarLista(registros) {
+
     let lista = document.getElementById('lista_simulacoes');
     lista.innerHTML = '';
     for (let i = 0; i < registros.length; i++) {
@@ -178,6 +187,7 @@ function montarLista(registros) {
 
 // Dois gráficos simples. O for separa os dados de cada simulação em vetores.
 function montarGraficos(registros) {
+
     if (graficoCustos) {
         graficoCustos.destroy();
     }
@@ -245,6 +255,7 @@ function montarGraficos(registros) {
 
 // Busca as simulações do usuário e atualiza os indicadores, a lista e os gráficos.
 function carregarSimulacoes() {
+
     document.getElementById('btn_atualizar').disabled = true;
 
     return fetch('/simulacoes/listar/' + sessionStorage.ID_USUARIO).then(function (resposta) {
@@ -266,6 +277,7 @@ function carregarSimulacoes() {
 
 // Alteração: formulário comum, sempre visível. Não precisa abrir ou fechar janela.
 function salvarSimulacao() {
+
     if (salvando == true || document.getElementById('formulario_simulacao').reportValidity() == false) {
         return;
     }
@@ -301,11 +313,13 @@ function salvarSimulacao() {
 }
 
 function liberarFormulario() {
+
     salvando = false;
     document.getElementById('btn_salvar').disabled = false;
 }
 
 function excluirSimulacao(id) {
+
     if (confirm('Excluir esta simulação?') == false) {
         return;
     }
@@ -325,6 +339,7 @@ function excluirSimulacao(id) {
 }
 
 function limparFiltros() {
+
     document.getElementById('filtro_plataforma').value = '';
     document.getElementById('filtro_resultado').value = '';
     atualizarPainel();
@@ -332,10 +347,12 @@ function limparFiltros() {
 
 // Sair limpa os dados do login desta aba, como no WebDataViz.
 function sair() {
+
     limparSessao();
 }
 
 function iniciar() {
+
     if (validarSessao() == false) {
         return;
     }
