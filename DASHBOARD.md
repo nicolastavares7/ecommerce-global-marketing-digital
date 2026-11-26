@@ -1,61 +1,73 @@
 # Dashboard do DigitalTrack
 
-Tela: `public/dashboard/dashboard.html`. Script: `public/js/dashboard.js`. O acesso após o login abre `/dashboard/dashboard.html`.
+O DigitalTrack salva e compara hipóteses de venda. Os resultados são estimativas de 30 dias, não vendas realizadas nem lucro líquido.
 
-O painel compara simulações de venda em reais para 30 dias. Os valores são estimativas, não vendas reais nem lucro líquido.
+## Três páginas comuns
 
-## Fluxo para apresentar
-
-1. Cadastrar uma conta e fazer login.
-2. Usar o formulário "Cadastrar simulação" na própria página. Não há popup.
-3. Informar nome, plataforma, preço, produto/frete, anúncio por venda e vendas por dia.
-4. Salvar e conferir os quatro indicadores, os dois gráficos e a lista.
-5. Usar os filtros ou excluir uma simulação.
-
-O botão "Nova simulação" é apenas um link para o formulário. "Limpar campos" é um botão HTML de reset. A análise individual e o terceiro gráfico foram retirados para reduzir o código.
-
-## Como o código funciona
-
-- A rota recebe o endereço e chama o controller.
-- O controller confere os campos com `if/else` e chama o model.
-- O model contém o SQL e passa os valores separadamente para a conexão.
-- O navegador recebe os registros, faz as contas e monta a lista e os gráficos.
-
-Cada operação usa `fetch` diretamente. `then` trata a resposta; `catch` mostra a falha. A dashboard usa vetores, `for`, `if/else` e funções comuns. O Chart.js desenha os dois gráficos.
-
-## Contas
-
-- Vendas no mês = vendas por dia × 30.
-- Faturamento = vendas no mês × preço.
-- Custos = vendas no mês × (produto/frete + anúncio).
-- Resultado = faturamento − custos.
-- Margem = resultado ÷ faturamento × 100.
-- ROAS = faturamento ÷ custo dos anúncios.
-
-Sem faturamento, a margem aparece como "—". Sem anúncios, o ROAS aparece como "—". Valores negativos indicam prejuízo estimado.
-
-## Login e banco
-
-As contas e simulações ficam no MySQL. O login retorna ID, nome e e-mail; `acesso.js` guarda esses dados no `sessionStorage`, como no WebDataViz. `iniciar()` chama `validarSessao()` em `public/js/sessao.js` antes de carregar a dashboard. O botão sair chama `limparSessao()`. Essas duas funções vieram da base WebDataViz, com os campos da tela e o endereço do login adaptados.
-
-Não há middleware próprio nem endpoints de sessão ou logout. As rotas recebem o ID do usuário no endereço e chamam diretamente o controller:
-
-| Método | Endereço | Função do controller |
+| Página | Arquivo | Script |
 | --- | --- | --- |
-| POST | `/usuarios/cadastrar` | `usuarioController.cadastrar` |
-| POST | `/usuarios/autenticar` | `usuarioController.autenticar` |
-| GET | `/simulacoes/listar/:idUsuario` | `simulacaoController.listar` |
-| POST | `/simulacoes/cadastrar/:idUsuario` | `simulacaoController.cadastrar` |
-| DELETE | `/simulacoes/excluir/:id/:idUsuario` | `simulacaoController.excluir` |
+| Visão geral | `public/dashboard.html` | `public/js/dashboard.js` |
+| Cadastro | `public/nova-simulacao.html` | `public/js/nova-simulacao.js` |
+| Análise de um cenário | `public/analise.html?id=1` | `public/js/analise-simulacao.js` |
 
-O model filtra a listagem e a exclusão por `fk_usuario`. Como o navegador informa o ID, esse padrão didático não verifica a identidade no servidor: alterar o ID permite acessar os registros de outra conta. Não é um controle de autorização para uso público.
+O botão Nova simulação é um link para outra página. Não há modal. Produto e frete são campos separados no mesmo formulário. Depois de salvar, a página abre a análise do registro criado. Analisar abre a mesma página com o ID do cenário no endereço. O link Voltar retorna à visão geral.
 
-As senhas preservam o formato scrypt com salt, para os cadastros existentes continuarem funcionando. O controller usa as funções do módulo `crypto` do Node, sem uma função própria que cria uma Promise para esse cálculo. Os models mantêm SQL e valores separados: cada `?` recebe um valor do vetor de parâmetros.
+## Indicadores e gráficos
 
-O contador de três erros de login fica na página e reinicia ao recarregar.
+A visão geral conta os cenários totais, positivos, em equilíbrio e negativos. Verde, amarelo e vermelho têm o mesmo significado nos cartões, resultados da tabela e barras. Os custos têm suas próprias cores: produto laranja, frete dourado, anúncios lilás; faturamento azul.
 
-## Conferência manual
+O gráfico horizontal compara resultados entre cenários. O agrupado compara o que entra e sai. Não há gráfico temporal: as simulações não são histórico de vendas. Na análise, o gráfico mostra a composição de um cenário e aceita resultado negativo. Um rótulo abaixo do gráfico geral identifica os cenários em equilíbrio, porque uma barra com valor zero não tem altura.
 
-Com o MySQL e o servidor iniciados, cadastre uma conta e faça login. Salve uma simulação, confira os indicadores e gráficos, filtre os registros e exclua a simulação. Saia e tente abrir a dashboard novamente: ela deve encaminhar ao login. Os dados já gravados permanecem no banco.
+Sem registros, os gráficos e a tabela ficam ocultos. A tela mostra uma orientação para cadastrar o primeiro cenário. Erros de consulta são mostrados separadamente e não significam conta vazia. A tabela permite ordenar por resultado ou margem com comparação e troca de posições usando dois laços `for`. Margens não calculáveis ficam ao final. A ordem original do vetor é preservada.
 
-O Chart.js é carregado pelo endereço `https://cdn.jsdelivr.net/npm/chart.js`, como no PowerTrack e no WebDataViz. Não há cópia da biblioteca em `public/js`; é necessário acesso à internet para carregá-la. As configurações e os dados dos gráficos ficam em `public/js/dashboard.js`.
+## Contas para explicar
+
+- Vendas em 30 dias = vendas por dia × 30.
+- Faturamento = vendas × preço.
+- Custos = vendas × (produto + frete + anúncio).
+- Sobra por venda = preço − produto − frete − anúncio.
+- Resultado = vendas × sobra por venda.
+- Margem = resultado ÷ faturamento × 100.
+- ROAS = faturamento ÷ anúncios.
+- Limite de anúncio = preço − produto − frete.
+
+Valores unitários são arredondados para centavos antes da projeção. Margem e ROAS ficam como Não calculável quando seus denominadores são zero. Com zero vendas, a análise explica que não há vendas estimadas.
+
+`contas-simulacao.js` reúne essas contas e a formatação usada nas páginas. `URLSearchParams` lê o número depois de `?id=`. As páginas usam `fetch`, `then` e `catch`. A biblioteca Chart.js desenha as barras a partir de vetores de números.
+
+## Banco e rotas
+
+Produto e frete ficam em `custo_produto` e `custo_frete` na mesma tabela `simulacao_cenario`. O relacionamento continua sendo um usuário para várias simulações.
+
+| Método | Rota | Operação |
+| --- | --- | --- |
+| GET | `/simulacoes/listar/:idUsuario` | Listar os cenários da conta informada |
+| GET | `/simulacoes/buscar/:id/:idUsuario` | Buscar um cenário da conta informada |
+| POST | `/simulacoes/cadastrar/:idUsuario` | Inserir cenário |
+| DELETE | `/simulacoes/excluir/:id/:idUsuario` | Excluir cenário da conta informada |
+
+A rota chama o controller; o controller valida os campos e chama o model; o model executa o SQL. A consulta individual filtra por ID do cenário e do usuário.
+
+O login usa `sessionStorage`, como no exemplo didático do WebDataViz. Esse filtro por ID enviado pelo navegador não autentica a identidade no servidor. Não é uma autorização segura para publicar dados de clientes. O projeto mantém essa limitação documentada, sem acrescentar a camada de sessão removida.
+
+## Atualizar um banco já criado
+
+- Banco novo: execute `src/database/script-tabelas.sql`.
+Use apenas `src/database/script-tabelas.sql` para criar uma instalação nova. O banco local já está atualizado e os registros existentes devem ser preservados. Usuários e cenários podem ser cadastrados pelo site.
+- Confira as colunas com `SHOW COLUMNS FROM digital_track.simulacao_cenario` antes de escolher o script.
+
+A atualização preserva registros e totais: o valor combinado anterior fica em custo_produto e o novo custo_frete começa em zero. Não é possível recuperar a divisão histórica automaticamente. Ajuste os valores antigos quando souber a divisão real.
+
+Use apenas `src/database/script-tabelas.sql` para criar uma instalação nova. O banco local já está atualizado e os registros existentes devem ser preservados. Usuários e cenários podem ser cadastrados pelo site.
+
+## Simulador público
+
+`calculadora.html` e `calculadora.js` usam produto e frete separados, cinco moedas e cotação manual. O modo COD considera receita apenas dos pedidos pagos, frete de todos os envios e anúncios como investimento diário. Os não vendidos retornam ao estoque sem perda; essa hipótese está explicada na tela. Não é uma análise de capital de giro. COD fica apenas na calculadora, sem criar registros no banco.
+
+## Conferir antes da apresentação
+
+Com o MySQL atualizado e o Node iniciados, crie uma conta e confira a tela vazia. Cadastre um cenário, abra a análise, volte ao painel, confira as contagens, ordene e exclua. Confira também prejuízo, equilíbrio, zero vendas e zero anúncio. Acesse outra conta e confira a listagem dela. Chart.js usa CDN e precisa de acesso à internet.
+
+
+Pagamento nos cenários: `forma_pagamento` (antecipado/cod) e `percentual_pago` (0 a 100). A estrutura completa está em `src/database/script-tabelas.sql`. O banco local já está atualizado.
+CPA é por pedido gerado. No COD, todos os pedidos gerados são considerados enviados. Receita e produto usam a quantidade paga; frete e anúncios usam a quantidade enviada. Produtos não pagos retornam ao estoque sem perda; não inclui frete de devolução. Sobra e CPA de equilíbrio são médias por pedido gerado.

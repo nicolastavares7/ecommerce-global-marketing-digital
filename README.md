@@ -1,82 +1,59 @@
 # DigitalTrack — E-commerce Global e Marketing Digital
 
-Projeto individual com conteúdo educativo, simulador financeiro e dashboard de cenários de venda. Desenvolvido com HTML, CSS, JavaScript, Node.js, MySQL e Chart.js, usando a organização do WebDataViz.
+Projeto individual com conteúdo educativo, simulador financeiro e comparação de cenários de venda. HTML, CSS, JavaScript, Node.js, MySQL e Chart.js, organizados na base WebDataViz.
+
+O DigitalTrack permite salvar e comparar cenários de venda, entendendo como preço, custos e anúncios afetam o resultado estimado antes de testar uma operação.
 
 ## Executar
 
-1. Instale as dependências na pasta do projeto: `npm install`.
-2. No MySQL Workbench, abra e execute `src/database/script-tabelas.sql`.
-3. Copie `.env.example` para `.env.dev` e preencha seu usuário e senha locais do MySQL.
-4. Inicie o servidor: `npm start`.
-5. Abra **http://localhost:3334/**. Crie uma conta e faça login para acessar a dashboard.
+1. Instale as dependências: `npm install`.
+2. Banco novo: execute `src/database/script-tabelas.sql` no Workbench.
+Use apenas `src/database/script-tabelas.sql` para criar uma instalação nova. O banco local já está atualizado e os registros existentes devem ser preservados. Usuários e cenários podem ser cadastrados pelo site.
+4. Configure sua conexão local em `.env.dev`, usando `.env.example` como referência.
+5. Inicie o Node com `npm start` e abra `http://localhost:3334/`.
+6. Cadastre uma conta e faça login. A dashboard abre em `/dashboard.html`.
 
-O MySQL e o servidor Node precisam estar ativos. O simulador público pode ser acessado sem login. Ao abrir login, cadastro ou dashboard diretamente como arquivo, a página encaminha para o servidor local na porta 3334.
+Os arquivos `.env` e `.env.dev` contêm configurações locais e não são enviados ao Git. Não substitua suas credenciais pelo exemplo.
+
+## Organização
+
+- `public`: telas, estilos, scripts e imagens.
+- `public`: inclui também `dashboard.html`, `nova-simulacao.html` e `analise.html`, junto das demais páginas, sem pop-up.
+- `src/routes`: recebe os endereços e chama os controllers.
+- `src/controllers`: valida os campos e chama os models.
+- `src/models`: consultas SQL, com os valores separados por parâmetros.
+- `src/database`: conexão, criação das tabelas, atualização e exemplos opcionais.
+- `docs/modelagem`: diagrama e explicação das tabelas.
+
+O `app.js`, as rotas de usuários e a estrutura de conexão preservam a base original. Os nomes e campos das funcionalidades foram adaptados ao DigitalTrack. Não há novos pacotes ou framework.
+
+## Fluxo para explicar
+
+Página → fetch → rota → controller → model → MySQL → controller → resposta JSON → página.
+
+Exemplo: salvar um cenário envia produto e frete separados. O controller valida, o model faz o INSERT e retorna o novo ID. A página abre `analise.html?id=ID`. Essa tela consulta o registro e calcula os indicadores.
 
 ## Dashboard
 
-Cada usuário cadastra seus cenários com plataforma de anúncio, preço, custo de produto/frete, anúncio por venda e quantidade estimada por dia. As simulações ficam no MySQL e alimentam quatro indicadores e dois gráficos Chart.js em elementos `canvas`, sem animações.
+A conta começa vazia. Os quatro indicadores mostram total, positivos, equilíbrio e negativos. Dois gráficos comparam resultados e custos. A tabela permite ordenar, analisar e excluir. A análise individual mostra os valores por unidade, a projeção mensal, a margem, o ROAS e o limite de anúncio. Todos são estimativas baseadas nos custos informados.
 
-As projeções usam reais e um período de 30 dias. Não representam vendas reais nem lucro líquido. Contas novas começam sem registros. O layout foi desenvolvido para computador.
+`public/js/contas-simulacao.js` contém as contas e a formatação compartilhadas pelas páginas. Os scripts usam funções comuns, `let`, `if/else`, vetores e laços `for`, com o estilo de recuo do exemplo Interestelar. A comunicação usa `fetch`, `then` e `catch`, como na base. Chart.js é carregado por CDN na versão 4.4.8.
 
-## Banco e documentação
+Produto e frete estão em duas colunas na mesma tabela. A atualização dos registros antigos preserva o custo total e inicia o frete separado em zero: consulte o comentário do script antes de usá-lo.
 
-- [DER e explicação do relacionamento](docs/modelagem/README.md)
-- [Diagrama do banco](docs/modelagem/der.svg)
-- [Script SQL](src/database/script-tabelas.sql)
-- [Detalhes da dashboard e verificações realizadas](DASHBOARD.md)
+## Simulador financeiro
 
-A configuração da máquina virtual é uma etapa posterior. A estrutura do WebDataViz e sua licença foram preservadas. O conjunto original de usuários foi adaptado e o de avisos foi reaproveitado e renomeado para simulações. Os conjuntos de sensores, aquários e empresas e as páginas de exemplo foram retirados. Antigravity foi usado como referência visual; o código segue a organização do projeto individual.
+A calculadora pública aceita BRL, USD, EUR, GBP e COP. A cotação é manual; no BRL, vale 1. Produto e frete são campos separados. O modo COD projeta o efeito de pedidos enviados sem pagamento e informa suas hipóteses. Esse modo não é salvo na dashboard.
 
-## Código das páginas
+## Documentação e demonstração
 
-Os scripts das funcionalidades usam contas em etapas, condicionais `if/else` e laços `for/while`. O `sessao.js` reaproveita as funções da base WebDataViz, incluindo as variáveis com `var`. Os trechos revisados possuem comentários explicando as alterações. O HTML usa recuo de quatro espaços por nível. O CSS tem uma propriedade por linha, com os blocos compactados expandidos. Os estilos dos campos e botões de login/cadastro ficam nos respectivos arquivos CSS. A dashboard agora tem um formulário na própria página, sem janela flutuante, e dois gráficos de comparação. Os trechos alterados estão comentados.
+- [Detalhes das telas, contas e conferência manual](DASHBOARD.md)
+- [DER e relacionamento](docs/modelagem/README.md)
+- [Diagrama](docs/modelagem/der.svg)
+- [Criação das tabelas](src/database/script-tabelas.sql)
 
-- `calculadora.js`: leitura dos campos, validação e contas do simulador.
-- `validacoes.js`: campos obrigatórios, e-mail e senha.
-- `acesso.js`: validações do cadastro/login e envio direto com `fetch` para o servidor.
-- `sessao.js`: `validarSessao` e `limparSessao` reaproveitadas do WebDataViz, com os elementos da dashboard e o caminho do login adaptados.
-- `dashboard.js`: contas, filtros, lista, gráficos e pedidos diretos com `fetch` para listar, cadastrar e excluir.
-- `public/dashboard/dashboard.html`: tela da dashboard, na mesma organização de pasta da referência do Vini.
-- `marketing-e-metricas.js`: troca das abas de conteúdo.
+A conta de demonstração é cadastrada pelo site. O script opcional acrescenta quatro cenários somente à conta indicada; não preenche contas novas automaticamente.
 
-A comunicação com o servidor usa `fetch`, `then` e `catch`, como nos exemplos do WebDataViz: envia o pedido, espera a resposta e trata erros. O Chart.js continua responsável pelos gráficos. Essas partes complementam os cálculos de algoritmos e estão comentadas. As rotas, os controllers e os models de usuário e simulação também usam funções comuns, validações com `if/else` e consultas SQL separadas dos valores. O login guarda `ID_USUARIO`, `NOME_USUARIO` e `EMAIL_USUARIO` no `sessionStorage`, como na base original. Não há middleware próprio, cookies, tokens ou sessão no servidor. A proteção das senhas existentes e as consultas SQL com parâmetros foram mantidas. As dependências não foram alteradas.
+## Limite do login didático
 
-## Fluxo para explicar na apresentação
-
-1. **Página (`public/js`)**: lê os campos e usa `fetch` para enviar a requisição.
-2. **Rota (`src/routes`)**: associa o endereço à função do controller.
-3. **Controller (`src/controllers`)**: recebe os dados, valida e chama o model.
-4. **Model (`src/models`)**: contém a consulta SQL e chama `database.executar`.
-5. **Banco (`src/database/config.js`)**: executa a consulta no MySQL e devolve o resultado.
-6. O resultado volta ao controller, que responde com `res.json`. A página recebe a resposta no `then` e atualiza a tela.
-
-Exemplo: `carregarSimulacoes()` em `dashboard.js` chama `GET /simulacoes/listar/:idUsuario`. A rota chama `simulacaoController.listar`, que chama `simulacaoModel.listar`. O model executa um `SELECT` com `WHERE fk_usuario = ?`.
-
-No login, o controller consulta a conta e confere a senha. A página guarda o ID, nome e e-mail retornados no `sessionStorage`. Ao abrir a dashboard, `iniciar()` chama `validarSessao()` do `sessao.js`. Sair chama `limparSessao()`, que limpa o `sessionStorage` e abre o login.
-
-Esse controle segue o exemplo didático: o ID enviado pelo navegador filtra as consultas, mas pode ser alterado pelo próprio cliente. Portanto, não constitui autorização no servidor para proteger dados entre contas em uma aplicação pública.
-
-## Conferir para apresentar
-
-Com o MySQL e o servidor iniciados, abra o site, cadastre uma conta, faça login e cadastre uma simulação. Confira os indicadores, os gráficos, os filtros e a exclusão pela própria tela. O simulador público pode ser conferido sem login.
-
-Não publique `.env` ou `.env.dev`; use apenas o modelo sem credenciais reais.
-
-O Chart.js é carregado pelo endereço `https://cdn.jsdelivr.net/npm/chart.js`, como no PowerTrack e no WebDataViz. Não há cópia da biblioteca em `public/js`; é necessário acesso à internet para carregá-la. As configurações e os dados dos gráficos ficam em `public/js/dashboard.js`.
-
-## Reaproveitamento da base original
-
-- `app.js`: configuração, dependências, arquivos públicos e inicialização originais; apenas os conjuntos de rotas foram ajustados ao DigitalTrack.
-- `src/routes/usuarios.js`: código original.
-- `src/routes/simulacoes.js`: formato das rotas de avisos, com os nomes e parâmetros das simulações.
-- `src/database/config.js`: estrutura original de conexão; aceita também parâmetros para o SQL e encaminha os erros ao controller.
-- `public/js/sessao.js`: validação e limpeza do login originais, adaptadas aos campos e endereços atuais.
-- `package.json` e dependências: mantidos da base.
-
-O índice continua servindo HTML com `sendFile`, porque o projeto não configura um motor de templates para `res.render`. Os controllers e models foram adaptados às tabelas de usuários e simulações. O formato das senhas foi preservado para manter as contas existentes.
-
-## Estilo do código e organização
-
-O HTML e os scripts das funcionalidades seguem o exemplo `Interestelar.html`: recuo de quatro espaços, variáveis com `let`, funções diretas, validações com `if/else`, vetores e laços `for/while`. O HTML mantém textos simples junto das tags. Os scripts continuam em arquivos separados dentro de `public/js`, para localizar cada parte facilmente. Os arquivos reaproveitados do WebDataViz mantêm seu padrão original.
-
-O login redireciona para `/dashboard/dashboard.html`. Os caminhos de estilos, scripts, imagens e links da dashboard consideram essa subpasta. Não há funções intermediárias `enviarAcesso` ou `consultar`: cada operação mostra seu próprio `fetch`, `then` e `catch`.
+O login salva ID, nome e e-mail no `sessionStorage`, como na base WebDataViz. As consultas filtram pelo ID informado pela página. Isso não comprova a identidade no servidor e não oferece autorização para dados de clientes em produção. As senhas mantêm o formato scrypt existente.
