@@ -1,109 +1,133 @@
-// Mesma simulação da referência: 30 dias por mês e câmbios de exemplo.
 function formatarValor(valor) {
 
-    return valor.toLocaleString("pt-BR", {
+    return valor.toLocaleString('pt-BR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 }
 
-function formatarMoeda(valor) {
+function mudarMoeda() {
 
-    return valor.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    let moeda = document.getElementById('sel_moeda').value;
+    let cotacao = document.getElementById('ipt_cotacao');
+    cotacao.readOnly = false;
+    cotacao.value = '';
+    if (moeda == 'BRL') {
+        cotacao.value = '1';
+        cotacao.readOnly = true;
+    }
+    document.getElementById('ajuda_moeda').textContent = 'Informe todos os preços e custos em ' + moeda + '. A cotação é informada por você e não é atualizada automaticamente.';
+    calcular();
+}
+
+function mudarModo() {
+
+    let cod = document.getElementById('modo_pagamento').value == 'cod';
+    document.getElementById('campos_cod').hidden = !cod;
+    document.getElementById('resultado_cod').hidden = !cod;
+    document.getElementById('label_quantidade').textContent = 'Vendas estimadas por dia';
+    document.getElementById('label_anuncio').textContent = 'Anúncio por venda';
+    if (cod == true) {
+        document.getElementById('label_quantidade').textContent = 'Pedidos enviados por dia';
+        document.getElementById('label_anuncio').textContent = 'Investimento diário em anúncios';
+    }
+    // A unidade do anúncio mudou: pede novo valor para evitar uma comparação errada.
+    document.getElementById('ipt_anuncio').value = '';
+    calcular();
 }
 
 function limparResultado(texto) {
 
-    let resultados = ["div_lucro_reais", "div_lucro_moeda", "div_faturamento", "div_margem", "div_roas"];
-    for (let i = 0; i < resultados.length; i++) {
-        document.getElementById(resultados[i]).textContent = "—";
+    let campos = ['div_lucro_reais', 'div_lucro_moeda', 'div_faturamento', 'div_custos', 'div_margem', 'div_roas', 'div_enviados', 'div_pagos', 'div_nao_pagos', 'div_logistica', 'div_logistica_pedido'];
+    for (let i = 0; i < campos.length; i++) {
+        document.getElementById(campos[i]).textContent = '—';
     }
-    document.getElementById("aviso_calculadora").textContent = texto;
+    document.getElementById('aviso_calculadora').textContent = texto;
 }
 
 function calcular() {
 
-    let moeda = document.getElementById("sel_moeda").value;
-    let cambio = 5.75;
-    let simbolo = "$";
-    if (moeda == "EUR") {
-        cambio = 6.20;
-        simbolo = "€";
-    } else if (moeda == "GBP") {
-        cambio = 7.35;
-        simbolo = "£";
+    let cod = document.getElementById('modo_pagamento').value == 'cod';
+    let campos = ['ipt_preco', 'ipt_custo', 'ipt_frete', 'ipt_anuncio', 'ipt_vendas', 'ipt_cotacao'];
+    if (cod == true) {
+        campos.push('ipt_sucesso');
+    }
+    for (let i = 0; i < campos.length; i++) {
+        let texto = document.getElementById(campos[i]).value.trim();
+        let valor = Number(texto.replace(',', '.'));
+        if (texto == '' || isFinite(valor) == false || valor < 0 || valor > 1000000000) {
+            limparResultado('Preencha os campos para visualizar a estimativa. Use valores válidos e não negativos.');
+            return;
+        }
     }
 
-    document.getElementById("simbolo_preco").textContent = simbolo;
-    document.getElementById("simbolo_custo").textContent = simbolo;
-    document.getElementById("simbolo_anuncio").textContent = simbolo;
-
-    // Alteração: lê cada campo diretamente, como na calculadora do PowerTrack.
-    // replace permite que o usuário digite a parte decimal com vírgula.
-    let textoPreco = document.getElementById("ipt_preco").value.trim();
-    let textoCusto = document.getElementById("ipt_custo").value.trim();
-    let textoAnuncio = document.getElementById("ipt_anuncio").value.trim();
-    let textoVendas = document.getElementById("ipt_vendas").value.trim();
-
-    let preco = Number(textoPreco.replace(",", "."));
-    let custo = Number(textoCusto.replace(",", "."));
-    let anuncio = Number(textoAnuncio.replace(",", "."));
-    let vendasDia = Number(textoVendas.replace(",", "."));
-
-    if (textoPreco == "" || textoCusto == "" || textoAnuncio == "" || textoVendas == "") {
-        limparResultado("Preencha todos os campos com números válidos e não negativos.");
+    let moeda = document.getElementById('sel_moeda').value;
+    let preco = Number(document.getElementById('ipt_preco').value.replace(',', '.'));
+    let produto = Number(document.getElementById('ipt_custo').value.replace(',', '.'));
+    let frete = Number(document.getElementById('ipt_frete').value.replace(',', '.'));
+    let anuncio = Number(document.getElementById('ipt_anuncio').value.replace(',', '.'));
+    let quantidade = Number(document.getElementById('ipt_vendas').value.replace(',', '.'));
+    let cotacao = Number(document.getElementById('ipt_cotacao').value.replace(',', '.'));
+    if (moeda == 'BRL') {
+        cotacao = 1;
+    }
+    if (cotacao <= 0 || quantidade % 1 != 0 || quantidade > 1000000) {
+        limparResultado('Informe uma cotação maior que zero e uma quantidade diária inteira de 0 a 1.000.000.');
         return;
     }
 
-    // isFinite recusa texto que não virou número e valores infinitos.
-    if (isFinite(preco) == false || isFinite(custo) == false || isFinite(anuncio) == false || isFinite(vendasDia) == false) {
-        limparResultado("Preencha todos os campos com números válidos e não negativos.");
-        return;
+    let enviados = quantidade * 30;
+    let pagos = enviados;
+    let naoPagos = 0;
+    let custoAnuncios = pagos * anuncio;
+    if (cod == true) {
+        let sucesso = Number(document.getElementById('ipt_sucesso').value.replace(',', '.'));
+        if (sucesso > 100) {
+            limparResultado('O percentual de pedidos pagos deve ficar entre 0% e 100%.');
+            return;
+        }
+        pagos = enviados * sucesso / 100;
+        naoPagos = enviados - pagos;
+        custoAnuncios = anuncio * 30;
     }
 
-    if (preco < 0 || custo < 0 || anuncio < 0 || vendasDia < 0) {
-        limparResultado("Preencha todos os campos com números válidos e não negativos.");
+    let faturamento = pagos * preco;
+    let custoProdutos = pagos * produto;
+    let custoFrete = enviados * frete;
+    let logistica = custoFrete;
+    let custos = custoProdutos + logistica + custoAnuncios;
+    let resultado = Number((faturamento - custos).toFixed(2));
+    let resultadoReais = resultado * cotacao;
+    // Evita exibir valores fora da precisão adequada do JavaScript.
+    if (Math.abs(resultadoReais) > 9000000000000 || custos > 9000000000000 || faturamento > 9000000000000) {
+        limparResultado('Reduza os valores para realizar uma projeção com precisão.');
         return;
     }
-
-    if (preco <= 0 || vendasDia % 1 != 0) {
-        limparResultado("O preço precisa ser maior que zero e as vendas devem ser um número inteiro.");
-        return;
+    document.getElementById('div_lucro_reais').textContent = 'R$ ' + formatarValor(resultadoReais);
+    document.getElementById('div_lucro_reais').className = 'simulador-valor';
+    if (resultado < 0) {
+        document.getElementById('div_lucro_reais').className = 'simulador-valor prejuizo';
     }
-
-    // Cálculos em etapas: vendas do mês, faturamento, custos e resultado.
-    let vendasMes = vendasDia * 30;
-    let faturamento = preco * vendasMes;
-    let investimento = anuncio * vendasMes;
-    let lucro = faturamento - (custo + anuncio) * vendasMes;
-    let lucroReais = lucro * cambio;
-    let margem = 0;
-    let roas = 0;
+    document.getElementById('div_lucro_moeda').textContent = moeda + ' ' + formatarValor(resultado);
+    document.getElementById('div_faturamento').textContent = moeda + ' ' + formatarValor(faturamento);
+    document.getElementById('div_custos').textContent = moeda + ' ' + formatarValor(custos);
+    document.getElementById('div_margem').textContent = 'Não calculável';
+    document.getElementById('div_roas').textContent = 'Não calculável';
     if (faturamento > 0) {
-        margem = lucro / faturamento * 100;
+        document.getElementById('div_margem').textContent = (resultado / faturamento * 100).toFixed(1).replace('.', ',') + '%';
     }
-    if (investimento > 0) {
-        roas = faturamento / investimento;
+    if (custoAnuncios > 0) {
+        document.getElementById('div_roas').textContent = (faturamento / custoAnuncios).toFixed(2).replace('.', ',') + 'x';
     }
-    if (isFinite(lucroReais) == false || isFinite(faturamento) == false || isFinite(lucro) == false || isFinite(margem) == false || isFinite(roas) == false) {
-        limparResultado("Reduza os valores para realizar a simulação.");
-        return;
+    document.getElementById('div_enviados').textContent = enviados;
+    document.getElementById('div_pagos').textContent = formatarValor(pagos);
+    document.getElementById('div_nao_pagos').textContent = formatarValor(naoPagos);
+    document.getElementById('div_logistica').textContent = moeda + ' ' + formatarValor(logistica);
+    document.getElementById('div_logistica_pedido').textContent = 'Não calculável';
+    if (pagos > 0) {
+        document.getElementById('div_logistica_pedido').textContent = moeda + ' ' + formatarValor(logistica / pagos);
     }
-
-    document.getElementById("div_lucro_reais").textContent = "R$ " + formatarValor(lucroReais);
-    document.getElementById("div_lucro_reais").className = "valor-lucro";
-    if (lucro < 0) {
-        document.getElementById("div_lucro_reais").className = "valor-lucro prejuizo";
-    }
-    document.getElementById("div_lucro_moeda").textContent = simbolo + " " + formatarMoeda(lucro) + " / mês";
-    document.getElementById("div_faturamento").textContent = simbolo + " " + formatarMoeda(faturamento);
-    document.getElementById("div_margem").textContent = margem.toFixed(1) + "%";
-    document.getElementById("div_roas").textContent = roas.toFixed(2) + "x";
-    if (investimento == 0) {
-        document.getElementById("div_roas").textContent = "—";
-    }
-    document.getElementById("aviso_calculadora").textContent = "Câmbios de exemplo. Simulação de 30 dias, sem taxas ou impostos adicionais.";
+    document.getElementById('aviso_calculadora').textContent = 'Estimativa com os custos informados e a cotação escolhida por você.';
 }
+
+calcular();

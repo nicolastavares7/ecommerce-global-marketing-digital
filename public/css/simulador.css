@@ -1,0 +1,175 @@
+[hidden] {
+    display: none !important;
+}
+
+.simulador {
+    max-width: 1280px;
+    margin: auto;
+    padding: 112px 28px 48px;
+}
+
+.simulador h1 {
+    font-size: 38px;
+    margin: 12px 0;
+}
+
+.simulador h2 {
+    font-size: 21px;
+    margin: 0 0 24px;
+}
+
+.simulador-destaque {
+    color: #2cddaf;
+    font-size: 12px;
+    letter-spacing: 1.4px;
+    font-weight: bold;
+}
+
+.simulador-intro {
+    color: #a7b6ca;
+    line-height: 1.7;
+    max-width: 800px;
+    margin-bottom: 32px;
+}
+
+.simulador-colunas {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+}
+
+.simulador-painel {
+    flex: 1;
+    min-width: 0;
+    padding: 24px;
+    background: #0e1829;
+    border: 1px solid #293d55;
+    border-radius: 18px;
+}
+
+.simulador-linha {
+    display: flex;
+    gap: 18px;
+}
+
+.simulador-campo {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 16px;
+}
+
+.simulador-campo label {
+    display: block;
+    font-size: 14px;
+    color: #ced9e9;
+    margin-bottom: 9px;
+    line-height: 1.5;
+}
+
+.simulador-campo input, .simulador-campo select {
+    box-sizing: border-box;
+    width: 100%;
+    font: inherit;
+    background: #142236;
+    border: 1px solid #3b4e68;
+    color: #fff;
+    border-radius: 9px;
+    padding: 11px;
+}
+
+.simulador-campo input:focus, .simulador-campo select:focus {
+    outline: 2px solid #23caac;
+}
+
+.simulador-campo input:read-only {
+    opacity: .7;
+}
+
+.simulador-campo small, .simulador-ajuda, .simulador-nota {
+    display: block;
+    color: #9bafc9;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 8px;
+}
+
+.simulador-ajuda {
+    border-left: 2px solid #2a7467;
+    padding-left: 14px;
+    margin-bottom: 20px;
+}
+
+.simulador-valor {
+    font-size: 42px;
+    font-weight: bold;
+    color: #2bd4a3;
+    margin: 18px 0 28px;
+    overflow-wrap: anywhere;
+}
+
+.simulador-valor.prejuizo {
+    color: #ff818c;
+}
+
+.simulador-resumo {
+    margin: 0 0 28px;
+}
+
+.simulador-resumo div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 0;
+    border-top: 1px solid #273a52;
+    font-size: 14px;
+}
+
+.simulador-resumo dt {
+    color: #aebed4;
+}
+
+.simulador-resumo dd {
+    margin: 0;
+    text-align: right;
+    font-weight: bold;
+}
+
+@media (max-width: 1000px) {
+    .simulador-colunas {
+        flex-direction: column;
+    }
+    .simulador-painel {
+        box-sizing: border-box;
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .simulador-linha {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* Mantém os campos de cada linha alinhados, mesmo com rótulos maiores. */
+.simulador-linha .simulador-campo label {
+    min-height: 42px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.simulador-campo input, .simulador-campo select {
+    height: 48px;
+}
+
+.simulador-campo input::placeholder {
+    color: #91a2bb;
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .simulador-linha .simulador-campo label {
+        min-height: 0;
+    }
+}
