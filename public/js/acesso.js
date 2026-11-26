@@ -56,7 +56,7 @@ function entrar() {
                 sessionStorage.ID_USUARIO = dados.id;
                 sessionStorage.NOME_USUARIO = dados.nome;
                 sessionStorage.EMAIL_USUARIO = dados.email;
-                window.location.href = 'dashboard/dashboard.html';
+                window.location.href = 'dashboard.html';
             } else if (resposta.status == 401) {
                 tentativas++;
 
@@ -107,10 +107,10 @@ function cadastrar() {
         mostrarMensagem('Informe seu nome com pelo menos 3 caracteres.', true);
         tudoCerto = false;
     } else if (validarEmail(email) == false) {
-        mostrarMensagem('Digite um e-mail válido.', true);
+        mostrarMensagem('Digite um e-mail com @ e domínio, como nome@exemplo.com.', true);
         tudoCerto = false;
     } else if (validarSenha(senha) == false) {
-        mostrarMensagem('A senha precisa ter no mínimo 6 caracteres.', true);
+        mostrarMensagem('Use no mínimo 8 caracteres, com maiúscula, minúscula, número e símbolo, sem espaços.', true);
         tudoCerto = false;
     } else if (senha != confirmarSenha) {
         mostrarMensagem('As senhas não coincidem.', true);
@@ -179,14 +179,14 @@ function verificarSenha(senha) {
     if (senha.length == 0) {
         barra.className = 'barra-senha';
         texto.textContent = 'Digite uma senha segura';
-    } else if (senha.length >= 8 && achouNumero && achouMaiuscula && achouSimbolo) {
+    } else if (validarSenha(senha) == true) {
         barra.className = 'barra-senha senha-forte';
-        texto.textContent = 'Senha Forte e Segura!';
+        texto.textContent = 'Senha atende aos requisitos';
     } else if (senha.length >= 8 && (achouNumero || achouMaiuscula)) {
         barra.className = 'barra-senha senha-media';
-        texto.textContent = 'Senha Média (adicione caracteres especiais)';
+        texto.textContent = 'Falta atender algum requisito da senha';
     } else {
         barra.className = 'barra-senha senha-fraca';
-        texto.textContent = 'Senha Fraca (adicione números ou letras maiúsculas)';
+        texto.textContent = 'Use 8 caracteres, maiúscula, minúscula, número e símbolo';
     }
 }

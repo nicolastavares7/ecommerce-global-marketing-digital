@@ -19,6 +19,30 @@ function emailValido(email) {
     return true;
 }
 
+// Percorre os caracteres com for e verifica os requisitos com if/else.
+function validarSenha(senha) {
+
+    let maiuscula = false;
+    let minuscula = false;
+    let numero = false;
+    let simbolo = false;
+    let especiais = '!@#$%&*()_+-=[]{};:,.?/<>|~^=\\"' + "'";
+
+    for (let i = 0; i < senha.length; i++) {
+        let caractere = senha[i];
+        if (caractere >= 'A' && caractere <= 'Z') {
+            maiuscula = true;
+        } else if (caractere >= 'a' && caractere <= 'z') {
+            minuscula = true;
+        } else if (caractere >= '0' && caractere <= '9') {
+            numero = true;
+        } else if (especiais.indexOf(caractere) != -1) {
+            simbolo = true;
+        }
+    }
+    return senha.length >= 8 && senha.length <= 128 && maiuscula && minuscula && numero && simbolo && senha.indexOf(' ') == -1;
+}
+
 function cadastrar(req, res) {
     let nome = req.body.nome;
     let email = req.body.email;
@@ -29,8 +53,8 @@ function cadastrar(req, res) {
         res.status(400).json({ mensagem: 'Informe um nome de 3 a 100 caracteres.' });
     } else if (typeof email != 'string' || email.length > 100 || emailValido(email.trim()) == false) {
         res.status(400).json({ mensagem: 'Informe um e-mail válido.' });
-    } else if (typeof senha != 'string' || senha.length < 6 || senha.length > 128) {
-        res.status(400).json({ mensagem: 'A senha deve ter de 6 a 128 caracteres.' });
+    } else if (typeof senha != 'string' || validarSenha(senha) == false) {
+        res.status(400).json({ mensagem: 'Use de 8 a 128 caracteres, com maiúscula, minúscula, número e símbolo, sem espaços.' });
     } else if (nivel != 'Iniciante' && nivel != 'Intermediário' && nivel != 'Avançado') {
         res.status(400).json({ mensagem: 'Escolha um nível de experiência.' });
     } else {

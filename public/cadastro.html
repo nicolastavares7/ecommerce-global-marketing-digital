@@ -56,7 +56,7 @@
                 <div class="campo">
                     <label>Senha</label>
                     <div class="caixa-campo">
-                        <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Mínimo 6 caracteres" required oninput="verificarSenha(this.value)" autocomplete="new-password" maxlength="128" aria-label="Senha">
+                        <input type="password" id="ipt_senha" class="entrada-acesso" placeholder="Mínimo 8 caracteres" required oninput="verificarSenha(this.value)" autocomplete="new-password" maxlength="128" aria-label="Senha">
                         <img class="icone icone-campo" src="assets/icones/cadeado-94a3b8.svg" alt="">
                         <button type="button" class="botao-senha" aria-label="Mostrar senha" aria-pressed="false" onclick="mostrarSenha('ipt_senha', this)">
                             <img class="icone" src="assets/icones/olho-94a3b8.svg" alt="">
@@ -67,6 +67,7 @@
                         </div>
                     </div>
                     <span class="texto-senha" id="texto_senha">Digite uma senha segura</span>
+                    <p class="texto-senha">Use de 8 a 128 caracteres, com pelo menos uma maiúscula, uma minúscula, um número e um símbolo (ex.: @), sem espaços.</p>
                 </div>
                 <div class="campo">
                     <label>Confirmação da Senha</label>
@@ -79,7 +80,7 @@
                     </div>
                 </div>
                 <label class="opcao">
-                    <input type="checkbox" id="chk_termos" required checked aria-label="chk_termos">
+                    <input type="checkbox" id="chk_termos" required aria-label="Concordância com os termos">
                     <span>Concordo com os Termos de Uso e Política de Privacidade</span>
                 </label>
                 <button type="button" class="botao botao-colorido botao-brilho" onclick="cadastrar()" id="btn_cadastrar">

@@ -65,14 +65,28 @@ function validarEmail(email) {
     return true;
 }
 
-// Mantém o contador com while, como no cadastro do PowerTrack.
+// Percorre os caracteres com for e verifica os requisitos com if/else.
 function validarSenha(senha) {
 
-    let contador = 0;
-    while (contador < senha.length) {
-        contador++;
+    let maiuscula = false;
+    let minuscula = false;
+    let numero = false;
+    let simbolo = false;
+    let especiais = '!@#$%&*()_+-=[]{};:,.?/<>|~^=\\"' + "'";
+
+    for (let i = 0; i < senha.length; i++) {
+        let caractere = senha[i];
+        if (caractere >= 'A' && caractere <= 'Z') {
+            maiuscula = true;
+        } else if (caractere >= 'a' && caractere <= 'z') {
+            minuscula = true;
+        } else if (caractere >= '0' && caractere <= '9') {
+            numero = true;
+        } else if (especiais.indexOf(caractere) != -1) {
+            simbolo = true;
+        }
     }
-    return contador >= 6;
+    return senha.length >= 8 && senha.length <= 128 && maiuscula && minuscula && numero && simbolo && senha.indexOf(' ') == -1;
 }
 
 function mostrarSenha(idCampo, botao) {
