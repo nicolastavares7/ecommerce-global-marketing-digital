@@ -7,6 +7,10 @@ router.get("/listar/:idUsuario", function (req, res) {
     simulacaoController.listar(req, res);
 });
 
+router.get("/buscar/:id/:idUsuario", function (req, res) {
+    simulacaoController.buscar(req, res);
+});
+
 router.post("/cadastrar/:idUsuario", function (req, res) {
     simulacaoController.cadastrar(req, res);
 });

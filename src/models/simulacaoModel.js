@@ -6,7 +6,9 @@ let database = require('../database/config');
 function listar(idUsuario) {
     let instrucaoSql = `
         SELECT id, nome_simulacao AS nome, plataforma_anuncio AS plataforma,
-            preco_venda_unidade AS precoVenda, custo_produto_frete AS custoProduto,
+            forma_pagamento AS formaPagamento, percentual_pago AS percentualPago,
+            preco_venda_unidade AS precoVenda, custo_produto AS custoProduto,
+            custo_frete AS custoFrete,
             custo_anuncio_venda AS custoAnuncio, vendas_estimadas_dia AS vendasDia
         FROM simulacao_cenario
         WHERE fk_usuario = ?
@@ -15,14 +17,27 @@ function listar(idUsuario) {
     return database.executar(instrucaoSql, [idUsuario]);
 }
 
-function cadastrar(idUsuario, nome, plataforma, preco, produto, anuncio, vendas) {
+function buscar(id, idUsuario) {
+    let instrucaoSql = `
+        SELECT id, nome_simulacao AS nome, plataforma_anuncio AS plataforma,
+            forma_pagamento AS formaPagamento, percentual_pago AS percentualPago,
+            preco_venda_unidade AS precoVenda, custo_produto AS custoProduto,
+            custo_frete AS custoFrete, custo_anuncio_venda AS custoAnuncio,
+            vendas_estimadas_dia AS vendasDia
+        FROM simulacao_cenario
+        WHERE id = ? AND fk_usuario = ?;
+    `;
+    return database.executar(instrucaoSql, [id, idUsuario]);
+}
+
+function cadastrar(idUsuario, nome, plataforma, preco, produto, frete, anuncio, vendas, formaPagamento, percentualPago) {
     let instrucaoSql = `
         INSERT INTO simulacao_cenario
             (fk_usuario, nome_simulacao, plataforma_anuncio, preco_venda_unidade,
-             custo_produto_frete, custo_anuncio_venda, vendas_estimadas_dia)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+             custo_produto, custo_frete, custo_anuncio_venda, vendas_estimadas_dia, forma_pagamento, percentual_pago)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    let valores = [idUsuario, nome, plataforma, preco, produto, anuncio, vendas];
+    let valores = [idUsuario, nome, plataforma, preco, produto, frete, anuncio, vendas, formaPagamento, percentualPago];
     return database.executar(instrucaoSql, valores);
 }
 
@@ -34,6 +49,7 @@ function excluir(id, idUsuario) {
 
 module.exports = {
     listar: listar,
+    buscar: buscar,
     cadastrar: cadastrar,
     excluir: excluir
 };
