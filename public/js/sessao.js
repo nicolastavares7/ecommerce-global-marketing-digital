@@ -10,13 +10,13 @@ function validarSessao() {
         b_usuario.textContent = nome;
         return true;
     } else {
-        window.location.href = "../login.html";
+        window.location.href = "login.html";
         return false;
     }
 }
 
 function limparSessao() {
     sessionStorage.clear();
-    window.location.href = "../login.html";
+    window.location.href = "login.html";
 }
 

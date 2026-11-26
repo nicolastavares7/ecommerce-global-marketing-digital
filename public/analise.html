@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DigitalTrack | Análise individual</title>
+        <link rel="stylesheet" href="css/dashboard.css">
+        <script src="js/abrir-servidor.js"></script>
+    </head>
+    <body>
+        <aside class="menu-lateral">
+            <a class="logo" href="index.html">
+                <img src="assets/digitaltrack-logo.svg" alt="DigitalTrack">
+            </a>
+            <p class="rotulo-menu">SEU ESPAÇO DE PLANEJAMENTO</p>
+            <nav class="links-menu" aria-label="Navegação da conta">
+                <a class="selecionado" aria-current="page" href="dashboard.html">
+                    <img src="assets/icones/camadas-94a3b8.svg" alt="">
+                    Análise de cenários
+                </a>
+                <a href="nova-simulacao.html">
+                    <img src="assets/icones/carrinho-94a3b8.svg" alt="">
+                    Cadastrar simulação
+                </a>
+                <a href="calculadora.html">
+                    <img src="assets/icones/calculadora-94a3b8.svg" alt="">
+                    Simulador financeiro
+                </a>
+                <a href="index.html">
+                    <img src="assets/icones/mundo-00d9f5.svg" alt="">
+                    Início
+                </a>
+            </nav>
+            <div class="rodape-menu">
+                <div class="perfil">
+                    <span class="iniciais" id="iniciais_usuario">DT</span>
+                    <div>
+                        <p id="nome_usuario">Sua conta</p>
+                        <span>Área de simulações</span>
+                    </div>
+                </div>
+                <button class="botao-sair" type="button" onclick="limparSessao()">Sair da conta</button>
+            </div>
+        </aside>
+        <main class="conteudo">
+            <header class="cabecalho">
+                <p id="saudacao">Bem-vindo ao DigitalTrack</p>
+                <a class="botao principal" href="nova-simulacao.html">＋ Nova simulação</a>
+            </header>
+            <div class="area-painel">
+                <a class="voltar" href="dashboard.html">← Voltar para seus cenários</a>
+                <p class="aviso" id="aviso" role="status" aria-live="polite">Consultando o cenário…</p>
+                <div id="area_analise" hidden>
+                    <div class="apresentacao">
+                        <div>
+                            <p class="destaque">ENTENDA OS VALORES</p>
+                            <h1 id="titulo_cenario"></h1>
+                            <p class="texto-apoio" id="plataforma_cenario"></p>
+                        </div>
+                        <span class="periodo">Projeção de 30 dias</span>
+                    </div>
+                    <section class="painel">
+                        <h2>Quanto sobra por pedido?</h2>
+                        <p class="texto-apoio" id="explicacao_pedido">Receita menos produto, frete e anúncio = resultado médio por pedido.</p>
+                        <div class="equacao">
+                            <div>
+                                <span>Receita esperada</span>
+                                <strong class="azul" id="preco_unitario"></strong>
+                            </div>
+                            <span class="operador">−</span>
+                            <div>
+                                <span>Custo médio do produto</span>
+                                <strong class="laranja" id="produto_unitario"></strong>
+                            </div>
+                            <span class="operador">−</span>
+                            <div>
+                                <span>Frete</span>
+                                <strong class="frete" id="frete_unitario"></strong>
+                            </div>
+                            <span class="operador">−</span>
+                            <div>
+                                <span>CPA · anúncio por pedido</span>
+                                <strong class="lilas" id="anuncio_unitario"></strong>
+                            </div>
+                            <span class="operador">=</span>
+                            <div class="total-equacao">
+                                <span>Sobra estimada</span>
+                                <strong id="sobra_unitaria"></strong>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="cartoes analise-cartoes">
+                        <article class="cartao">
+                            <p class="titulo-cartao">Resultado estimado · 30 dias</p>
+                            <p class="valor" id="resultado_analise"></p>
+                            <p class="detalhe">Total que sobra ou falta após produto, frete e anúncios</p>
+                        </article>
+                        <article class="cartao">
+                            <p class="titulo-cartao">Margem estimada</p>
+                            <p class="valor" id="margem_analise"></p>
+                            <p class="detalhe">De cada R$ 100 faturados, quanto sobra ou falta</p>
+                        </article>
+                        <article class="cartao">
+                            <p class="titulo-cartao">Limite de CPA para empatar</p>
+                            <p class="valor lilas" id="limite_anuncio"></p>
+                            <p class="detalhe" id="explicacao_limite"></p>
+                        </article>
+                        <article class="cartao">
+                            <p class="titulo-cartao">ROAS estimado</p>
+                            <p class="valor azul" id="roas_analise"></p>
+                            <p class="detalhe">Receita gerada por R$ 1 em anúncios; não representa lucro</p>
+                        </article>
+                    </div>
+                    <div class="graficos">
+                        <section class="painel">
+                            <h2>Composição financeira em 30 dias</h2>
+                            <p class="texto-apoio" id="vendas_analise"></p>
+                            <div class="area-canvas">
+                                <canvas id="grafico_analise" aria-label="Faturamento, produto, frete, anúncios e resultado" role="img"></canvas>
+                            </div>
+                        </section>
+                        <section class="painel">
+                            <h2>Leitura do cenário</h2>
+                            <p class="status-cenario" id="status_cenario"></p>
+                            <p class="texto-diagnostico" id="diagnostico_cenario"></p>
+                            <dl class="resumo-financeiro">
+                                <div>
+                                    <dt>Faturamento estimado</dt>
+                                    <dd class="azul" id="faturamento_analise"></dd>
+                                </div>
+                                <div>
+                                    <dt>Custo dos produtos</dt>
+                                    <dd class="laranja" id="produtos_analise"></dd>
+                                </div>
+                                <div>
+                                    <dt>Custo dos fretes</dt>
+                                    <dd class="frete" id="fretes_analise"></dd>
+                                </div>
+                                <div>
+                                    <dt>Custo dos anúncios</dt>
+                                    <dd class="lilas" id="anuncios_analise"></dd>
+                                </div>
+                            </dl>
+                        </section>
+                    </div>
+                </div>
+                <p class="nota">Projeção de 30 dias baseada nos valores informados. Não inclui impostos, taxas e outros custos não cadastrados. Os cenários representam estimativas, não vendas realizadas.</p>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+        <script src="js/sessao.js"></script>
+        <script src="js/contas-simulacao.js"></script>
+        <script src="js/analise-simulacao.js"></script>
+    </body>
+</html>

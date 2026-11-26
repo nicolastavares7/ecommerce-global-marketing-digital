@@ -4,8 +4,5 @@
 if (window.location.protocol == "file:") {
     let partesCaminho = window.location.pathname.split("/");
     let pagina = partesCaminho[partesCaminho.length - 1];
-    if (pagina == "dashboard.html") {
-        pagina = "dashboard/dashboard.html";
-    }
-    window.location.replace("http://localhost:3334/" + pagina);
+    window.location.replace("http://localhost:3334/" + pagina + window.location.search);
 }

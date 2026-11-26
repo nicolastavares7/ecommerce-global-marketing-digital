@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DigitalTrack | Análise de cenários</title>
+        <link rel="stylesheet" href="css/dashboard.css">
+        <script src="js/abrir-servidor.js"></script>
+    </head>
+    <body>
+        <aside class="menu-lateral">
+            <a class="logo" href="index.html">
+                <img src="assets/digitaltrack-logo.svg" alt="DigitalTrack">
+            </a>
+            <p class="rotulo-menu">SEU ESPAÇO DE PLANEJAMENTO</p>
+            <nav class="links-menu" aria-label="Navegação da conta">
+                <a class="selecionado" aria-current="page" href="dashboard.html">
+                    <img src="assets/icones/camadas-94a3b8.svg" alt="">
+                    Análise de cenários
+                </a>
+                <a href="nova-simulacao.html">
+                    <img src="assets/icones/carrinho-94a3b8.svg" alt="">
+                    Cadastrar simulação
+                </a>
+                <a href="calculadora.html">
+                    <img src="assets/icones/calculadora-94a3b8.svg" alt="">
+                    Simulador financeiro
+                </a>
+                <a href="index.html">
+                    <img src="assets/icones/mundo-00d9f5.svg" alt="">
+                    Início
+                </a>
+            </nav>
+            <div class="rodape-menu">
+                <div class="perfil">
+                    <span class="iniciais" id="iniciais_usuario">DT</span>
+                    <div>
+                        <p id="nome_usuario">Sua conta</p>
+                        <span>Área de simulações</span>
+                    </div>
+                </div>
+                <button class="botao-sair" type="button" onclick="limparSessao()">Sair da conta</button>
+            </div>
+        </aside>
+        <main class="conteudo">
+            <header class="cabecalho">
+                <p id="saudacao">Bem-vindo ao DigitalTrack</p>
+                <a class="botao principal" href="nova-simulacao.html">＋ Nova simulação</a>
+            </header>
+            <div class="area-painel">
+                <div class="apresentacao">
+                    <div>
+                        <p class="destaque">COMPARE ANTES DE TESTAR</p>
+                        <h1>Análise de cenários</h1>
+                        <p class="texto-apoio">Entenda como preço, produto, frete e anúncios afetam os cenários da sua conta.</p>
+                    </div>
+                    <span class="periodo">R$ · projeção de 30 dias</span>
+                </div>
+                <div class="orientacao">Compare alternativas do mesmo produto alterando um fator por vez, como preço, fornecedor, frete ou anúncio.</div>
+                <p id="aviso" class="aviso" role="status" aria-live="polite">Consultando seus cenários…</p>
+                <div class="cartoes">
+                    <article class="cartao">
+                        <p class="titulo-cartao">Seus cenários</p>
+                        <p class="valor" id="total_simulacoes">—</p>
+                        <p class="detalhe">Alternativas cadastradas na sua conta</p>
+                    </article>
+                    <article class="cartao cartao-positivo">
+                        <p class="titulo-cartao">Com resultado positivo</p>
+                        <p class="valor positivo" id="total_positivos">—</p>
+                        <p class="detalhe">Faturamento maior que os custos informados</p>
+                    </article>
+                    <article class="cartao cartao-equilibrio">
+                        <p class="titulo-cartao">Em equilíbrio</p>
+                        <p class="valor amarelo" id="total_equilibrio">—</p>
+                        <p class="detalhe">Faturamento igual aos custos informados</p>
+                    </article>
+                    <article class="cartao cartao-negativo">
+                        <p class="titulo-cartao">Com resultado negativo</p>
+                        <p class="valor negativo" id="total_negativos">—</p>
+                        <p class="detalhe">Custos maiores que o faturamento</p>
+                    </article>
+                </div>
+                <section class="painel sem-registros" id="sem_registros" hidden>
+                    <img src="assets/icones/camadas-94a3b8.svg" alt="">
+                    <h2>Nenhum cenário cadastrado ainda</h2>
+                    <p class="texto-apoio">Salve sua primeira alternativa. Os indicadores e gráficos aparecem quando houver dados.</p>
+                    <a class="botao principal" href="nova-simulacao.html">＋ Cadastrar primeiro cenário</a>
+                </section>
+                <div id="area_dados" hidden>
+                    <div class="graficos">
+                        <section class="painel">
+                            <h2>Quanto entra e quanto sai</h2>
+                            <p class="texto-apoio">Faturamento e custos totais estimados de cada cenário em 30 dias. Custos incluem produto, frete e anúncios.</p>
+                            <div class="area-canvas">
+                                <canvas id="grafico_custos" aria-label="Faturamento, produto, frete e anúncios por cenário" role="img"></canvas>
+                            </div>
+                        </section>
+                        <section class="painel">
+                            <h2>Quanto sobra ou falta</h2>
+                            <p class="texto-apoio">Verde: positivo · Amarelo: equilíbrio · Vermelho: negativo.</p>
+                            <div class="area-canvas">
+                                <canvas id="grafico_resultados" aria-label="Resultado estimado de cada cenário" role="img"></canvas>
+                            </div>
+                            <p class="detalhe" id="cenarios_equilibrio"></p>
+                        </section>
+                    </div>
+                    <section class="painel lista">
+                        <div class="cabecalho-lista">
+                            <div>
+                                <h2>Cenários cadastrados</h2>
+                                <p class="texto-apoio">Abra a análise para entender os valores de cada alternativa.</p>
+                            </div>
+                            <span class="periodo" id="quantidade_lista"></span>
+                        </div>
+                        <div class="controles">
+                            <label for="ordenacao">Ordenar por</label>
+                            <select id="ordenacao" onchange="atualizarPainel()">
+                                <option value="cadastro">Mais recentes</option>
+                                <option value="resultado">Maior resultado</option>
+                                <option value="margem">Maior margem</option>
+                            </select>
+                            <button class="botao discreto" type="button" id="btn_atualizar" onclick="carregarSimulacoes()">Atualizar dados</button>
+                        </div>
+                        <div class="rolagem-tabela">
+                            <table>
+                                <caption class="texto-apoio">Projeções em reais para 30 dias</caption>
+                                <thead>
+                                    <tr>
+                                        <th>Cenário / plataforma</th>
+                                        <th>Vendas</th>
+                                        <th>Faturamento</th>
+                                        <th>Custos totais</th>
+                                        <th>Resultado</th>
+                                        <th>Margem</th>
+                                        <th>ROAS</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lista_simulacoes"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <p class="nota">Projeção de 30 dias baseada nos valores informados. Não inclui impostos, taxas e outros custos não cadastrados. Os cenários representam estimativas, não vendas realizadas.</p>
+            </div>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+        <script src="js/sessao.js"></script>
+        <script src="js/contas-simulacao.js"></script>
+        <script src="js/dashboard.js"></script>
+    </body>
+</html>

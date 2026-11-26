@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DigitalTrack | Cadastrar simulação</title>
+        <link rel="stylesheet" href="css/dashboard.css">
+        <script src="js/abrir-servidor.js"></script>
+    </head>
+    <body>
+        <aside class="menu-lateral">
+            <a class="logo" href="index.html">
+                <img src="assets/digitaltrack-logo.svg" alt="DigitalTrack">
+            </a>
+            <p class="rotulo-menu">SEU ESPAÇO DE PLANEJAMENTO</p>
+            <nav class="links-menu" aria-label="Navegação da conta">
+                <a href="dashboard.html">
+                    <img src="assets/icones/camadas-94a3b8.svg" alt="">
+                    Análise de cenários
+                </a>
+                <a class="selecionado" aria-current="page" href="nova-simulacao.html">
+                    <img src="assets/icones/carrinho-94a3b8.svg" alt="">
+                    Cadastrar simulação
+                </a>
+                <a href="calculadora.html">
+                    <img src="assets/icones/calculadora-94a3b8.svg" alt="">
+                    Simulador financeiro
+                </a>
+                <a href="index.html">
+                    <img src="assets/icones/mundo-00d9f5.svg" alt="">
+                    Início
+                </a>
+            </nav>
+            <div class="rodape-menu">
+                <div class="perfil">
+                    <span class="iniciais" id="iniciais_usuario">DT</span>
+                    <div>
+                        <p id="nome_usuario">Sua conta</p>
+                        <span>Área de simulações</span>
+                    </div>
+                </div>
+                <button class="botao-sair" type="button" onclick="limparSessao()">Sair da conta</button>
+            </div>
+        </aside>
+        <main class="conteudo">
+            <header class="cabecalho">
+                <p id="saudacao">Bem-vindo ao DigitalTrack</p>
+                <a class="botao principal" href="nova-simulacao.html">＋ Nova simulação</a>
+            </header>
+            <div class="area-painel">
+                <a class="voltar" href="dashboard.html">← Voltar para seus cenários</a>
+                <div class="apresentacao">
+                    <div>
+                        <p class="destaque">UMA NOVA ALTERNATIVA</p>
+                        <h1>Cadastrar simulação</h1>
+                        <p class="texto-apoio">Informe os valores por unidade em reais. Produto e frete ficam separados.</p>
+                    </div>
+                </div>
+                <section class="painel formulario">
+                    <form id="formulario_simulacao" onsubmit="event.preventDefault(); salvarSimulacao()">
+                        <div class="linha-campos">
+                            <div class="campo">
+                                <label for="nome_simulacao">Nome do cenário</label>
+                                <input id="nome_simulacao" required minlength="3" maxlength="120" placeholder="Ex.: Luminária — anúncio a R$ 25">
+                            </div>
+                            <div class="campo">
+                                <label for="plataforma_simulacao">Plataforma de anúncio</label>
+                                <select id="plataforma_simulacao">
+                                    <option>Google Ads</option>
+                                    <option>Meta Ads</option>
+                                    <option>TikTok Ads</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="linha-campos">
+                            <div class="campo">
+                                <label for="preco_venda">Preço de venda por unidade (R$)</label>
+                                <input id="preco_venda" type="number" required min="0" max="99999999.99" step="0.01" placeholder="120,00">
+                            </div>
+                            <div class="campo">
+                                <label for="vendas_dia">Pedidos gerados por dia</label>
+                                <input id="vendas_dia" type="number" required min="0" max="1000000" step="1" placeholder="5">
+                            </div>
+                        </div>
+                        <div class="linha-campos">
+                            <div class="campo">
+                                <label for="forma_pagamento">Forma de pagamento</label>
+                                <select id="forma_pagamento" onchange="mudarPagamento()">
+                                    <option value="antecipado">Pagamento antecipado</option>
+                                    <option value="cod">Pagamento na entrega (COD)</option>
+                                </select>
+                            </div>
+                            <div class="campo" id="campo_percentual" hidden>
+                                <label for="percentual_pago">Entregas pagas estimadas (%)</label>
+                                <input id="percentual_pago" type="number" min="0" max="100" step="0.1" placeholder="Ex.: 80">
+                                <p class="detalhe">Ex.: 80% significa receber por 8 de cada 10 pedidos enviados.</p>
+                            </div>
+                        </div>
+                        <h2 class="subtitulo-formulario">Custos por pedido</h2>
+                        <div class="linha-campos">
+                            <div class="campo">
+                                <label for="custo_produto">Custo do produto (R$)</label>
+                                <input id="custo_produto" type="number" required min="0" max="99999999.99" step="0.01" placeholder="30,00">
+                                <p class="detalhe">Somente o produto, sem incluir o frete.</p>
+                            </div>
+                            <div class="campo">
+                                <label for="custo_frete">Custo do frete (R$)</label>
+                                <input id="custo_frete" type="number" required min="0" max="99999999.99" step="0.01" placeholder="10,00">
+                                <p class="detalhe">Frete que será pago por você. Informe 0 se não houver.</p>
+                            </div>
+                            <div class="campo">
+                                <label for="custo_anuncio">CPA estimado (R$)</label>
+                                <input id="custo_anuncio" type="number" required min="0" max="99999999.99" step="0.01" placeholder="25,00">
+                                <p class="detalhe">Custo por aquisição: anúncio para gerar um pedido, mesmo se ele não for pago na entrega.</p>
+                            </div>
+                        </div>
+                        <div class="orientacao">No COD, todos os pedidos gerados são considerados enviados: todos geram frete e CPA; apenas os pagos geram receita e custo do produto. Os não pagos retornam ao estoque sem perda. Projeção de 30 dias, sem frete de devolução ou outras taxas.</div>
+                        <p class="aviso erro" id="erro_formulario" role="alert" hidden></p>
+                        <div class="acoes-cadastro">
+                            <a class="botao discreto" href="dashboard.html">Cancelar</a>
+                            <button class="botao principal" id="btn_salvar" type="submit">Salvar simulação</button>
+                        </div>
+                    </form>
+                </section>
+                <p class="nota">Projeção de 30 dias baseada nos valores informados. Não inclui impostos, taxas e outros custos não cadastrados. Os cenários representam estimativas, não vendas realizadas.</p>
+            </div>
+        </main>
+        <script src="js/sessao.js"></script>
+        <script src="js/contas-simulacao.js"></script>
+        <script src="js/nova-simulacao.js"></script>
+    </body>
+</html>
